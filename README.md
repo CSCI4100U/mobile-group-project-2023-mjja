@@ -3,13 +3,13 @@
 
 Group members (3-5) (no Student IDs, only names and github usernames):
 
-1. 
+1. Jessica Patel
 
-2. 
+2. Mansi Patel
 
-3. 
+3. Aanisha Newaz 
 
-4. 
+4. Jahanvi Mathukia
 
 5.
 
