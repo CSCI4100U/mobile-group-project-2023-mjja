@@ -7,8 +7,7 @@ class ExpenseDatabase {
   static Database? _database;
 
   Future<void> initializeDatabase() async {
-    if (_database == null) {
-      _database = await openDatabase(
+    _database ??= await openDatabase(
         join(await getDatabasesPath(), 'expenses.db'),
         onCreate: (db, version) {
           return db.execute('''
@@ -24,7 +23,6 @@ class ExpenseDatabase {
         },
         version: 1,
       );
-    }
   }
 
   Future<int?> createExpense(Expense expense) async {
