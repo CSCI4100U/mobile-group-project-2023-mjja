@@ -7,10 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'data/localDB/expenses.dart';
 import 'models/expense_model.dart';
 
-///////////   SQLite test code ////////////////
 void main() => runApp(MyApp());
 
-
+/////////   SQLite test code ////////////////
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

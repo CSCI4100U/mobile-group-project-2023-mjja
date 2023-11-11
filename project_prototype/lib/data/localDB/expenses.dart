@@ -6,7 +6,14 @@ class Expense {
   String? date;
   String description;
 
-  Expense({this.id, this.name, this.category, this.amount, this.date, required this.description});
+  Expense({
+    this.id,
+    this.name,
+    this.category,
+    this.amount,
+    this.date,
+    required this.description
+  });
 
   // Generate a new Expense object from a map, typically from the database
   factory Expense.fromMap(Map<String, dynamic> map) {
