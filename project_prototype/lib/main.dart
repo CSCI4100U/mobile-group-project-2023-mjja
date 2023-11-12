@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'LogIn.dart'; // Import the welcome back page
+import 'LandingPage.dart'; // Import the main UI page
+
 //firebase dependencies
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,37 +15,47 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Money Minder'),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () async {
-              final expense = Expense(
-                name: 'Groceries',
-                category: 'Food',
-                amount: 50.0,
-                date: '2023/11/07',
-                description: 'Monthly grocery shopping',
-              );
-
-              final db = ExpenseDatabase();
-              await db.createExpense(expense);
-
-              final expenses = await db.readAllExpenses();
-              for (final exp in expenses) {
-                print('************ Expense: ${exp.name}, Amount: ${exp.amount}');
-              }
-            },
-            child: Text('Test Local Database'),
-          ),
-        ),
+      title: 'Money Minder App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: SignInScreen(), // Set the MainUIPage as the home page
     );
   }
+
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //     home: Scaffold(
+  //       appBar: AppBar(
+  //         title: Text('Money Minder'),
+  //       ),
+  //       body: Center(
+  //         child: ElevatedButton(
+  //           onPressed: () async {
+  //             final expense = Expense(
+  //               name: 'Groceries',
+  //               category: 'Food',
+  //               amount: 50.0,
+  //               date: '2023/11/07',
+  //               description: 'Monthly grocery shopping',
+  //             );
+
+  //             final db = ExpenseDatabase();
+  //             await db.createExpense(expense);
+
+  //             final expenses = await db.readAllExpenses();
+  //             for (final exp in expenses) {
+  //               print('************ Expense: ${exp.name}, Amount: ${exp.amount}');
+  //             }
+  //           },
+  //           child: Text('Test Local Database'),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 //////////  FIREBASE TEST DATA///////////////////////
