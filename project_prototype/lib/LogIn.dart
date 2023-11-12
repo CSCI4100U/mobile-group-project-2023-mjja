@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'SignUp.dart';
-import 'UnderConstruction.dart';
+import 'MainPage.dart';
 
 
 class WelcomeBackPage extends StatelessWidget {
@@ -85,7 +85,7 @@ class WelcomeBackPage extends StatelessWidget {
                     onPressed: () {
                       // Implement forgot password functionality
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => UnderConstructionPage(),
+                        builder: (context) => ProfilePage(),
                       ));
                     },
                     child: Text(
@@ -102,7 +102,7 @@ class WelcomeBackPage extends StatelessWidget {
                     onPressed: () {
                       // Implement login functionality
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => UnderConstructionPage(),
+                        builder: (context) => ProfilePage(),
                       ));
                     },
                     child: Text(
