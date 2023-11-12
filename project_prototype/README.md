@@ -9,15 +9,30 @@ is working.
 ## Requirements
 Max Score	Requirement	Description / Criteria
 ### 2.00	Multiple screens/navigation	 - Jessica and Aanisha
-
+MoneyMinder has multiple screens that serve different purposes:
+- Landing page for user to sign in or sign up
+- Sign up page
+- Sign in page
+- Main page, where the user can see an overview of their current networth, as well as their recent expenses (partially implemented)
+- Insights page, where the user can track their spending habits and follow their investments (partially implemented)
+- Reminders page, where the user can set reminders for different financial tasks
+- Settings page (not implemented)
 #### 1.00: At least two different screens implemented.
+![landingpage](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/f385bffd-cff2-41f7-8589-5e6763b70e8f)
+![login](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/35012bad-3470-4adf-9e1f-5f8262ddc374)
+![reminders](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/684168be-fa3e-4dc0-b255-55e2e9f20e92)
 
 #### 1.00: Seamless navigation between screens with no crashes or glitches.
+The user can switch between the Main overview, insights, reminders, and settings tabs efficiently without any glitches.
 
 ### 2.00	Dialogs and pickers	- Aanisha
 #### 1.00: At least one dialog or picker is present.
 
+![date-dialog](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/a28edb5d-90ba-482a-8a07-c57810418948)
+
 #### 1.00: Dialog or picker serves a functional purpose and enhances user experience.
+We have successfully integrated a dialog/picker function into our application. This allows the user to pick the date and time in which their task is due in the reminders tab. The date and time will be stored into a variable/database to send notifications to the user's device when their task's due date is coming up soon.
+![date-dialogue-code](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/26de6da1-1177-4ae9-8f90-9c49473f0a19)
 
 ### 1.00	Notifications	
 #### 0.50: Notifications are implemented.
@@ -27,8 +42,10 @@ Max Score	Requirement	Description / Criteria
 ### 1.00	Snackbars	- Aanisha
 #### 0.50: Snackbar integration in the application.
 We have successfully integrated a snackbar function into our application. The snackbar notifies the user once they have set a new task reminder or if they have completed a task.
+![snackbar code](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/bf99f941-f2ba-41d6-af66-131c06cf3f7e)
 
 #### 0.50: Snackbars convey meaningful information or feedback to the user.
+![snackbar](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/48f27013-e519-4c3c-91c0-94028f1133f2)
 
 ### 2.00	Local storage	- Jahanvi and Mansi
 #### 1.00: Data is saved and accessed using SQLite (or equivalent).
