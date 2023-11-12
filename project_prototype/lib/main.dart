@@ -34,16 +34,25 @@ class MyApp extends StatelessWidget {
   //       body: Center(
   //         child: ElevatedButton(
   //           onPressed: () async {
-  //             final expense = Expense(
+  //             final expense1 = Expense(
   //               name: 'Groceries',
   //               category: 'Food',
   //               amount: 50.0,
   //               date: '2023/11/07',
   //               description: 'Monthly grocery shopping',
   //             );
+ //              final expense2 = Expense(
+//               name: 'Groceries',
+//               category: 'Food',
+//               amount: 50.0,
+//               date: '2023/11/07',
+//               description: 'Monthly grocery shopping',
+//             );
+
 
   //             final db = ExpenseDatabase();
-  //             await db.createExpense(expense);
+  //             await db.createExpense(expense1);
+  //              await db.createExpense(expense2);
 
   //             final expenses = await db.readAllExpenses();
   //             for (final exp in expenses) {

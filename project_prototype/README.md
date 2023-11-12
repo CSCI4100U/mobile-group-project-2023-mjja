@@ -23,10 +23,18 @@ Max Score	Requirement	Description / Criteria
 
 #### 0.50: Snackbars convey meaningful information or feedback to the user.
 
-### 2.00	Local storage	
+### 2.00	Local storage	- Jahanvi and Mansi
 #### 1.00: Data is saved and accessed using SQLite (or equivalent).
+We have successfully integrated SQLite into our application. SqLite serves as our local storage solution, allowing us to store, manage, and retrieve data efficiently.
 
 #### 1.00: Data integrity is maintained, and there are no issues/crashes related to storage.
+Our application demonstrates efficient local data retrieval and storage with minimal delays. When data is stored in SQLite, it is readily available for retrieval and can be accessed within milliseconds.
+We have verified the efficiency of our data retrieval process by printing retrieved data on the console, confirming that data retrieval occurs promptly without causing any significant performance issues or delays in our application.
+
+Here are the screenshots of data retrieval:
+![localdb_ss1.png](..%2F..%2F..%2Flocaldb_ss1.png)
+
+![localdb_ss2.png](..%2F..%2F..%2Flocaldb_ss2.png)
 
 ### 2.00	Cloud storage	- Jahanvi and Mansi
 #### 1.00: Cloud storage (e.g., Firestore) integration.
