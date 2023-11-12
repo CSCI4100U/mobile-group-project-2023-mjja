@@ -68,11 +68,13 @@ The starting stock page
 ![stockHome](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/9e0dda68-334d-4423-aa03-e7cf7f055c2e)
 Adding a new stock
 ![stockAdd](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/e803ccdc-5c85-4e0c-9e2d-83145e811c20)
-The updated list
-![stockUpdated](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/c8cfbeb6-e879-409e-9e33-7be4eb15dd62)
-If a stock is down for the day the text is red 
-![stockRed](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/7398bfd6-ccfb-40ca-b639-925e99ca40d7)
-If you type a stock symbol that does not exist this error is printed to the console but the app does not crash
-![image](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/91616dfe-93e5-4df9-837f-f62a821839f4)
 
+![stockUpdated](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/c8cfbeb6-e879-409e-9e33-7be4eb15dd62)
+
+![stockRed](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/7398bfd6-ccfb-40ca-b639-925e99ca40d7)
+
+![image](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/91616dfe-93e5-4df9-837f-f62a821839f4)
+The updated list
+If a stock is down for the day the text is red 
+If you type a stock symbol that does not exist this error is printed to the console but the app does not crash
 #### 1.00: Proper error handling and data parsing are observed.
