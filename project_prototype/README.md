@@ -84,18 +84,17 @@ Here are the screenshots of data retrieval:
 A brief summary of the HTTP requests is that we are using a free public API called IEX cloud that allows you to get real time stock data and have it be parsed to your code and updated. So theoretically if you launched our app during the week at different times of day the app would display the correct live prices.
 
 Snippet of code for HTTP requests
+
 ![image](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/d6d123a7-3732-4837-a0c4-c87c39b24f53)
-The starting stock page
 ![stockHome](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/9e0dda68-334d-4423-aa03-e7cf7f055c2e)
-Adding a new stock
 ![stockAdd](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/e803ccdc-5c85-4e0c-9e2d-83145e811c20)
 
-![stockUpdated](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/c8cfbeb6-e879-409e-9e33-7be4eb15dd62)
-
-![stockRed](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/7398bfd6-ccfb-40ca-b639-925e99ca40d7)
-
-![image](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/91616dfe-93e5-4df9-837f-f62a821839f4)
 The updated list
 If a stock is down for the day the text is red 
 If you type a stock symbol that does not exist this error is printed to the console but the app does not crash
+
+![stockUpdated](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/c8cfbeb6-e879-409e-9e33-7be4eb15dd62)
+![stockRed](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/7398bfd6-ccfb-40ca-b639-925e99ca40d7)
+![image](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/61356946/91616dfe-93e5-4df9-837f-f62a821839f4)
+
 #### 1.00: Proper error handling and data parsing are observed.
