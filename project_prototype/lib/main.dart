@@ -7,9 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'data/localDB/expenses.dart';
 import 'models/expense_model.dart';
 
+///////   SQLite test code ////////////////
 void main() => runApp(MyApp());
 
-/////////   SQLite test code ////////////////
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
 //   runApp(MyApp());
 // }
 //
-//
 // class MyApp extends StatelessWidget {
 //   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 //
@@ -69,26 +68,41 @@ class MyApp extends StatelessWidget {
 //         body: Center(
 //           child: ElevatedButton(
 //             onPressed: () async {
-//               final expenseData = {
+//               final expenseData1 = {
 //                 'name': 'Groceries',
 //                 'category': 'Food',
 //                 'amount': 50.0,
 //                 'date': '2023/11/07',
 //                 'description': 'Monthly grocery shopping',
 //               };
+//               final expenseData2 = {
+//                 'name': 'Electronics',
+//                 'category': 'Shopping',
+//                 'amount': 100.0,
+//                 'date': '2023/11/08',
+//                 'description': 'Purchased new gadgets',
+//               };
 //
 //               // Reference to the 'expenses' collection
 //               final CollectionReference expensesCollection = firestore.collection('expenses');
 //
 //               // Add an expense to the Firestore collection
-//               await expensesCollection.add(expenseData);
+//               await expensesCollection.add(expenseData1);
+//               await expensesCollection.add(expenseData2);
 //
-//               // Query the Firestore collection to retrieve expenses
+//               print('Expenses added to the Firestore collection.');
+//
+//               // Query the Firestore collection to access expenses
 //               final QuerySnapshot expensesQuery = await expensesCollection.get();
 //
 //               for (final QueryDocumentSnapshot doc in expensesQuery.docs) {
 //                 final data = doc.data() as Map<String, dynamic>;
-//                 print('************ Expense: ${data['name']}, Amount: ${data['amount']}');
+//                 print('Expense: ${data['name']}, '
+//                     'Category: ${data['category']}, '
+//                     'Amount: ${data['amount']}, '
+//                     'Date: ${data['date']},'
+//                     'Description: ${data['description']}'
+//                 );
 //               }
 //             },
 //             child: const Text('Test Firebase Database'),
@@ -98,6 +112,5 @@ class MyApp extends StatelessWidget {
 //     );
 //   }
 // }
-
 
 //////////////Firebase test code ends ///////////////////////////////////////
