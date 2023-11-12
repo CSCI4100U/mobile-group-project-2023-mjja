@@ -32,9 +32,11 @@ Our application demonstrates efficient local data retrieval and storage with min
 We have verified the efficiency of our data retrieval process by printing retrieved data on the console, confirming that data retrieval occurs promptly without causing any significant performance issues or delays in our application.
 
 Here are the screenshots of data retrieval:
-![localdb_ss1.png](..%2F..%2F..%2Flocaldb_ss1.png)
 
-![localdb_ss2.png](..%2F..%2F..%2Flocaldb_ss2.png)
+![localdb_ss1](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90158170/edd3d5d5-518e-40ba-98b5-dd465070e382)
+
+![localdb_ss2](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90158170/555bb229-6c8c-43b9-9d19-a35fde090039)
+
 
 ### 2.00	Cloud storage	- Jahanvi and Mansi
 #### 1.00: Cloud storage (e.g., Firestore) integration.
