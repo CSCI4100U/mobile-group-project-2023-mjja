@@ -8,13 +8,13 @@ Both SQLite and fire base code is commented out in main.dart but it is working. 
 is working.
 ## Requirements
 Max Score	Requirement	Description / Criteria
-### 2.00	Multiple screens/navigation	 
+### 2.00	Multiple screens/navigation	 - Jessica and Aanisha
 
 #### 1.00: At least two different screens implemented.
 
 #### 1.00: Seamless navigation between screens with no crashes or glitches.
 
-### 2.00	Dialogs and pickers	
+### 2.00	Dialogs and pickers	- Aanisha
 #### 1.00: At least one dialog or picker is present.
 
 #### 1.00: Dialog or picker serves a functional purpose and enhances user experience.
@@ -24,8 +24,9 @@ Max Score	Requirement	Description / Criteria
 
 #### 0.50: Notifications are contextually appropriate and don’t spam the user.
 
-### 1.00	Snackbars	
+### 1.00	Snackbars	- Aanisha
 #### 0.50: Snackbar integration in the application.
+We have successfully integrated a snackbar function into our application. The snackbar notifies the user once they have set a new task reminder or if they have completed a task.
 
 #### 0.50: Snackbars convey meaningful information or feedback to the user.
 
@@ -58,7 +59,7 @@ Here are the screenshots of data retrieval:
 <img width="904" alt="Screenshot 2023-11-12 114701" src="https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90855128/1d5fcc11-9e21-40b6-abe0-23faa4ec71eb">
 
 
-### 2.00	HTTP Requests	
+### 2.00	HTTP Requests
 #### 1.00: HTTP requests are made within the app.
 A brief summary of the HTTP requests is that we are using a free public API called IEX cloud that allows you to get real time stock data and have it be parsed to your code and updated. So theoretically if you launched our app during the week at different times of day the app would display the correct live prices.
 
