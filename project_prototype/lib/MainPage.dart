@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'RemindersPage.dart'as reminders;
-import 'UnderConstruction.dart'as setup;
+import 'RemindersPage.dart' as reminders;
+import 'UnderConstruction.dart' as setup;
+import 'InsightsPage.dart' as insights;
 import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -8,9 +9,11 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin {
+class _ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
   final Color backgroundColor = Colors.black;
-  final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
+  final Color purpleColor =
+      Color(0xFF5E17EB); // Replace with your exact color code
   final Color textColor = Colors.white;
 
   int _selectedIndex = 0;
@@ -31,8 +34,10 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   List<Widget> getWidgetOptions() {
     return <Widget>[
       HomePage(), // The Home Page widget will go here
-      setup.UnderConstructionPage(),
-      reminders.RemindersPage(tabController: _tabController), // Using the RemindersPage class
+      insights.InsightsPage(
+        tabController: _tabController),
+      reminders.RemindersPage(
+          tabController: _tabController), // Using the RemindersPage class
       setup.UnderConstructionPage(),
     ];
   }
@@ -107,8 +112,13 @@ class HomePage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Total Balance', style: TextStyle(color: Colors.black)),
-                            Text('\$13,250', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black)),
+                            Text('Total Balance',
+                                style: TextStyle(color: Colors.black)),
+                            Text('\$13,250',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
                           ],
                         ),
                         IconButton(

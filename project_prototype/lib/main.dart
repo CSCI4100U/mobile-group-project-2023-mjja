@@ -15,7 +15,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
-    Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Money Minder App',
       theme: ThemeData(
@@ -41,14 +41,13 @@ class MyApp extends StatelessWidget {
   //               date: '2023/11/07',
   //               description: 'Monthly grocery shopping',
   //             );
- //              final expense2 = Expense(
+  //              final expense2 = Expense(
 //               name: 'Groceries',
 //               category: 'Food',
 //               amount: 50.0,
 //               date: '2023/11/07',
 //               description: 'Monthly grocery shopping',
 //             );
-
 
   //             final db = ExpenseDatabase();
   //             await db.createExpense(expense1);
