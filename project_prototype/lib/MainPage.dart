@@ -16,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   final Color backgroundColor = Colors.black;
   final Color purpleColor =
-      Color(0xFF5E17EB); // Replace with your exact color code
+  Color(0xFF5E17EB); // Replace with your exact color code
   final Color textColor = Colors.white;
 
   int _selectedIndex = 0;
@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage>
     return <Widget>[
       HomePage(), // The Home Page widget will go here
       insights.InsightsPage(
-        tabController: _tabController),
+          tabController: _tabController),
       reminders.RemindersPage(
           tabController: _tabController), // Using the RemindersPage class
       setup.UnderConstructionPage(),
@@ -57,8 +57,141 @@ class _ProfilePageState extends State<ProfilePage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('MoneyMinder'),
-        backgroundColor: Colors.white,
+        leading: Builder(
+          builder: (context) =>
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
+        ),
+        title: Center(
+          child: Container(
+            height: 40, // Adjust the height as needed
+            width: 80, // Adjust the width as needed
+            child: Image.asset(
+            'assets/logo.png',
+            fit: BoxFit.fitHeight, // Ensures the entire logo is visible within the bounds
+          ),
+          ),
+        ),
+        actions: <Widget>[
+          // IconButton for the profile icon
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              // Handle the profile icon tap
+            },
+
+          ),
+
+          // PopupMenuButton<String>(
+          //   onSelected: (String result) {
+          //     // Handle the menu item selected
+          //   },
+          //   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+          //     const PopupMenuItem<String>(
+          //       value: 'Profile',
+          //       child: Text('Profile'),
+          //     ),
+          //     const PopupMenuItem<String>(
+          //       value: 'Settings',
+          //       child: Text('Settings'),
+          //     ),
+          //     const PopupMenuItem<String>(
+          //       value: 'Logout',
+          //       child: Text('Logout'),
+          //     ),
+          //   ],
+          // ),
+        ],
+        backgroundColor: Colors.black,
+        centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Container(
+              height: 80, // Adjust the header height as needed
+              child: DrawerHeader(
+                child: Center( // Center the child within the DrawerHeader
+                  child: Text(
+                    'Menu',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                ),
+                margin: EdgeInsets.all(0.0),
+                padding: EdgeInsets.all(0.0),
+              ),
+            ),
+            ListTile(
+              title: Text('Home'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Expenses'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Financial Insights'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Budgets'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Reminders'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Investment Insights'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Group Members'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Net Worth'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                // Handle the drawer item tap
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
       backgroundColor: Colors.black,
       body: Center(
