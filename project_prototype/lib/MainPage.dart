@@ -75,34 +75,26 @@ class _ProfilePageState extends State<ProfilePage>
           ),
         ),
         actions: <Widget>[
-          // IconButton for the profile icon
-          IconButton(
+          PopupMenuButton<String>(
             icon: Icon(Icons.person),
-            onPressed: () {
-              // Handle the profile icon tap
+            onSelected: (String result) {
+              // Handle the menu item selected
             },
-
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'Profile',
+                child: Text('Profile'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Settings',
+                child: Text('Settings'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'Logout',
+                child: Text('Logout'),
+              ),
+            ],
           ),
-
-          // PopupMenuButton<String>(
-          //   onSelected: (String result) {
-          //     // Handle the menu item selected
-          //   },
-          //   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-          //     const PopupMenuItem<String>(
-          //       value: 'Profile',
-          //       child: Text('Profile'),
-          //     ),
-          //     const PopupMenuItem<String>(
-          //       value: 'Settings',
-          //       child: Text('Settings'),
-          //     ),
-          //     const PopupMenuItem<String>(
-          //       value: 'Logout',
-          //       child: Text('Logout'),
-          //     ),
-          //   ],
-          // ),
         ],
         backgroundColor: Colors.black,
         centerTitle: true,
