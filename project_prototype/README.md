@@ -1,7 +1,7 @@
 # This is our project prototype
 
 ## HOW TO RUN OUR CODE:
-Once you clone our project proposal you will need to then cd navigate to the project_prototype folder and run a pub get in your command line. Then it is as simple as flutter run.  You will be presented with the login screen. For now, the user can enter any email and password to enter into the app. After pressing sign in the user can navigate to our other pages. As the database is not integrated with the whole application, no information about the user will be stored on the app.
+Once you clone our project proposal you will need to then cd to the project_prototype folder and run a pub get in your command line to install all the dependencies. Then it is as simple as flutter run.  You will be presented with the login screen. For now, the user can enter any email and password to enter into the app. After pressing sign in the user can navigate to our other pages. As the database is not integrated with the whole application, no information about the user will be stored on the app.
 
 #### WARNING:
 Both SQLite and Firebase code are commented out in main.dart but it is working. Refer to the requirements below for more information and proof of images that the function is working.
