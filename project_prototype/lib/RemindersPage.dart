@@ -1,6 +1,3 @@
-// ## Acknowledgments
-// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -72,6 +69,7 @@ class _RemindersPageState extends State<RemindersPage> {
   }
 
   void scheduleReminderNotifications(Reminder reminder) {
+    print('Scheduling notification for: ${reminder.title}');
     for (var daysBefore in [5, 3, 1]) {
       var scheduledNotificationDateTime = tz.TZDateTime.from(
           reminder.dueDate.subtract(Duration(days: daysBefore)),
@@ -288,16 +286,17 @@ class _RemindersPageState extends State<RemindersPage> {
               child: Text('Done'),
               onPressed: () {
                 setState(() {
-                  reminders.add(Reminder(
+                  var newReminder = Reminder(
                     title: title,
                     description: description,
                     isUrgent: isUrgent,
                     dueDate: dueDate,
-                  ));
+                  );
+                  reminders.add(newReminder);
+                  scheduleReminderNotifications(newReminder);
                 });
                 Navigator.of(context).pop(); // Close the dialog
 
-                // Show the SnackBar after adding a reminder
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('You have set a new reminder'),
@@ -308,22 +307,6 @@ class _RemindersPageState extends State<RemindersPage> {
             ),
           ],
         );
-      },
-    );
-    TextButton(
-      child: Text('Done'),
-      onPressed: () {
-        setState(() {
-          var newReminder = Reminder(
-            title: title,
-            description: description,
-            isUrgent: isUrgent,
-            dueDate: dueDate,
-          );
-          reminders.add(newReminder);
-          scheduleReminderNotifications(newReminder); // Schedule notifications
-        });
-        Navigator.of(context).pop(); // Close the dialog
       },
     );
   }
