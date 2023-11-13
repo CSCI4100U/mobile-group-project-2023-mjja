@@ -36,8 +36,11 @@ We have successfully integrated a dialog/picker function into our application. T
 
 ![date-dialogue-code](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/26de6da1-1177-4ae9-8f90-9c49473f0a19)
 
-## 1.00	Notifications	
+## 1.00	Notifications
 #### 0.50: Notifications are implemented.
+Currently, we are printing notification messages on the console.
+
+![image](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90855128/b1bf332c-d4b7-4d41-8ce2-2a10f0898935)
 
 #### 0.50: Notifications are contextually appropriate and don’t spam the user.
 The current notifications are the reminders set by the users.
