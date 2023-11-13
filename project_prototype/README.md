@@ -50,6 +50,7 @@ We have successfully integrated a snackbar function into our application. The sn
 
 #### 0.50: Snackbars convey meaningful information or feedback to the user.
 It displays that the goal/remainder is completed.
+
 ![snackbar](https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90078094/48f27013-e519-4c3c-91c0-94028f1133f2)
 
 ## 2.00	Local storage	- Jahanvi and Mansi
