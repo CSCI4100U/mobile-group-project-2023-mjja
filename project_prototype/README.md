@@ -85,7 +85,7 @@ Here are the screenshots of data retrieval:
 <img width="904" alt="Screenshot 2023-11-12 114701" src="https://github.com/CSCI4100U/mobile-group-project-2023-mjja/assets/90855128/1d5fcc11-9e21-40b6-abe0-23faa4ec71eb">
 
 
-## 2.00	HTTP Requests
+## 2.00	HTTP Requests - Ethan
 #### 1.00: HTTP requests are made within the app.
 A brief summary of the HTTP requests is that we are using a free public API called IEX cloud that allows you to get real-time stock data and have it parsed to your code and updated. So theoretically if you launched our app during the week at different times of day the app would display the live stick prices.
 
