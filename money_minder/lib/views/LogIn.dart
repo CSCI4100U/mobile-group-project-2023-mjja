@@ -85,7 +85,7 @@ class WelcomeBackPage extends StatelessWidget {
                     onPressed: () {
                       // Implement forgot password functionality
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
+                        builder: (context) => MainPage(),
                       ));
                     },
                     child: Text(
@@ -102,7 +102,7 @@ class WelcomeBackPage extends StatelessWidget {
                     onPressed: () {
                       // Implement login functionality
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
+                        builder: (context) => MainPage(),
                       ));
                     },
                     child: Text(

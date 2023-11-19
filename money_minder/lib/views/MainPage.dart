@@ -7,12 +7,12 @@ import 'UnderConstruction.dart' as setup;
 import 'InsightsPage.dart' as insights;
 import 'package:intl/intl.dart';
 
-class ProfilePage extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage>
+class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   final Color backgroundColor = Colors.black;
   final Color purpleColor =
