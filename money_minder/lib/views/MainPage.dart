@@ -79,6 +79,21 @@ class _MainPageState extends State<MainPage>
             icon: Icon(Icons.person),
             onSelected: (String result) {
               // Handle the menu item selected
+              if (result == 'Profile') {
+                // Navigate to the Landing Page when 'Logout' is selected
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => profilePage.ProfilePage()));
+              }
+              if (result == 'Settings') {
+                // Navigate to the Landing Page when 'Logout' is selected
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => setup.UnderConstructionPage()));
+              }
+              if (result == 'Logout') {
+                // Navigate to the Landing Page when 'Logout' is selected
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => landing.SignInScreen()));
+              }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
