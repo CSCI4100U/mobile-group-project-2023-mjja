@@ -1,33 +1,41 @@
+/**
+ * AccountInfo: This class will store the account information of the user
+ **/
+
 class AccountInfo {
-  String emailAddress;
+  int? id;
+  String? emailAddress;
   String firstName;
   String lastName;
   String phoneNumber;
 
   AccountInfo({
-    required this.emailAddress,
+    this.id,
+    this.emailAddress,
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
   });
 
-  // Convert an AccountInfo object to a map for data storage
-  Map<String, dynamic> toMap() {
-    return {
-      'emailAddress': emailAddress,
-      'firstName': firstName,
-      'lastName': lastName,
-      'phoneNumber': phoneNumber,
-    };
-  }
-
-  // Create an AccountInfo object from a map
+  // create an AccountInfo object from a map
   factory AccountInfo.fromMap(Map<String, dynamic> map) {
     return AccountInfo(
+      id: map['id'],
       emailAddress: map['emailAddress'],
       firstName: map['firstName'],
       lastName: map['lastName'],
       phoneNumber: map['phoneNumber'],
     );
+  }
+
+  // convert an AccountInfo object to a map for data storage
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'emailAddress': emailAddress,
+      'firstName': firstName,
+      'lastName': lastName,
+      'phoneNumber': phoneNumber,
+    };
   }
 }

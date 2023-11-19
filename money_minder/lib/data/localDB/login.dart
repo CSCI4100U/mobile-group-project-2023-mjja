@@ -1,25 +1,33 @@
+/**
+ * Login: This class will store the login information of the user
+ **/
+
 class Login {
-  String emailAddress;
-  String password;
+  int? id;
+  String? emailAddress;
+  String? password;
 
   Login({
-    required this.emailAddress,
-    required this.password,
+    this.id,
+    this.emailAddress,
+    this.password,
   });
 
-  // Convert a Login object to a map for data storage (e.g., in SharedPreferences)
-  Map<String, dynamic> toMap() {
-    return {
-      'emailAddress': emailAddress,
-      'password': password,
-    };
-  }
-
-  // Create a Login object from a map (e.g., when retrieving data from SharedPreferences)
+  // create a Login object from a map
   factory Login.fromMap(Map<String, dynamic> map) {
     return Login(
+      id: map['id'],
       emailAddress: map['emailAddress'],
       password: map['password'],
     );
+  }
+
+  // convert a Login object to a map for data storage
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'emailAddress': emailAddress,
+      'password': password,
+    };
   }
 }

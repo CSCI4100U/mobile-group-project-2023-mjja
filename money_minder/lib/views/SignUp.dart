@@ -88,18 +88,6 @@ class SignUpPage extends StatelessWidget {
                   ),
                   obscureText: true,
                 ),
-                SizedBox(height: 16.0),
-                // Confirm Password Input
-                TextField(
-                  style: TextStyle(color: textColor),
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    labelStyle: TextStyle(color: textColor),
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                  ),
-                  obscureText: true,
-                ),
                 SizedBox(height: 24.0),
                 // Sign Up Button
                 ElevatedButton(

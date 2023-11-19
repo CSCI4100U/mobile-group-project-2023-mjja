@@ -1,17 +1,22 @@
+/**
+ * ExpenseDatabase: This class contains all the method realted to Expense class
+ */
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../data/localDB/db_utils.dart';
 import '../data/localDB/expenses.dart';
 //import '../data/localDB/db_utils.dart';
 
 class ExpenseDatabase {
-  static Database? _database;
+  final dbUtils = DBUtils();
 
+  // initialize database and create table if does not exists
   Future<void> initializeDatabase() async {
-    _database ??= await openDatabase(
-        join(await getDatabasesPath(), 'expenses.db'),
-        onCreate: (db, version) {
-          return db.execute('''
-            CREATE TABLE expenses(
+    try {
+      final db = await dbUtils.database;
+      await db.execute('''
+      CREATE TABLE IF NOT EXISTS expenses(
               id INTEGER PRIMARY KEY,
               name TEXT,
               category TEXT,
@@ -19,28 +24,34 @@ class ExpenseDatabase {
               date TEXT,
               description TEXT
             )
-          ''');
-        },
-        version: 1,
-      );
+    ''');
+    } catch (e) {
+      print('Error initializing the database: $e');
+    }
   }
 
+  // create a new expense record
   Future<int?> createExpense(Expense expense) async {
     await initializeDatabase();
-    return await _database?.insert('expenses', expense.toMap());
+    final db = await dbUtils.database;
+    return await db.insert('expenses', expense.toMap());
   }
 
+  // read expense records
   Future<List<Expense>> readAllExpenses() async {
     await initializeDatabase();
-    final List<Map<String, Object?>>? maps = await _database?.query('expenses');
+    final db = await dbUtils.database;
+    final List<Map<String, Object?>> maps = await db.query('expenses');
     return List.generate(maps!.length, (i) {
       return Expense.fromMap(maps[i]);
     });
   }
 
+  // update expense record by id
   Future<int?> updateExpense(Expense expense) async {
     await initializeDatabase();
-    return await _database?.update(
+    final db = await dbUtils.database;
+    return await db.update(
       'expenses',
       expense.toMap(),
       where: 'id = ?',
@@ -48,9 +59,11 @@ class ExpenseDatabase {
     );
   }
 
+  // delete expense record by id
   Future<int?> deleteExpense(int id) async {
     await initializeDatabase();
-    return await _database?.delete(
+    final db = await dbUtils.database;
+    return await db.delete(
       'expenses',
       where: 'id = ?',
       whereArgs: [id],
