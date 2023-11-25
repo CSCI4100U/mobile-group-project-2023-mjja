@@ -3,8 +3,7 @@ class Expense {
   String? name;
   String? category;
   double? amount;
-  String? date;
-  String description;
+  DateTime? date;
 
   Expense({
     this.id,
@@ -12,7 +11,6 @@ class Expense {
     this.category,
     this.amount,
     this.date,
-    required this.description
   });
 
   // Generate a new Expense object from a map, typically from the database
@@ -22,8 +20,7 @@ class Expense {
       name: map['name'],
       category: map['category'],
       amount: map['amount'],
-      date: map['date'], // != null ? DateTime.parse(map['date']) : null,
-      description: map['description'],
+      date: DateTime.parse(map['date']),
     );
   }
 
@@ -34,13 +31,12 @@ class Expense {
       'name': name,
       'category': category,
       'amount': amount,
-      'date': date,
-      'description': description,
+      'date': date?.toIso8601String(),
     };
   }
 
   @override
   String toString() {
-    return 'Expense[id: $id, name: $name, category: $category, amount: $amount, date: $date, description: $description]';
+    return 'Expense[id: $id, name: $name, category: $category, amount: $amount, date: $date]';
   }
 }

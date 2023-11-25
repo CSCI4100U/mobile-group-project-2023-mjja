@@ -22,6 +22,10 @@ class _MainPageState extends State<MainPage>
   int _selectedIndex = 0;
   late TabController _tabController;
 
+  get profilePage => null;
+
+  get landing => null;
+
   @override
   void initState() {
     super.initState();
