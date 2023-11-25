@@ -6,6 +6,7 @@ import 'RemindersPage.dart' as reminders;
 import 'UnderConstruction.dart' as setup;
 import 'InsightsPage.dart' as insights;
 import 'package:intl/intl.dart';
+import 'goals_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -147,6 +148,20 @@ class _MainPageState extends State<MainPage>
               onTap: () {
                 // Handle the drawer item tap
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Goals'),
+              onTap: () {
+                // Close the drawer
+                Navigator.pop(context);
+                // Navigate to the InsightsPage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GoalsPage(),
+                  ),
+                );
               },
             ),
             ListTile(
