@@ -75,40 +75,13 @@ class _MainPageState extends State<MainPage>
           ),
         ),
         actions: <Widget>[
-          PopupMenuButton<String>(
+          IconButton(
             icon: Icon(Icons.person),
-            onSelected: (String result) {
-              // Handle the menu item selected
-              if (result == 'Profile') {
-                // Navigate to the Landing Page when 'Logout' is selected
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => profilePage.ProfilePage()));
-              }
-              if (result == 'Settings') {
-                // Navigate to the Landing Page when 'Logout' is selected
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => setup.UnderConstructionPage()));
-              }
-              if (result == 'Logout') {
-                // Navigate to the Landing Page when 'Logout' is selected
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => landing.SignInScreen()));
-              }
+            onPressed: () {
+              // Navigate to the ProfilePage when icon is selected
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => profilePage.ProfilePage()));
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'Profile',
-                child: Text('Profile'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Settings',
-                child: Text('Settings'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Logout',
-                child: Text('Logout'),
-              ),
-            ],
           ),
         ],
         backgroundColor: Colors.black,
