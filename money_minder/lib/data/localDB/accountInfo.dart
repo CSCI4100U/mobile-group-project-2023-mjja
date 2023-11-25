@@ -3,11 +3,11 @@
  **/
 
 class AccountInfo {
-  int? id;
-  String? emailAddress;
-  String? fullName;
-  String? username;
-  String? password;
+  int? id;                // unique AccountInfo identifier
+  String? emailAddress;   // email address of the user
+  String? fullName;       // fullname of the user
+  String? username;       // username of the user
+  String? password;       // password of the user
 
   AccountInfo({
     this.id,
@@ -17,7 +17,7 @@ class AccountInfo {
     this.password,
   });
 
-  // Create a AccountInfo object from a map (e.g., when retrieving data from SharedPreferences)
+  // generate a new AccountInfo object from a map, typically from the database
   factory AccountInfo.fromMap(Map<String, dynamic> map) {
     return AccountInfo(
       id: map['id'],
@@ -28,7 +28,7 @@ class AccountInfo {
     );
   }
 
-  // Convert a AccountInfo object to a map for data storage (e.g., in SharedPreferences)
+  // convert an AccountInfo object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -37,5 +37,10 @@ class AccountInfo {
       'username': username,
       'password': password,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Account Info [id: $id, fullname: $fullName, email: $emailAddress]';
   }
 }

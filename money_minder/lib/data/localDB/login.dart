@@ -3,9 +3,9 @@
  **/
 
 class Login {
-  int? id;
-  String? emailAddress;
-  String? password;
+  int? id;                  // unique Login identifier
+  String? emailAddress;     // email address of the user
+  String? password;         // password of the user
 
   Login({
     this.id,
@@ -13,7 +13,7 @@ class Login {
     this.password,
   });
 
-  // create a Login object from a map
+  // generate a new Login object from a map, typically from the database
   factory Login.fromMap(Map<String, dynamic> map) {
     return Login(
       id: map['id'],
@@ -22,7 +22,7 @@ class Login {
     );
   }
 
-  // convert a Login object to a map for data storage
+  // convert an Expense object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,

@@ -52,8 +52,7 @@ class DBUtils {
               name TEXT,
               category TEXT,
               amount REAL,
-              date DATETIME,
-              description TEXT
+              date TEXT
             )
         ''');
         db.execute('''
@@ -61,7 +60,7 @@ class DBUtils {
               id INTEGER PRIMARY KEY,
               name TEXT,
               amount REAL,
-              date DATETIME
+              date TEXT
             )
         ''');
         db.execute('''
@@ -73,9 +72,10 @@ class DBUtils {
         db.execute('''
          CREATE TABLE IF NOT EXISTS budget(
               id INTEGER PRIMARY KEY,
+              name TEXT,
               category TEXT,
               amount REAL,
-              endDate DATETIME
+              endDate TEXT
             )
         ''');
         db.execute('''
@@ -83,7 +83,7 @@ class DBUtils {
               id INTEGER PRIMARY KEY,
               name TEXT,
               amount REAL,
-              endDate DATETIME
+              endDate TEXT
             )
         ''');
       },

@@ -1,33 +1,48 @@
+/**
+ * Budget: this class store the budget information of the user.
+ */
+
 class Budget {
-  int? id;
-  String category; // Category for which the budget is defined
-  double amount; // Budget amount
-  DateTime endDate; // Budget end date
+  int? id;              // unique Budget identifier
+  String? name;         // name of the budget
+  String? category;     // category for the budget
+  double? amount;       // budget amount
+  DateTime? endDate;    // budget end date
 
   Budget({
     this.id,
-    required this.category,
-    required this.amount,
-    required this.endDate,
+    this.name,
+    this.category,
+    this.amount,
+    this.endDate,
   });
 
-  // create a Budget object from a map
+  // generate a new Budget object from a map, typically from the database
   factory Budget.fromMap(Map<String, dynamic> map) {
     return Budget(
       id: map['id'],
-      category: map['expenseCategory'],
+      name: map['name'],
+      category: map['category'],
       amount: map['amount'],
       endDate: DateTime.parse(map['endDate']),
     );
   }
 
-  // convert a Budget object to a map for data storage
+  // convert an Budget object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
       'id' : id,
-      'expenseCategory': category,
+      'name': name,
+      'category': category,
       'amount': amount,
-      'endDate': endDate.toIso8601String(),
+      'endDate': endDate?.toIso8601String(),
     };
   }
+
+
+  @override
+  String toString() {
+    return 'Budget [id: $id, name: $name, category: $category, amount: $amount, date: $endDate]';
+  }
+
 }
