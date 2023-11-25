@@ -21,8 +21,7 @@ class ExpenseDatabase {
               name TEXT,
               category TEXT,
               amount REAL,
-              date TEXT,
-              description TEXT
+              date TEXT
             )
     ''');
     } catch (e) {
@@ -34,7 +33,7 @@ class ExpenseDatabase {
   Future<int?> createExpense(Expense expense) async {
     await initializeDatabase();
     final db = await dbUtils.database;
-    return await db.insert('expenses', expense.toMap());
+    return await db.insert('expenses', expense.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // read expense records

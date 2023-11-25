@@ -45,10 +45,10 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   // insights.InsightsPage(
   //     tabController: _tabController),
   UnderConstructionPage(), //temporary over insights page
-  RemindersPage(
-  tabController: _tabController), // Using the RemindersPage class
-  UnderConstructionPage(),
-  ];
+  // RemindersPage(
+  // tabController: _tabController), // Using the RemindersPage class
+  // UnderConstructionPage(),
+   ];
   }
 
 

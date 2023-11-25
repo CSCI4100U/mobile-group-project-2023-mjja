@@ -5,37 +5,37 @@
 class AccountInfo {
   int? id;
   String? emailAddress;
-  String firstName;
-  String lastName;
-  String phoneNumber;
+  String? fullName;
+  String? username;
+  String? password;
 
   AccountInfo({
     this.id,
     this.emailAddress,
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
+    this.fullName,
+    this.username,
+    this.password,
   });
 
-  // create an AccountInfo object from a map
+  // Create a AccountInfo object from a map (e.g., when retrieving data from SharedPreferences)
   factory AccountInfo.fromMap(Map<String, dynamic> map) {
     return AccountInfo(
       id: map['id'],
       emailAddress: map['emailAddress'],
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      phoneNumber: map['phoneNumber'],
+      fullName: map['fullName'],
+      username: map['username'],
+      password: map['password'],
     );
   }
 
-  // convert an AccountInfo object to a map for data storage
+  // Convert a AccountInfo object to a map for data storage (e.g., in SharedPreferences)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'emailAddress': emailAddress,
-      'firstName': firstName,
-      'lastName': lastName,
-      'phoneNumber': phoneNumber,
+      'fullName': fullName,
+      'username': username,
+      'password': password,
     };
   }
 }

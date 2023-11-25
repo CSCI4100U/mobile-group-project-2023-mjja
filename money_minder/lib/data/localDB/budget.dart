@@ -1,12 +1,12 @@
 class Budget {
   int? id;
-  String expenseCategory; // Category for which the budget is defined
+  String category; // Category for which the budget is defined
   double amount; // Budget amount
   DateTime endDate; // Budget end date
 
   Budget({
     this.id,
-    required this.expenseCategory,
+    required this.category,
     required this.amount,
     required this.endDate,
   });
@@ -15,7 +15,7 @@ class Budget {
   factory Budget.fromMap(Map<String, dynamic> map) {
     return Budget(
       id: map['id'],
-      expenseCategory: map['expenseCategory'],
+      category: map['expenseCategory'],
       amount: map['amount'],
       endDate: DateTime.parse(map['endDate']),
     );
@@ -25,7 +25,7 @@ class Budget {
   Map<String, dynamic> toMap() {
     return {
       'id' : id,
-      'expenseCategory': expenseCategory,
+      'expenseCategory': category,
       'amount': amount,
       'endDate': endDate.toIso8601String(),
     };

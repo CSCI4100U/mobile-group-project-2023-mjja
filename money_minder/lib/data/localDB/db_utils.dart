@@ -22,6 +22,13 @@ class DBUtils {
       path.join(await getDatabasesPath(), 'money_minder_local.db'),
       onCreate: (db, version) {
         db.execute('''
+          CREATE TABLE IF NOT EXISTS login(
+          id INTEGER PRIMARY KEY,
+          emailAddress TEXT,
+          password TEXT
+          )
+        ''');
+        db.execute('''
          CREATE TABLE IF NOT EXISTS signup(
             id INTEGER PRIMARY KEY,
             emailAddress TEXT,
@@ -31,19 +38,12 @@ class DBUtils {
           )
         ''');
         db.execute('''
-          CREATE TABLE IF NOT EXISTS login(
-          id INTEGER PRIMARY KEY,
-          emailAddress TEXT,
-          password TEXT
-          )
-        ''');
-        db.execute('''
-            CREATE TABLE IF NOT EXISTS accountInfo(
+         CREATE TABLE IF NOT EXISTS accountInfo(
             id INTEGER PRIMARY KEY,
             emailAddress TEXT,
-            firstName TEXT,
-            lastName TEXT,
-            phoneNumber TEXT
+            fullName TEXT,
+            username TEXT,
+            password TEXT
           )
         ''');
         db.execute('''
@@ -52,8 +52,38 @@ class DBUtils {
               name TEXT,
               category TEXT,
               amount REAL,
-              date TEXT,
+              date DATETIME,
               description TEXT
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS income(
+              id INTEGER PRIMARY KEY,
+              name TEXT,
+              amount REAL,
+              date DATETIME
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS category(
+              id INTEGER PRIMARY KEY,
+              name TEXT
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS budget(
+              id INTEGER PRIMARY KEY,
+              category TEXT,
+              amount REAL,
+              endDate DATETIME
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS goal(
+              id INTEGER PRIMARY KEY,
+              name TEXT,
+              amount REAL,
+              endDate DATETIME
             )
         ''');
       },
