@@ -6,7 +6,7 @@ import 'RemindersPage.dart' as reminders;
 import 'UnderConstruction.dart' as setup;
 import 'InsightsPage.dart' as insights;
 import 'package:intl/intl.dart';
-import 'ProfilePage.dart' as profilePage;
+import 'profile_page.dart' as profilePage;
 import 'goals_page.dart';
 
 class MainPage extends StatefulWidget {
