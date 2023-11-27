@@ -18,9 +18,9 @@ class AccountInfoDatabase {
         CREATE TABLE IF NOT EXISTS accountInfo(
             id INTEGER PRIMARY KEY,
             emailAddress TEXT,
-            firstName TEXT,
-            lastName TEXT,
-            phoneNumber TEXT
+            fullName TEXT,
+            username TEXT,
+            password TEXT
           )
         ''');
     } catch (e) {
