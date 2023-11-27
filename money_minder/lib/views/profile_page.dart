@@ -2,11 +2,8 @@
 // The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
 
 import 'package:flutter/material.dart';
-import 'MainPage.dart'; // Assuming you have a HomePage widget
-import 'UnderConstruction.dart'; // Assuming you have a SettingsPage widget
-import 'InsightsPage.dart'; // Assuming you have an InsightsPage widget
-import 'RemindersPage.dart'; // Assuming you have a RemindersPage widget
 import 'LandingPage.dart';
+import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor =
@@ -24,58 +21,6 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   Color(0xFF5E17EB); // Replace with your exact color code
   final Color textColor = Colors.white;
 
-  int _selectedIndex = 0;
-  late TabController _tabController;
-
-  @override
-  void initState() {
-  super.initState();
-  _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-  _tabController.dispose();
-  super.dispose();
-  }
-
-  List<Widget> getWidgetOptions() {
-  return <Widget>[
-  HomePage(), // The Home Page widget will go here
-  // insights.InsightsPage(
-  //     tabController: _tabController),
-  UnderConstructionPage(), //temporary over insights page
-  RemindersPage(
-  tabController: _tabController), // Using the RemindersPage class
-  UnderConstructionPage(),
-  ];
-  }
-
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => MainPage()));
-        break;
-      case 1:
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => UnderConstructionPage()));
-        break;
-      // case 2:
-      //   Navigator.of(context).pushReplacement(
-      //       MaterialPageRoute(builder: (context) => reminder()));
-      //   break;
-      case 3:
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => UnderConstructionPage()));
-        break;
-    }
-  }
-
   // void _onItemTapped(int index) {
   //   setState(() {
   //     _selectedIndex = index;
@@ -85,21 +30,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Money Minder'),
-        backgroundColor: Colors.black, // Adjust the color to match the screenshot
-        leading: Image.asset(
-          'assets/logo.png',
-          width: 70.0,
-          height: 70.0,
-        ), // Menu icon
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(Icons.notifications_none, color: Colors.white), // Notification icon
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(),
       body: Container(
         color: Colors.black, // Adjust the color to match the screenshot
         child: Column(
@@ -226,31 +157,11 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.insights),
-            label: 'Insights',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Reminders',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: purpleColor,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+        },
       ),
 
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'LogIn.dart';
+import 'home_page.dart';
 
 class SignUpPage extends StatelessWidget {
   final Color backgroundColor = Colors.black;
@@ -94,13 +95,18 @@ class SignUpPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(primary: buttonColor),
                   onPressed: () {
                     // Handle sign up action
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ));
                   },
                   child: Text('Sign Up', style: TextStyle(color: textColor)),
                 ),
                 SizedBox(height: 16.0),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context); // This assumes that you're pushing this page onto the stack
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => WelcomeBackPage(),
+                    ));// This assumes that you're pushing this page onto the stack
                   },
                   child: Text(
                     'Have an account? Log In',

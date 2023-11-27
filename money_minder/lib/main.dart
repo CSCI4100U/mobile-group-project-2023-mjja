@@ -10,6 +10,8 @@ import 'data/localDB/signup.dart';
 import 'data/localDB/login.dart';
 import 'data/localDB/expenses.dart';
 import 'views/LogIn.dart';
+import 'views/LandingPage.dart';
+import 'views/custom_navigation.dart';
 
 // firebase dependencies
 // import 'package:firebase_core/firebase_core.dart';
@@ -21,214 +23,216 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
-
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Money Minder'),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () async {
-              await testAllFunctionality();
-            },
-            child: Text('Test All Functionality'),
-          ),
-        ),
-      ),
+      // home: Scaffold(
+      //   appBar: AppBar(
+      //     title: Text('Money Minder'),
+      //   ),
+        home: SignInScreen(),
+
+        // body: Center(
+        //   child: ElevatedButton(
+        //     onPressed: () async {
+        //       await testAllFunctionality();
+        //     },
+        //     child: Text('Test All Functionality'),
+        //   ),
+        // ),
+      //),
+
     );
-  }
-
-  Future<void> testAllFunctionality() async {
-    await testSignup();
-    await testLogin();
-    await testAccountInfo();
-    await testExpense();
-  }
-
-  Future<void> testSignup() async {
-    SignUpDatabase signUpDb = SignUpDatabase();
-    await signUpDb.initializeDatabase();
-
-    Signup signUpInfo = Signup(
-      emailAddress: 'signup85@example.com',
-      password: 'signup_password',
-      fullName: 'signupTF85',
-      username: 'signupTF85',
-    );
-
-    await signUpDb.transferToLogin(signUpInfo);
-    await signUpDb.checkSignUpInformation();
-    printSignupRecords(await signUpDb.readSignUp());
-
-    // Test deleting a signup record
-    List<Signup> signUpListBeforeDeletion = await signUpDb.readSignUp();
-    if (signUpListBeforeDeletion.isNotEmpty) {
-      int deletedId = signUpListBeforeDeletion.first.id!;
-      await signUpDb.deleteSignUp(deletedId);
-      print('Deleted signup record with ID: $deletedId');
-    } else {
-      print('No signup records to delete.');
-    }
-
-    // Reading the signup records after deletion
-    print('************ AFTER DELETION Signup ****************************');
-    printSignupRecords(await signUpDb.readSignUp());
-  }
-
-  Future<void> testLogin() async {
-    final login = Login(
-      emailAddress: 'test@example.com',
-      password: 'test1243',
-    );
-
-    final loginDb = LoginDatabase();
-    printLoginRecords(await loginDb.readLogin());
-
-    // Check login successful or fail
-    bool isLoginSuccessful = await loginDb.checkLoginCredentials(
-      'test@example.com',
-      'test1243',
-    );
-
-    if (isLoginSuccessful) {
-      print('Login successful!');
-    } else {
-      print('Invalid credentials. Login failed.');
-    }
-
-    bool isLoginFailed = await loginDb.checkLoginCredentials(
-      'sample@example.com',
-      'sample_password',
-    );
-    if (isLoginFailed) {
-      print('Login successful!');
-    } else {
-      print('Invalid credentials. Login failed.');
-    }
-
-    // Test deleting a login record
-    List<Login> loginListBeforeDeletion = await loginDb.readLogin();
-    if (loginListBeforeDeletion.isNotEmpty) {
-      int deletedId = loginListBeforeDeletion.first.id!;
-      await loginDb.deleteLogin(deletedId);
-      print('Deleted login record with ID: $deletedId');
-    } else {
-      print('No login records to delete.');
-    }
-
-    // Reading the login records after deletion
-    print(
-        '********************* AFTER DELETION Login ****************************');
-    printLoginRecords(await loginDb.readLogin());
-  }
-
-  Future<void> testAccountInfo() async {
-    AccountInfoDatabase accountInfoDb = AccountInfoDatabase();
-    await accountInfoDb.initializeDatabase();
-
-    AccountInfo accountInfo = AccountInfo(
-      emailAddress: 'john@example.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      phoneNumber: '1234567890',
-    );
-    AccountInfo accountInfo2 = AccountInfo(
-      emailAddress: 'adam@example.com',
-      firstName: 'Adam',
-      lastName: 'Doe',
-      phoneNumber: '8528528899',
-    );
-
-    await accountInfoDb.createAccountInfo(accountInfo);
-    await accountInfoDb.createAccountInfo(accountInfo2);
-
-    print('****************** AccountInfo Table Data: **********************');
-    printAccountInfoRecords(await accountInfoDb.readAccountInfo());
-
-    // Update the accountInfo record
-    List<AccountInfo> accountInfoList = await accountInfoDb.readAccountInfo();
-    if (accountInfoList.isNotEmpty) {
-      AccountInfo existingAccountInfo = accountInfoList.first;
-      AccountInfo updatedAccountInfo = AccountInfo(
-        id: existingAccountInfo.id,
-        emailAddress: existingAccountInfo.emailAddress,
-        firstName: 'Updated John',
-        lastName: existingAccountInfo.lastName,
-        phoneNumber: existingAccountInfo.phoneNumber,
-      );
-      await accountInfoDb.updateAccountInfo(updatedAccountInfo);
-      print('Updated accountInfo record with ID: ${updatedAccountInfo.id}');
-    } else {
-      print('No accountInfo records to update.');
-    }
-
-    // Read accountInfo records after update
-    print('********************* AFTER Update AccountInfo ****************************');
-    printAccountInfoRecords(await accountInfoDb.readAccountInfo());
-
-    // Delete an accountInfo record
-    if (accountInfoList.isNotEmpty) {
-      int deletedId = accountInfoList.first.id!;
-      await accountInfoDb.deleteAccountInfo(deletedId);
-      print('Deleted accountInfo record with ID: $deletedId');
-    } else {
-      print('No accountInfo records to delete.');
-    }
-
-    // Read accountInfo records after delete
-    print('********************* AFTER Delete AccountInfo ****************************');
-    printAccountInfoRecords(await accountInfoDb.readAccountInfo());
-  }
-
-  Future<void> testExpense() async {
-    final expense1 = Expense(
-      name: 'Groceries',
-      category: 'Food',
-      amount: 50.0,
-      date: '2023/11/07',
-      description: 'Monthly grocery shopping',
-    );
-
-    final db = ExpenseDatabase();
-    await db.createExpense(expense1);
-
-    // Read all expenses
-    List<Expense> expenses = await db.readAllExpenses();
-    print('********************* Expenses records ****************************');
-    for (final exp in expenses) {
-      print('Expense: ${exp.name}, Amount: ${exp.amount}');
-    }
-  }
-
-  void printSignupRecords(List<Signup> signups) {
-    print('************ Signup Records **********************');
-    signups.forEach((signup) {
-      print('Id: ${signup.id} Username: ${signup.username}, Fullname: ${signup
-          .fullName}, '
-          'Email: ${signup.emailAddress}, Password: ${signup.password}');
-    });
-  }
-
-  void printLoginRecords(List<Login> logins) {
-    print('************ Login Records **********************');
-    logins.forEach((login) {
-      print(' Id: ${login.id}  Email: ${login.emailAddress}, Password: ${login
-          .password}');
-    });
-  }
-
-  void printAccountInfoRecords(List<AccountInfo> accountInfos) {
-    print('************ AccountInfo Records **********************');
-    accountInfos.forEach((accountInfo) {
-      print(accountInfo.toMap());
-    });
   }
 }
+
+//   Future<void> testAllFunctionality() async {
+//     await testSignup();
+//     await testLogin();
+//     await testAccountInfo();
+//     await testExpense();
+//   }
+//
+//   Future<void> testSignup() async {
+//     SignUpDatabase signUpDb = SignUpDatabase();
+//     await signUpDb.initializeDatabase();
+//
+//     Signup signUpInfo = Signup(
+//       emailAddress: 'signup85@example.com',
+//       password: 'signup_password',
+//       fullName: 'signupTF85',
+//       username: 'signupTF85',
+//     );
+//
+//     await signUpDb.transferToLogin(signUpInfo);
+//     await signUpDb.checkSignUpInformation();
+//     printSignupRecords(await signUpDb.readSignUp());
+//
+//     // Test deleting a signup record
+//     List<Signup> signUpListBeforeDeletion = await signUpDb.readSignUp();
+//     if (signUpListBeforeDeletion.isNotEmpty) {
+//       int deletedId = signUpListBeforeDeletion.first.id!;
+//       await signUpDb.deleteSignUp(deletedId);
+//       print('Deleted signup record with ID: $deletedId');
+//     } else {
+//       print('No signup records to delete.');
+//     }
+//
+//     // Reading the signup records after deletion
+//     print('************ AFTER DELETION Signup ****************************');
+//     printSignupRecords(await signUpDb.readSignUp());
+//   }
+//
+//   Future<void> testLogin() async {
+//     final login = Login(
+//       emailAddress: 'test@example.com',
+//       password: 'test1243',
+//     );
+//
+//     final loginDb = LoginDatabase();
+//     printLoginRecords(await loginDb.readLogin());
+//
+//     // Check login successful or fail
+//     bool isLoginSuccessful = await loginDb.checkLoginCredentials(
+//       'test@example.com',
+//       'test1243',
+//     );
+//
+//     if (isLoginSuccessful) {
+//       print('Login successful!');
+//     } else {
+//       print('Invalid credentials. Login failed.');
+//     }
+//
+//     bool isLoginFailed = await loginDb.checkLoginCredentials(
+//       'sample@example.com',
+//       'sample_password',
+//     );
+//     if (isLoginFailed) {
+//       print('Login successful!');
+//     } else {
+//       print('Invalid credentials. Login failed.');
+//     }
+//
+//     // Test deleting a login record
+//     List<Login> loginListBeforeDeletion = await loginDb.readLogin();
+//     if (loginListBeforeDeletion.isNotEmpty) {
+//       int deletedId = loginListBeforeDeletion.first.id!;
+//       await loginDb.deleteLogin(deletedId);
+//       print('Deleted login record with ID: $deletedId');
+//     } else {
+//       print('No login records to delete.');
+//     }
+//
+//     // Reading the login records after deletion
+//     print(
+//         '********************* AFTER DELETION Login ****************************');
+//     printLoginRecords(await loginDb.readLogin());
+//   }
+//
+//   Future<void> testAccountInfo() async {
+//     AccountInfoDatabase accountInfoDb = AccountInfoDatabase();
+//     await accountInfoDb.initializeDatabase();
+//
+//     AccountInfo accountInfo = AccountInfo(
+//       emailAddress: 'john@example.com',
+//       firstName: 'John',
+//       lastName: 'Doe',
+//       phoneNumber: '1234567890',
+//     );
+//     AccountInfo accountInfo2 = AccountInfo(
+//       emailAddress: 'adam@example.com',
+//       firstName: 'Adam',
+//       lastName: 'Doe',
+//       phoneNumber: '8528528899',
+//     );
+//
+//     await accountInfoDb.createAccountInfo(accountInfo);
+//     await accountInfoDb.createAccountInfo(accountInfo2);
+//
+//     print('****************** AccountInfo Table Data: **********************');
+//     printAccountInfoRecords(await accountInfoDb.readAccountInfo());
+//
+//     // Update the accountInfo record
+//     List<AccountInfo> accountInfoList = await accountInfoDb.readAccountInfo();
+//     if (accountInfoList.isNotEmpty) {
+//       AccountInfo existingAccountInfo = accountInfoList.first;
+//       AccountInfo updatedAccountInfo = AccountInfo(
+//         id: existingAccountInfo.id,
+//         emailAddress: existingAccountInfo.emailAddress,
+//         firstName: 'Updated John',
+//         lastName: existingAccountInfo.lastName,
+//         phoneNumber: existingAccountInfo.phoneNumber,
+//       );
+//       await accountInfoDb.updateAccountInfo(updatedAccountInfo);
+//       print('Updated accountInfo record with ID: ${updatedAccountInfo.id}');
+//     } else {
+//       print('No accountInfo records to update.');
+//     }
+//
+//     // Read accountInfo records after update
+//     print('********************* AFTER Update AccountInfo ****************************');
+//     printAccountInfoRecords(await accountInfoDb.readAccountInfo());
+//
+//     // Delete an accountInfo record
+//     if (accountInfoList.isNotEmpty) {
+//       int deletedId = accountInfoList.first.id!;
+//       await accountInfoDb.deleteAccountInfo(deletedId);
+//       print('Deleted accountInfo record with ID: $deletedId');
+//     } else {
+//       print('No accountInfo records to delete.');
+//     }
+//
+//     // Read accountInfo records after delete
+//     print('********************* AFTER Delete AccountInfo ****************************');
+//     printAccountInfoRecords(await accountInfoDb.readAccountInfo());
+//   }
+//
+//   Future<void> testExpense() async {
+//     final expense1 = Expense(
+//       name: 'Groceries',
+//       category: 'Food',
+//       amount: 50.0,
+//       date: '2023/11/07',
+//       description: 'Monthly grocery shopping',
+//     );
+//
+//     final db = ExpenseDatabase();
+//     await db.createExpense(expense1);
+//
+//     // Read all expenses
+//     List<Expense> expenses = await db.readAllExpenses();
+//     print('********************* Expenses records ****************************');
+//     for (final exp in expenses) {
+//       print('Expense: ${exp.name}, Amount: ${exp.amount}');
+//     }
+//   }
+//
+//   void printSignupRecords(List<Signup> signups) {
+//     print('************ Signup Records **********************');
+//     signups.forEach((signup) {
+//       print('Id: ${signup.id} Username: ${signup.username}, Fullname: ${signup
+//           .fullName}, '
+//           'Email: ${signup.emailAddress}, Password: ${signup.password}');
+//     });
+//   }
+//
+//   void printLoginRecords(List<Login> logins) {
+//     print('************ Login Records **********************');
+//     logins.forEach((login) {
+//       print(' Id: ${login.id}  Email: ${login.emailAddress}, Password: ${login
+//           .password}');
+//     });
+//   }
+//
+//   void printAccountInfoRecords(List<AccountInfo> accountInfos) {
+//     print('************ AccountInfo Records **********************');
+//     accountInfos.forEach((accountInfo) {
+//       print(accountInfo.toMap());
+//     });
+//   }
+// }
 
 
 //

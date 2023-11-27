@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor =
@@ -9,9 +10,9 @@ final Color purpleColor =
 final Color textColor = Colors.white;
 
 class InsightsPage extends StatefulWidget {
-  final TabController tabController;
-
-  InsightsPage({required this.tabController});
+  // final TabController tabController;
+  //
+  // InsightsPage({required this.tabController});
 
   @override
   _InsightsPageState createState() => _InsightsPageState();
@@ -83,6 +84,7 @@ class _InsightsPageState extends State<InsightsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       backgroundColor: Colors.black,
       body: Column(
         children: [
@@ -188,6 +190,12 @@ class _InsightsPageState extends State<InsightsPage> {
           );
         },
         child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+        },
       ),
     );
   }

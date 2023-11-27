@@ -1,10 +1,12 @@
 // TODO Implement this library.
 import 'package:flutter/material.dart';
+import 'custom_navigation.dart';
 
 class UnderConstructionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       backgroundColor: Colors.black, // Set the background color
       body: Center(
         child: Column(
@@ -34,6 +36,12 @@ class UnderConstructionPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 3,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+        },
       ),
     );
   }
