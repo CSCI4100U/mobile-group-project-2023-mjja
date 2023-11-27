@@ -17,6 +17,7 @@ class ForgotPasswordPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 0,
+        backgroundColor: backgroundColor,
       ),
       body: Container(
         padding: EdgeInsets.all(20),
