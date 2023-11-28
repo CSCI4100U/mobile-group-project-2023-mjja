@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import intl to format dates
 import 'package:percent_indicator/percent_indicator.dart';
 
+final Color backgroundColor = Colors.black;
+final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
+final Color textColor = Colors.white;
+
 class GoalsPage extends StatefulWidget {
   @override
   _GoalsPageState createState() => _GoalsPageState();
@@ -68,9 +72,12 @@ class _GoalsPageState extends State<GoalsPage> {
                 ),
                 TextFormField(
                   controller: deadlineController,
+                  style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Deadline',
                     prefixIcon: Icon(Icons.calendar_today),
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintStyle: TextStyle(color: Colors.black),
                   ),
                   onTap: () async {
                     FocusScope.of(context).requestFocus(new FocusNode()); // to prevent opening default keyboard
@@ -90,13 +97,13 @@ class _GoalsPageState extends State<GoalsPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel', style: TextStyle(color: Colors.purple)),
+              child: Text('Cancel', style: TextStyle(color: purpleColor)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Save', style: TextStyle(color: Colors.purple)),
+              child: Text('Save', style: TextStyle(color: purpleColor)),
               onPressed: () {
                 setState(() {
                   goalsList.add({
@@ -136,8 +143,12 @@ class _GoalsPageState extends State<GoalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Financial Goals'),
-        backgroundColor: Colors.black,
+        title: Text(
+          'Goals',
+          style: TextStyle(color: textColor),
+        ),
+        backgroundColor: purpleColor,
+        centerTitle: true,
       ),
       backgroundColor: Colors.black,
       body: ListView.builder(
@@ -160,7 +171,7 @@ class _GoalsPageState extends State<GoalsPage> {
         onPressed: _addNewGoal,
         tooltip: 'Add Goal',
         child: Icon(Icons.add),
-        backgroundColor: Colors.purple,
+        backgroundColor: purpleColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
@@ -224,6 +235,7 @@ class _GoalCardState extends State<GoalCard> {
             fontSize: 18, // Slightly larger text
           ),
         ),
+
         subtitle: isCompleted
             ? Text(
           'Completed',
@@ -239,6 +251,19 @@ class _GoalCardState extends State<GoalCard> {
               return AlertDialog(
                 title: Text(widget.title),
                 content: SingleChildScrollView(
+
+
+
+
+
+
+
+
+
+
+
+
+
                   child: ListBody(
                     children: <Widget>[
                       Text('Description: ${widget.description}'),
@@ -248,7 +273,7 @@ class _GoalCardState extends State<GoalCard> {
                         child: LinearProgressIndicator(
                           value: progress,
                           backgroundColor: Colors.grey[300],
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                          valueColor: AlwaysStoppedAnimation<Color>(purpleColor),
                         ),
                       ),
                       Text('Progress: ${progress * 100}% of the goal'),
@@ -258,13 +283,13 @@ class _GoalCardState extends State<GoalCard> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text('Close', style: TextStyle(color: Colors.purple)),
+                    child: Text('Close', style: TextStyle(color: purpleColor)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   TextButton(
-                    child: Text('Complete', style: TextStyle(color: Colors.purple)),
+                    child: Text('Complete', style: TextStyle(color: purpleColor)),
                     onPressed: () {
                       if (!isCompleted) {
                         setState(() {
