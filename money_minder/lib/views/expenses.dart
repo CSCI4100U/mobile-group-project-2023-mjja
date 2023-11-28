@@ -1,13 +1,10 @@
 // ## Acknowledgments
 // The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
 import 'package:flutter/material.dart';
-import 'RemindersPage.dart' as reminders;
-import 'UnderConstruction.dart' as setup;
-import 'InsightsPage.dart' as insights;
-import 'add_expense.dart' as addExpense;
-import 'MainPage.dart';
 import 'custom_navigation.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_date_pickers/flutter_date_pickers.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 final Color backgroundColor = Colors.black;
@@ -46,12 +43,61 @@ class Expense {
   }
 }
 
-class ExpensesPage extends StatefulWidget {
-  @override
-  _ExpensesPageState createState() => _ExpensesPageState();
+Future<DateTimeRange?> showCustomDateRangePicker({
+  required BuildContext context,
+  required DateTime firstDate,
+  required DateTime lastDate,
+  DateTimeRange? initialDateRange, // Corrected the parameter name
+}) async {
+  DateTimeRange? pickedRange;
+
+  return showDialog<DateTimeRange>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Container(
+          width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+          height: MediaQuery.of(context).size.height * 0.5, // 80% of screen height
+          child: SfDateRangePicker(
+            selectionMode: DateRangePickerSelectionMode.range,
+            initialSelectedRange: PickerDateRange(
+              initialDateRange?.start ?? firstDate,
+              initialDateRange?.end ?? lastDate,
+            ),
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+              if (args.value is PickerDateRange) {
+                final PickerDateRange range = args.value;
+                pickedRange = DateTimeRange(
+                  start: range.startDate!,
+                  end: range.endDate ?? range.startDate!, // end date can be null if the same day is selected twice
+                );
+              }
+            },
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.pop(context, pickedRange);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
-class _ExpensesPageState extends State<ExpensesPage> {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   String _selectedTransactionType = 'All'; // Default selection
   DateTimeRange? _selectedDateRange;
 
@@ -61,7 +107,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.black,
       body: Column(
         children: <Widget>[
           _buildTotalBalanceCard(),
@@ -156,6 +202,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
       ),
     );
   }
+
   Widget _buildRecentTransactionsTitle() {
     return Container(
       color: Colors.black, // Set the background color
@@ -174,8 +221,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
           IconButton(
             icon: Icon(Icons.date_range, color: Colors.white),
             onPressed: () async {
-              // Show a date range picker and update the selected date range
-              DateTimeRange? pickedRange = await showDateRangePicker(
+              DateTimeRange? pickedRange = await showCustomDateRangePicker(
                 context: context,
                 firstDate: DateTime(2022),
                 lastDate: DateTime(2150),
@@ -192,6 +238,43 @@ class _ExpensesPageState extends State<ExpensesPage> {
       ),
     );
   }
+
+  // Widget _buildRecentTransactionsTitle() {
+  //   return Container(
+  //     color: Colors.black, // Set the background color
+  //     padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: <Widget>[
+  //         Text(
+  //           'Recent Transactions',
+  //           style: TextStyle(
+  //             fontSize: 20,
+  //             fontWeight: FontWeight.bold,
+  //             color: Colors.white,
+  //           ),
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.date_range, color: Colors.white),
+  //           onPressed: () async {
+  //             // Show a date range picker and update the selected date range
+  //             DateTimeRange? pickedRange = await showDateRangePicker(
+  //               context: context,
+  //               firstDate: DateTime(2022),
+  //               lastDate: DateTime(2150),
+  //               initialDateRange: _selectedDateRange,
+  //             );
+  //             if (pickedRange != null && pickedRange != _selectedDateRange) {
+  //               setState(() {
+  //                 _selectedDateRange = pickedRange;
+  //               });
+  //             }
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildRecentTransactionList() {
     // Hardcoded sample data
@@ -215,7 +298,8 @@ class _ExpensesPageState extends State<ExpensesPage> {
     if (_selectedDateRange != null) {
       transactions = transactions.where((tx) {
         DateTime txDate = DateTime.parse(tx.date!);
-        return _selectedDateRange!.start.isBefore(txDate) && _selectedDateRange!.end.isAfter(txDate);
+        return (txDate.isAfter(_selectedDateRange!.start) || txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
+            (txDate.isBefore(_selectedDateRange!.end.add(Duration(days: 1))) || txDate.isAtSameMomentAs(_selectedDateRange!.end));
       }).toList();
     }
 
