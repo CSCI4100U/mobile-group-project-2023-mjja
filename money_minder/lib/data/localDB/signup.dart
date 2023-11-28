@@ -3,11 +3,11 @@
  **/
 
 class Signup {
-  int? id;
-  String? emailAddress;
-  String? fullName;
-  String? username;
-  String? password;
+  int? id;                  // unique Signup identifier
+  String? emailAddress;     // email address of the user
+  String? fullName;         // fullname of the user
+  String? username;         // usernam eof the user
+  String? password;         // password of the user
 
   Signup({
     this.id,
@@ -17,7 +17,7 @@ class Signup {
     this.password,
   });
 
-  // Create a SignUp object from a map (e.g., when retrieving data from SharedPreferences)
+  // generate a new Signup object from a map, typically from the database
   factory Signup.fromMap(Map<String, dynamic> map) {
     return Signup(
       id: map['id'],
@@ -28,7 +28,7 @@ class Signup {
     );
   }
 
-  // Convert a SignUp object to a map for data storage (e.g., in SharedPreferences)
+  // convert a Signup object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -38,4 +38,5 @@ class Signup {
       'password': password,
     };
   }
+
 }

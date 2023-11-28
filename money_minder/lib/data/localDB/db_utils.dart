@@ -22,8 +22,15 @@ class DBUtils {
       path.join(await getDatabasesPath(), 'money_minder_local.db'),
       onCreate: (db, version) {
         db.execute('''
+          CREATE TABLE IF NOT EXISTS login(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          emailAddress TEXT,
+          password TEXT
+          )
+        ''');
+        db.execute('''
          CREATE TABLE IF NOT EXISTS signup(
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             emailAddress TEXT,
             fullName TEXT,
             username TEXT,
@@ -31,29 +38,52 @@ class DBUtils {
           )
         ''');
         db.execute('''
-          CREATE TABLE IF NOT EXISTS login(
-          id INTEGER PRIMARY KEY,
-          emailAddress TEXT,
-          password TEXT
-          )
-        ''');
-        db.execute('''
-            CREATE TABLE IF NOT EXISTS accountInfo(
-            id INTEGER PRIMARY KEY,
+         CREATE TABLE IF NOT EXISTS accountInfo(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             emailAddress TEXT,
-            firstName TEXT,
-            lastName TEXT,
-            phoneNumber TEXT
+            fullName TEXT,
+            username TEXT,
+            password TEXT
           )
         ''');
         db.execute('''
          CREATE TABLE IF NOT EXISTS expenses(
-              id INTEGER PRIMARY KEY,
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
               name TEXT,
               category TEXT,
               amount REAL,
-              date TEXT,
-              description TEXT
+              date TEXT
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS income(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT,
+              amount REAL,
+              date TEXT
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS category(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS budget(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT,
+              category TEXT,
+              amount REAL,
+              endDate TEXT
+            )
+        ''');
+        db.execute('''
+         CREATE TABLE IF NOT EXISTS goal(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT,
+              amount REAL,
+              endDate TEXT
             )
         ''');
       },

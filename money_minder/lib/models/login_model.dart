@@ -30,7 +30,7 @@ class LoginDatabase {
   Future<int?> createLogin(Login login) async {
     await initializeDatabase();
     final db = await dbUtils.database;
-    return await db.insert('login', login.toMap());
+    return await db.insert('login', login.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // read login records

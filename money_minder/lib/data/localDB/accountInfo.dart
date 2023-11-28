@@ -3,39 +3,44 @@
  **/
 
 class AccountInfo {
-  int? id;
-  String? emailAddress;
-  String firstName;
-  String lastName;
-  String phoneNumber;
+  int? id;                // unique AccountInfo identifier
+  String? emailAddress;   // email address of the user
+  String? fullName;       // fullname of the user
+  String? username;       // username of the user
+  String? password;       // password of the user
 
   AccountInfo({
     this.id,
     this.emailAddress,
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
+    this.fullName,
+    this.username,
+    this.password,
   });
 
-  // create an AccountInfo object from a map
+  // generate a new AccountInfo object from a map, typically from the database
   factory AccountInfo.fromMap(Map<String, dynamic> map) {
     return AccountInfo(
       id: map['id'],
       emailAddress: map['emailAddress'],
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      phoneNumber: map['phoneNumber'],
+      fullName: map['fullName'],
+      username: map['username'],
+      password: map['password'],
     );
   }
 
-  // convert an AccountInfo object to a map for data storage
+  // convert an AccountInfo object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'emailAddress': emailAddress,
-      'firstName': firstName,
-      'lastName': lastName,
-      'phoneNumber': phoneNumber,
+      'fullName': fullName,
+      'username': username,
+      'password': password,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Account Info [id: $id, fullname: $fullName, email: $emailAddress]';
   }
 }
