@@ -3,15 +3,13 @@
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 // import 'package:timezone/timezone.dart' as tz;
 // import 'package:timezone/data/latest.dart' as tzdata;
+// import 'custom_navigation.dart';
 //
 // final Color backgroundColor = Colors.black;
 // final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
 // final Color textColor = Colors.white;
 //
 // class RemindersPage extends StatefulWidget {
-//   final TabController tabController;
-//
-//   RemindersPage({required this.tabController});
 //
 //   @override
 //   _RemindersPageState createState() => _RemindersPageState();
@@ -36,13 +34,13 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
+//       appBar: CustomAppBar(),
 //       backgroundColor: Colors.black,
 //       body: Column(
 //         children: [
 //           _buildSearchBar(),
 //           Container(
 //             child: TabBar(
-//               controller: widget.tabController,
 //               tabs: [
 //                 Tab(text: 'Urgent'),
 //                 Tab(text: 'All'),
@@ -51,7 +49,6 @@
 //           ),
 //           Expanded(
 //             child: TabBarView(
-//               controller: widget.tabController,
 //               children: [
 //                 _buildReminderList(context, urgentOnly: true),
 //                 _buildReminderList(context, urgentOnly: false),
@@ -64,6 +61,12 @@
 //         onPressed: () => _showAddReminderDialog(context),
 //         child: Icon(Icons.add),
 //         backgroundColor: purpleColor,
+//       ),
+//       bottomNavigationBar: CustomBottomNavigationBar(
+//         currentIndex: 0,
+//         onTap: (index) {
+//           // Handle bottom navigation bar item taps
+//         },
 //       ),
 //     );
 //   }

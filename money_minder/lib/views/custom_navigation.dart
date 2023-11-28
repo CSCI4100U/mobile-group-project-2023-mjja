@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_minder/views/expenses.dart';
 import 'RemindersPage.dart';
 import 'UnderConstruction.dart';
 import 'InsightsPage.dart';
@@ -33,6 +34,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text('Expenses'),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ExpensesPage(),
+                  ));
                   // Handle the Expenses page tap
                 },
               ),
