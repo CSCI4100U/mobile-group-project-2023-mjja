@@ -52,7 +52,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text('Budgets'),
                 onTap: () {
                   Navigator.pop(context);
-                  // Handle the Financial Insights page tap
+                  // Handle the Budgets page tap
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => BudgetsPage(),
+                  ));
                 },
               ),
               PopupMenuItem(
