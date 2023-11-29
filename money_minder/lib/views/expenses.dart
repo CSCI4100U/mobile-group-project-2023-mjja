@@ -92,12 +92,12 @@ Future<DateTimeRange?> showCustomDateRangePicker({
   );
 }
 
-class HomePage extends StatefulWidget {
+class ExpensesPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _ExpensesPageState createState() => _ExpensesPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ExpensesPageState extends State<ExpensesPage> {
   String _selectedTransactionType = 'All'; // Default selection
   DateTimeRange? _selectedDateRange;
 
@@ -238,44 +238,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  // Widget _buildRecentTransactionsTitle() {
-  //   return Container(
-  //     color: Colors.black, // Set the background color
-  //     padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: <Widget>[
-  //         Text(
-  //           'Recent Transactions',
-  //           style: TextStyle(
-  //             fontSize: 20,
-  //             fontWeight: FontWeight.bold,
-  //             color: Colors.white,
-  //           ),
-  //         ),
-  //         IconButton(
-  //           icon: Icon(Icons.date_range, color: Colors.white),
-  //           onPressed: () async {
-  //             // Show a date range picker and update the selected date range
-  //             DateTimeRange? pickedRange = await showDateRangePicker(
-  //               context: context,
-  //               firstDate: DateTime(2022),
-  //               lastDate: DateTime(2150),
-  //               initialDateRange: _selectedDateRange,
-  //             );
-  //             if (pickedRange != null && pickedRange != _selectedDateRange) {
-  //               setState(() {
-  //                 _selectedDateRange = pickedRange;
-  //               });
-  //             }
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
+  
   Widget _buildRecentTransactionList() {
     // Hardcoded sample data
     List<Expense> transactions = [

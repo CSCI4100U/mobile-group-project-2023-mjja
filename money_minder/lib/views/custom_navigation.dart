@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/expenses.dart';
 import 'reminders_page.dart';
 import 'under_construction.dart';
-import 'insights_page.dart';
+import 'InsightsPage.dart';
 import 'goals_page.dart';
-import 'home_page.dart';
+import 'package:money_minder/views/home_page.dart';
 import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_expense.dart';
+import 'budgets.dart';
 
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
