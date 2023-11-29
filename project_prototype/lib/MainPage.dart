@@ -2,9 +2,9 @@
 // The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
 
 import 'package:flutter/material.dart';
-import 'RemindersPage.dart' as reminders;
-import 'UnderConstruction.dart' as setup;
-import 'InsightsPage.dart' as insights;
+import 'reminders_page.dart' as reminders;
+import 'under_construction.dart' as setup;
+import 'insights_page.dart' as insights;
 import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {

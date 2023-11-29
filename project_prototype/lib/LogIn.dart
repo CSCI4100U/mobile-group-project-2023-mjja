@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'SignUp.dart';
-import 'MainPage.dart';
+import 'sign_up.dart';
+import 'main_page.dart';
 
 
 class WelcomeBackPage extends StatelessWidget {

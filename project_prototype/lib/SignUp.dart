@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../LogIn.dart';
+import '../login.dart';
 
 class SignUpPage extends StatelessWidget {
   final Color backgroundColor = Colors.black;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/expenses.dart';
-import 'RemindersPage.dart';
-import 'UnderConstruction.dart';
-import 'InsightsPage.dart';
+import 'reminders_page.dart';
+import 'under_construction.dart';
+import 'insights_page.dart';
 import 'goals_page.dart';
 import 'home_page.dart';
 import 'package:intl/intl.dart';

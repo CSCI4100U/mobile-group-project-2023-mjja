@@ -9,8 +9,8 @@ import 'models/expense_model.dart';
 import 'data/localDB/signup.dart';
 import 'data/localDB/login.dart';
 import 'data/localDB/expenses.dart';
-import 'views/LogIn.dart';
-import 'views/LandingPage.dart';
+import 'views/login.dart';
+import 'views/landing_page.dart';
 import 'views/custom_navigation.dart';
 
 // firebase dependencies

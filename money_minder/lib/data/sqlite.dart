@@ -15,7 +15,7 @@ import '../data/localDB/expenses.dart';
 import '../data/localDB/budget.dart';
 import '../data/localDB/goals.dart';
 import '../data/localDB/income.dart';
-import '../views/LogIn.dart';
+import '../views/login.dart';
 
 // firebase dependencies
 // import 'package:firebase_core/firebase_core.dart';

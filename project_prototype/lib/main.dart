@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'LogIn.dart'; // Import the welcome back page
-import 'LandingPage.dart'; // Import the main UI page
+import 'login.dart'; // Import the welcome back page
+import 'landing_page.dart'; // Import the main UI page
 
 //firebase dependencies
 import 'package:firebase_core/firebase_core.dart';

@@ -2,7 +2,7 @@
 // The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
 
 import 'package:flutter/material.dart';
-import 'LandingPage.dart';
+import 'landing_page.dart';
 import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
