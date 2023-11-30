@@ -30,12 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  
   sqflite: ^2.0.0
   path_provider: ^2.0.5
   timezone: ^0.9.2 # Use the latest version available
 #  flutter_local_notifications: ^16.1.0 # use the latest version
-  intl: ^0.18.1 # Check for the latest version
+  intl: any # Check for the latest version
   fl_chart: 0.64.0
   percent_indicator: ^4.0.1
 
@@ -50,6 +50,8 @@ dependencies:
   firebase_core: ^2.23.0
   cloud_firestore: ^4.13.2
   firebase_auth: ^4.0.0
+  flutter_localizations:
+    sdk: flutter
 
 
 dev_dependencies:
@@ -68,7 +70,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

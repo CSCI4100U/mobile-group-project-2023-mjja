@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/expenses.dart';
 import 'reminders_page.dart';
 import 'under_construction.dart';
-import 'InsightsPage.dart';
+import 'insights_page.dart';
 import 'goals_page.dart';
 import 'package:money_minder/views/home_page.dart';
 import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_expense.dart';
 import 'budgets.dart';
-
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -46,7 +45,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () {
                   Navigator.pop(context);
                   // Handle the Financial Insights page tap
-
                 },
               ),
               PopupMenuItem(
@@ -64,7 +62,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap: () {
                   Navigator.pop(context);
                   // Handle the Financial Insights page tap
-
                 },
               ),
               PopupMenuItem(
@@ -185,35 +182,35 @@ class CustomBottomNavigationBar extends StatelessWidget {
         // Add logic to navigate to specific pages based on the selected index
         switch (index) {
           case 0:
-          // Navigate to the Home page
+            // Navigate to the Home page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => HomePage()),
             );
             break;
           case 1:
-          // Navigate to the Insights page
+            // Navigate to the Insights page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => InsightsPage()),
             );
             break;
           case 2:
-          // Navigate to the Add page
+            // Navigate to the Add page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => AddExpenseForm()),
             );
             break;
           case 3:
-          // Navigate to the Reminders page
+            // Navigate to the Reminders page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => UnderConstructionPage()),
             );
             break;
           case 4:
-          // Navigate to the Settings page
+            // Navigate to the Settings page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => UnderConstructionPage()),

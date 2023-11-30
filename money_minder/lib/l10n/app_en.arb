@@ -1,0 +1,18 @@
+{
+  "sign_in_with_email": "Sign In with Email",
+  "@sign_in_with_email": {
+    "description": "sign_in_with_email text on homepage"
+  },
+  "mm_slogan": "Manage your daily finances in a central location",
+  "@mm_slogan": {
+    "description": "money minder slogan"
+  },
+  "sign_up": "Sign Up",
+  "@sign_up": {
+    "description": "sign_up button"
+  },
+  "agree_terms_and_cond": "By continuing you agree to terms and conditions",
+  "@agree_terms_and_cond": {
+    "description": "Agrees to terms and conditions statement"
+  }
+}

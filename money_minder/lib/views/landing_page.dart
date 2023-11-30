@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'sign_up.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInScreen extends StatelessWidget {
   final Color purpleColor = Color(0xFF5E17EB);
@@ -11,7 +11,8 @@ class SignInScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Center( // Center the items
+        child: Center(
+          // Center the items
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +31,7 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Manage your daily finances in a central location',
+                  AppLocalizations.of(context)!.mm_slogan,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
@@ -41,7 +42,8 @@ class SignInScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: purpleColor,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20), // Padding inside button
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 20), // Padding inside button
                   ),
                   onPressed: () {
                     // Navigate to the LogIn when the button is pressed
@@ -50,7 +52,7 @@ class SignInScreen extends StatelessWidget {
                     ));
                   },
                   child: Text(
-                    'Sign In with Email',
+                    AppLocalizations.of(context)!.sign_in_with_email,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -61,7 +63,8 @@ class SignInScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: purpleColor,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20), // Padding insidebutton
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 20), // Padding insidebutton
                   ),
                   onPressed: () {
                     // Navigate to the SignUp when the button is pressed
@@ -70,7 +73,7 @@ class SignInScreen extends StatelessWidget {
                     ));
                   },
                   child: Text(
-                    'Sign Up',
+                    AppLocalizations.of(context)!.sign_up,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -79,7 +82,7 @@ class SignInScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 30.0), // Space after buttons
                 Text(
-                  'By continuing you agree to terms and conditions',
+                  AppLocalizations.of(context)!.agree_terms_and_cond,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 10.0,

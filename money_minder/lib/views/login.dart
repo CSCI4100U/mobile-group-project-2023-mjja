@@ -3,7 +3,6 @@ import 'sign_up.dart';
 import 'home_page.dart';
 import 'forgot_password.dart';
 
-
 class WelcomeBackPage extends StatelessWidget {
   final Color backgroundColor = Colors.black;
   final Color purpleColor = Color(0xFF5E17EB);
@@ -13,7 +12,8 @@ class WelcomeBackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView( // Makes  UI scrollable
+      body: SingleChildScrollView(
+        // Makes  UI scrollable
         child: Stack(
           children: [
             Positioned(
