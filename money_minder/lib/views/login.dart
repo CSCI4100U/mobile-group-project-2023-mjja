@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/login_model.dart';
 import 'sign_up.dart';
 import 'home_page.dart';
 import 'forgot_password.dart';
@@ -7,6 +8,21 @@ class WelcomeBackPage extends StatelessWidget {
   final Color backgroundColor = Colors.black;
   final Color purpleColor = Color(0xFF5E17EB);
   final Color textColor = Colors.white;
+
+  // Initialize LoginDatabase instance
+  final LoginDatabase loginDatabase = LoginDatabase();
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  String getEmail() {
+    return emailController.text;
+  }
+
+  String getPassword() {
+    return passwordController.text;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +69,7 @@ class WelcomeBackPage extends StatelessWidget {
                   ),
                   SizedBox(height: 32.0),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: textColor),
@@ -68,6 +85,7 @@ class WelcomeBackPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16.0),
                   TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(color: textColor),
@@ -100,11 +118,26 @@ class WelcomeBackPage extends StatelessWidget {
                       primary: purpleColor,
                       minimumSize: Size(double.infinity, 50),
                     ),
-                    onPressed: () {
-                      // Implement login functionality
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ));
+                    onPressed: () async {
+                      // Get email and password from the TextFields
+                      String email = getEmail(); // Implement this function to get email from TextField
+                      String password = getPassword().trim(); // Implement this function to get password from TextField
+
+                      // Check login credentials in the Firebase database
+                      bool isLoggedIn = await loginDatabase.checkLoginCredentialsFirebase(email, password);
+
+                      if (isLoggedIn) {
+                        // Navigate to the home page if login is successful
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ));
+                      } else {
+                        // Show an error message or handle unsuccessful login
+                        // For simplicity, you can use a SnackBar to show a message
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Invalid email or password'),
+                        ));
+                      }
                     },
                     child: Text(
                       'Log In',

@@ -2,6 +2,7 @@
  * LoginDatabase: This class contains all the method realted to Login class
  */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../data/localDB/login.dart';
@@ -9,6 +10,10 @@ import '../data/localDB/db_utils.dart';
 
 class LoginDatabase {
   final dbUtils = DBUtils();
+
+  //firebase call
+  final CollectionReference loginCollection =
+      FirebaseFirestore.instance.collection('logins');
 
   // initialize database and create table if does not exists
   Future<void> initializeDatabase() async {
@@ -30,7 +35,8 @@ class LoginDatabase {
   Future<int?> createLogin(Login login) async {
     await initializeDatabase();
     final db = await dbUtils.database;
-    return await db.insert('login', login.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.insert('login', login.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // read login records
@@ -74,5 +80,31 @@ class LoginDatabase {
     );
 
     return maps != null && maps.isNotEmpty;
+  }
+
+  Future<bool> checkLoginCredentialsFirebase(
+      String emailAddress, String password) async {
+    try {
+      //print('Calling the Firebase login method.');
+
+      QuerySnapshot querySnapshot = await loginCollection
+          .where('emailAddress', isEqualTo: emailAddress)
+          .limit(1) // Limit to 1 result since you expect only one match
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Check password manually
+        final storedPassword = querySnapshot.docs.first['password'];
+        if (storedPassword == password) {
+          print('Login successful for $emailAddress');
+          return true;
+        }
+      }
+      print('Login unsuccessful for $emailAddress');
+      return false;
+    } catch (e) {
+      print('Error checking login credentials, check Firebase DB: $e');
+      return false;
+    }
   }
 }
