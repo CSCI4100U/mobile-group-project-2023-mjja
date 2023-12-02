@@ -10,6 +10,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import intl to format dates
 import 'package:percent_indicator/percent_indicator.dart';
+import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
@@ -142,14 +143,8 @@ class _GoalsPageState extends State<GoalsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Goals',
-          style: TextStyle(color: textColor),
-        ),
-        backgroundColor: purpleColor,
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(),
+
       backgroundColor: Colors.black,
       body: ListView.builder(
         itemCount: goalsList.length,
@@ -174,6 +169,13 @@ class _GoalsPageState extends State<GoalsPage> {
         backgroundColor: purpleColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+        },
+      ),
+
     );
   }
 }
