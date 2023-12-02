@@ -25,6 +25,17 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  // Email regex pattern for validation
+  final RegExp emailRegex = RegExp(
+    r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
+  );
+
+  // Password regex pattern for validation
+  // (at least 8 characters, one uppercase, one lowercase, and one digit)
+  final RegExp passwordRegex = RegExp(
+    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
+  );
+
   void signUp(BuildContext context) async {
     try {
       if (_formKey.currentState?.validate() ?? false) {
@@ -114,6 +125,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (value == null || value.isEmpty) {
                         return 'Email is required';
                       }
+                      if (!emailRegex.hasMatch(value)) {
+                        return 'Enter a valid email address';
+                      }
                       return null;
                     },
                   ),
@@ -165,6 +179,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
+                      }
+                      if (!passwordRegex.hasMatch(value)) {
+                        return 'Password must be at least 8 characters long. It should \n contain at least one uppercase letter, one lowercase \n letter, and one digit';
                       }
                       return null;
                     },
