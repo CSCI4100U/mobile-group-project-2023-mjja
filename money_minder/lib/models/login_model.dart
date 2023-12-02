@@ -21,7 +21,7 @@ class LoginDatabase {
       final db = await dbUtils.database;
       await db.execute('''
       CREATE TABLE IF NOT EXISTS login(
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         emailAddress TEXT,
         password TEXT
       )
@@ -35,9 +35,22 @@ class LoginDatabase {
   Future<int?> createLogin(Login login) async {
     await initializeDatabase();
     final db = await dbUtils.database;
-    return await db.insert('login', login.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+
+    try {
+      // Insert the login record without specifying the id
+      int? id = await db.insert('login', login.toMap());
+
+      // Update the Login object with the generated id
+      login.id = id;
+
+      // Return the id
+      return id;
+    } catch (e) {
+      print('Error creating login: $e');
+      return null;
+    }
   }
+
 
   // read login records
   Future<List<Login>> readLogin() async {

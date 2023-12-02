@@ -52,7 +52,7 @@ class WelcomeBackPage extends StatelessWidget {
                   children: <Widget>[
                     SizedBox(height: 80.0),
                     Text(
-                      'Welcome Back!',
+                      'Welcome!',
                       style: TextStyle(
                         color: textColor,
                         fontSize: 45.0,

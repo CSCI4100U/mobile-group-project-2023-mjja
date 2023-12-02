@@ -18,7 +18,7 @@ class SignUpDatabase {
       final db = await dbUtils.database;
       await db.execute('''
         CREATE TABLE IF NOT EXISTS signup(
-          id INTEGER PRIMARY KEY,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
           emailAddress TEXT,
           fullName TEXT,
           username TEXT,
@@ -34,7 +34,20 @@ class SignUpDatabase {
   Future<int?> createSignUp(Signup signUp) async {
     await initializeDatabase();
     final db = await dbUtils.database;
-    return await db.insert('signup', signUp.toMap());
+
+    try {
+      // Insert the signup record without specifying the id
+      int? id = await db.insert('signup', signUp.toMap());
+
+      // Update the Signup object with the generated id
+      signUp.id = id;
+
+      // Return the id
+      return id;
+    } catch (e) {
+      print('Error creating signup: $e');
+      return null;
+    }
   }
 
   // read signup records
@@ -79,10 +92,16 @@ class SignUpDatabase {
 
     // transfer to login if the signup was successful
     if (signUpId != null) {
+      signUp.id = signUpId; // Update the id in the Signup object
       final loginDb = LoginDatabase();
-      final login =
-          Login(emailAddress: signUp.emailAddress, password: signUp.password);
-      await loginDb.createLogin(login);
+
+      // Update the Login object with the generated id
+      final login = Login(emailAddress: signUp.emailAddress, password: signUp.password);
+      final loginId = await loginDb.createLogin(login);
+
+      if (loginId != null) {
+        login.id = loginId; // Update the id in the Login object
+      }
     }
   }
 

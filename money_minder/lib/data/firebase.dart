@@ -49,6 +49,40 @@ Future<List<Budget>> fetchBudgetFromSQLite() async {
   return budgets.map((budget) => Budget.fromMap(budget.toMap())).toList();
 }
 
+// Read data from SQLite and push it to Firebase Specific method for Signup
+Future<void> syncSignupDataToFirebase(Signup signup) async {
+  try {
+    print('Syncing signup data from SQLite to Firebase...');
+
+    // Reference to the 'signups' collection
+    final CollectionReference signupsCollection = FirebaseFirestore.instance.collection('signups');
+
+    // Push the new signup data to Firebase
+    DocumentReference signupDocumentReference = await signupsCollection.add(signup.toMap());
+
+    // Log the signup data after pushing to Firebase
+    print('Signup data after pushing to Firebase: ${signup.toMap()}');
+
+    // Create a corresponding login entry in SQLite
+    final LoginDatabase loginDatabase = LoginDatabase();
+    Login login = Login(emailAddress: signup.emailAddress, password: signup.password);
+
+    // Add login to SQLite database
+    await loginDatabase.createLogin(login);
+
+    // Reference to the 'logins' collection
+    final CollectionReference loginsCollection = FirebaseFirestore.instance.collection('logins');
+
+    // Push the new login data to Firebase
+    DocumentReference loginDocumentReference = await loginsCollection.add(login.toMap());
+
+    print('Signup data synced to Firebase.');
+  } catch (e) {
+    print('Error syncing signup data to Firebase: $e');
+  }
+}
+
+
 // Read data from SQLite and push it to Firebase
 Future<void> syncDataToFirebase() async {
 
