@@ -1,10 +1,20 @@
+//Code to enter details of any transactions when the user clicks on the "+" icon
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:money_minder/views/expenses.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 final Color backgroundColor = Colors.black;
-final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
+final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
 class AddExpenseForm extends StatefulWidget {
+  final Function(Expense) onExpenseAdded;
+
+  AddExpenseForm({required this.onExpenseAdded});
+
   @override
   _AddExpenseFormState createState() => _AddExpenseFormState();
 }
@@ -16,6 +26,10 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
   final amountController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+
   // Dropdown options for category
   List<String> categories = [
     'Food',
@@ -25,12 +39,14 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
     'Education',
     'Subscriptions',
     'Home',
-    'Other',
+    'Income',
+    'Other'
   ];
 
   // Selected category
   String? selectedCategory;
 
+  //controllers for every fields
   @override
   void dispose() {
     dateController.dispose();
@@ -51,6 +67,16 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
         ),
         backgroundColor: purpleColor,
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back to the ExpensePage
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ExpensesPage()),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

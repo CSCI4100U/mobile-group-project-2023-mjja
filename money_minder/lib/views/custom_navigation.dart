@@ -19,19 +19,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Icon(Icons.menu, color: Colors.white),
           itemBuilder: (BuildContext context) {
             return [
+              // PopupMenuItem(
+              //   child: Text('Home'),
+              //   onTap: () {
+              //     // Handle the menu item tap
+              //     Navigator.pop(context); // Close the menu
+              //     // Navigate to the Home page or perform any other action
+              //     Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (context) => ExpensesPage(),
+              //     ));
+              //   },
+              // ),
               PopupMenuItem(
                 child: Text('Home'),
-                onTap: () {
-                  // Handle the menu item tap
-                  Navigator.pop(context); // Close the menu
-                  // Navigate to the Home page or perform any other action
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ));
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Expenses'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
@@ -185,7 +185,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => ExpensesPage()),
             );
             break;
           case 1:
@@ -199,7 +199,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Add page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => AddExpenseForm()),
+              MaterialPageRoute(builder: (context) => AddExpenseForm(onExpenseAdded: (Expense ) {  },)),
             );
             break;
           case 3:

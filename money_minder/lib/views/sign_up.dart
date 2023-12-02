@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/login.dart';
 import '../models/signup_model.dart';
@@ -75,142 +73,150 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-
       body: Form(
         key: _formKey,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 15,
-              left: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Image.asset(
-                  'assets/logo.png',
-                  width: 60.0,
-                  height: 80.0,
-                ),
-              ),
+        child: SingleChildScrollView(
+          child: ConstrainedBox( // Ensure the scroll view occupies the full height
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Spacer(),
-                  Text(
-                    'Create Account',
-                    style: TextStyle(color: textColor, fontSize: 45.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    "Let's create an account",
-                    style: TextStyle(color: textColor, fontSize: 14.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 32.0),
-                  TextFormField(
-                    controller: emailController,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      labelText: 'Email *',
-                      labelStyle: TextStyle(color: textColor),
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+            child: IntrinsicHeight( // Ensure the contents fill up the height
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 15,
+                    left: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Image.asset(
+                        'assets/logo.png',
+                        width: 60.0,
+                        height: 80.0,
+                      ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email is required';
-                      }
-                      if (!emailRegex.hasMatch(value)) {
-                        return 'Enter a valid email address';
-                      }
-                      return null;
-                    },
                   ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: fullNameController,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      labelText: 'Full Name *',
-                      labelStyle: TextStyle(color: textColor),
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Full Name is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: usernameController,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      labelText: 'Username *',
-                      labelStyle: TextStyle(color: textColor),
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Username is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    controller: passwordController,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      labelText: 'Password *',
-                      labelStyle: TextStyle(color: textColor),
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                    ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Password is required';
-                      }
-                      if (!passwordRegex.hasMatch(value)) {
-                        return 'Password must meet the following requirements:\n'
-                            '• At least 8 characters long.\n'
-                            '• At least one uppercase letter.\n'
-                            '• At least one lowercase letter.\n'
-                            '• At least one digit.';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 24.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: buttonColor),
-                    onPressed: () => signUp(context),
-                    child: Text('Sign Up', style: TextStyle(color: textColor)),
-                  ),
-                  SizedBox(height: 16.0),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => WelcomeBackPage(),
-                      ));
-                    },
-                    child: Text(
-                      'Have an account? Log In',
-                      style: TextStyle(color: textColor),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Spacer(),
+                        Text(
+                          'Create Account',
+                          style: TextStyle(color: textColor, fontSize: 45.0, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 8.0),
+                        Text(
+                          "Let's create an account",
+                          style: TextStyle(color: textColor, fontSize: 14.0),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 32.0),
+                        TextFormField(
+                          controller: emailController,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: 'Email *',
+                            labelStyle: TextStyle(color: textColor),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Email is required';
+                            }
+                            if (!emailRegex.hasMatch(value)) {
+                              return 'Enter a valid email address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: fullNameController,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: 'Full Name *',
+                            labelStyle: TextStyle(color: textColor),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Full Name is required';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: usernameController,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: 'Username *',
+                            labelStyle: TextStyle(color: textColor),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Username is required';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: passwordController,
+                          style: TextStyle(color: textColor),
+                          decoration: InputDecoration(
+                            labelText: 'Password *',
+                            labelStyle: TextStyle(color: textColor),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Password is required';
+                            }
+                            if (!passwordRegex.hasMatch(value)) {
+                              return 'Password must meet the following requirements:\n'
+                                  '• At least 8 characters long.\n'
+                                  '• At least one uppercase letter.\n'
+                                  '• At least one lowercase letter.\n'
+                                  '• At least one digit.';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 24.0),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: buttonColor),
+                          onPressed: () => signUp(context),
+                          child: Text('Sign Up', style: TextStyle(color: textColor)),
+                        ),
+                        SizedBox(height: 16.0),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => WelcomeBackPage(),
+                            ));
+                          },
+                          child: Text(
+                            'Have an account? Log In',
+                            style: TextStyle(color: textColor),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
