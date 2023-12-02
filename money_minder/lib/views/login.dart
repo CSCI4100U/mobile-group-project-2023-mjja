@@ -1,3 +1,7 @@
+// login page that allows user to enter an email and password to enter into an app.
+// also gives option to Forgot password, takes to password reset page by entering email address
+// Gives option to Sign Up if don't have an account
+
 import 'package:flutter/material.dart';
 import '../models/login_model.dart';
 import 'sign_up.dart';
@@ -9,7 +13,7 @@ class WelcomeBackPage extends StatelessWidget {
   final Color purpleColor = Color(0xFF5E17EB);
   final Color textColor = Colors.white;
 
-  // Initialize LoginDatabase instance
+  // Initialize LoginDatabase instance for SQLite
   final LoginDatabase loginDatabase = LoginDatabase();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -76,7 +80,7 @@ class WelcomeBackPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: textColor,
-                        fontSize: 14.0,
+                        fontSize: 15.0,
                       ),
                     ),
                     SizedBox(height: 32.0),
@@ -124,7 +128,11 @@ class WelcomeBackPage extends StatelessWidget {
                           return 'Password is required';
                         }
                         if (!passwordRegex.hasMatch(value)) {
-                          return 'Password must be at least 8 characters long. It should \n contain at least one uppercase letter, one lowercase \n letter, and one digit';
+                          return 'Password must meet the following requirements:\n'
+                              '• At least 8 characters long.\n'
+                              '• At least one uppercase letter.\n'
+                              '• At least one lowercase letter.\n'
+                              '• At least one digit.';
                         }
                         return null;
                       },

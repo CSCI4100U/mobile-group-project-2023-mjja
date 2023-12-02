@@ -1,12 +1,10 @@
-// signup.dart
+
 
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/login.dart';
 import '../models/signup_model.dart';
 import '../data/localDB/signup.dart';
-import '../models/login_model.dart';
-import '../data/localDB/login.dart';
-import '../data/firebase.dart'; // Import your firebase_sync.dart file
+import '../data/firebase.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -77,6 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+
       body: Form(
         key: _formKey,
         child: Stack(
@@ -181,7 +180,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         return 'Password is required';
                       }
                       if (!passwordRegex.hasMatch(value)) {
-                        return 'Password must be at least 8 characters long. It should \n contain at least one uppercase letter, one lowercase \n letter, and one digit';
+                        return 'Password must meet the following requirements:\n'
+                            '• At least 8 characters long.\n'
+                            '• At least one uppercase letter.\n'
+                            '• At least one lowercase letter.\n'
+                            '• At least one digit.';
                       }
                       return null;
                     },

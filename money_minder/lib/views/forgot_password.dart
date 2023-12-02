@@ -1,3 +1,5 @@
+//code for screen when click on Forgot password from Login page
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'sign_up.dart';
@@ -12,7 +14,7 @@ class ForgotPasswordPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        leading: IconButton(
+        leading: IconButton( // arrow to take back to login page
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -23,14 +25,13 @@ class ForgotPasswordPage extends StatelessWidget {
         padding: EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               'Oh, No! \n'
                   'I Forgot',
               style: TextStyle(fontSize: 56, fontWeight: FontWeight.w900, color: textColor),
             ),
-
             SizedBox(height: 10),
             Text(
               'Enter your email, and we\'ll send you a link to change a new password',
