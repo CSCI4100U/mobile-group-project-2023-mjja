@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_expense.dart';
 import 'budgets.dart';
+import 'setting_page.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -98,6 +99,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text('Settings'),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SettingsPage(),
+                  ));
                   // Handle the Financial Insights page tap
                 },
               ),
@@ -216,7 +220,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Settings page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => UnderConstructionPage()),
+              MaterialPageRoute(builder: (context) => SettingsPage()),
             );
             break;
         }

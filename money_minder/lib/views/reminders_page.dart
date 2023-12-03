@@ -47,7 +47,7 @@ class _RemindersPageState extends State<RemindersPage> {
         backgroundColor: purpleColor,
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: 3,
         onTap: (index) {
           // Handle bottom navigation bar item taps
         },

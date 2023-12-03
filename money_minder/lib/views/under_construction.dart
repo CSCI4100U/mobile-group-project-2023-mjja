@@ -38,7 +38,7 @@ class UnderConstructionPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 3,
+        currentIndex: 4,
         onTap: (index) {
           // Handle bottom navigation bar item taps
         },
