@@ -1,75 +1,68 @@
-
-// make it so that the view is monthly
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'custom_navigation.dart';
 
-class InsightsPage extends StatelessWidget {
-  final TabController tabController;
+enum TimePeriod { week, month, year }
 
-  InsightsPage({required this.tabController});
+class FinancialInsightsPage extends StatefulWidget {
+
+  @override
+  _FinancialInsightsPageState createState() => _FinancialInsightsPageState();
+}
+
+class _FinancialInsightsPageState extends State<FinancialInsightsPage> {
+  // New state variable to track if we're showing Expense or Income
+  bool showExpense = true;
+  final Color purpleColor =
+  Color(0xFF5E17EB);
+  TimePeriod selectedPeriod = TimePeriod.month;  // Default to month
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Total Balance',
-                                  style: TextStyle(color: Colors.black)),
-                              Text('\$13,250',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.purple)),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.upload, color: Colors.black),
-                                onPressed: () {
-                                  // Implement the export & share functionality
-                                },
-                              ),
-                              Text('Export and Share',
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.black)),
-                            ],
-                          ),
-                        ],
+            // show balance
+            Card(
+              color: purpleColor, // Purple color for the card
+              elevation: 4.0,
+              margin: const EdgeInsets.all(20.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Total Balance',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // White color for the text
                       ),
-                      // Add more UI elements similar to the above for the complete design
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 8), // Provides spacing between text elements
+                    Text(
+                      '\$13,250', // This should be a variable holding the balance value
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // White color for the balance figure
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(10.0),
               child: Card(
                 elevation: 4.0,
                 color: Colors.black,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -77,22 +70,69 @@ class InsightsPage extends StatelessWidget {
                         children: <Widget>[
                           ElevatedButton(
                             child: Text('Expense'),
-                            style: ElevatedButton.styleFrom(primary: Colors.purple),
-                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(primary: showExpense ? Colors.blue : Colors.grey),
+                            onPressed: () {
+                              setState(() {
+                                showExpense = true;
+                              });
+                            },
                           ),
                           ElevatedButton(
                             child: Text('Income'),
-                            style: ElevatedButton.styleFrom(primary: Colors.green),
-                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(primary: showExpense ? Colors.grey : Colors.green),
+                            onPressed: () {
+                              setState(() {
+                                showExpense = false;
+                              });
+                            },
+                          ),
+
+                          // Removed the 'Budgets' button for clarity
+                        ],
+                      ),
+                      // Toggle buttons for Week/Month/Year
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          ElevatedButton(
+                            child: Text('Week'),
+                            style: ElevatedButton.styleFrom(
+                              primary: selectedPeriod == TimePeriod.week ? Colors.purple : Colors.grey,
+                              onPrimary: Colors.white, // Text Color
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                selectedPeriod = TimePeriod.week;
+                              });
+                            },
                           ),
                           ElevatedButton(
-                            child: Text('Budgets'),
-                            style: ElevatedButton.styleFrom(primary: Colors.blue),
-                            onPressed: () {},
-
+                            child: Text('Month'),
+                            style: ElevatedButton.styleFrom(
+                              primary: selectedPeriod == TimePeriod.month ? Colors.purple : Colors.grey,
+                              onPrimary: Colors.white, // Text Color
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                selectedPeriod = TimePeriod.month;
+                              });
+                            },
+                          ),
+                          ElevatedButton(
+                            child: Text('Year'),
+                            style: ElevatedButton.styleFrom(
+                              primary: selectedPeriod == TimePeriod.year ? Colors.purple : Colors.grey,
+                              onPrimary: Colors.white, // Text Color
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                selectedPeriod = TimePeriod.year;
+                              });
+                            },
                           ),
                         ],
                       ),
+
                       SizedBox(height: 20),
                       Container(
                         height: 200,
@@ -109,25 +149,21 @@ class InsightsPage extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     );
-                                    String text;
-                                    switch (value.toInt()) {
-                                      case 0:
-                                        text = 'Jun';
+                                    String text = '';
+                                    // Change labels based on the selected time period
+                                    switch (selectedPeriod) {
+                                      case TimePeriod.week:
+                                        final labels = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+                                        text = labels[value.toInt() % labels.length];
                                         break;
-                                      case 1:
-                                        text = 'Jul';
+                                      case TimePeriod.month:
+                                        final labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                                        text = labels[value.toInt() % labels.length];
                                         break;
-                                      case 2:
-                                        text = 'Aug';
+                                      case TimePeriod.year:
+                                        final labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                        text = labels[value.toInt() % labels.length];
                                         break;
-                                      case 3:
-                                        text = 'Sep';
-                                        break;
-                                      case 4:
-                                        text = 'Oct';
-                                        break;
-                                      default:
-                                        text = '';
                                     }
                                     return SideTitleWidget(
                                       axisSide: meta.axisSide,
@@ -143,38 +179,9 @@ class InsightsPage extends StatelessWidget {
                               leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                             ),
                             borderData: FlBorderData(show: true),
-                            lineBarsData: [
-                              LineChartBarData(
-                                spots: [
-                                  FlSpot(0, 8000),
-                                  FlSpot(1, 8500),
-                                  FlSpot(2, 9000),
-                                  FlSpot(3, 8700),
-                                  FlSpot(4, 8600),
-                                ],
-                                isCurved: true,
-                                color: Colors.blue,
-                                barWidth: 5,
-                                isStrokeCapRound: true,
-                                dotData: FlDotData(show: true),
-                                belowBarData: BarAreaData(show: false),
-                              ),
-                              LineChartBarData(
-                                spots: [
-                                  FlSpot(0, 12000),
-                                  FlSpot(1, 12500),
-                                  FlSpot(2, 13000),
-                                  FlSpot(3, 12800),
-                                  FlSpot(4, 13200),
-                                ],
-                                isCurved: true,
-                                color: Colors.green,
-                                barWidth: 5,
-                                isStrokeCapRound: true,
-                                dotData: FlDotData(show: true),
-                                belowBarData: BarAreaData(show: false),
-                              ),
-                            ],
+                            // lineBarsData: showExpense ? [expenseData()] : [incomeData()], // Use the new helper methods
+                            lineBarsData: getChartData(),  // Update to use a new method
+
                           ),
                         ),
                       ),
@@ -189,7 +196,208 @@ class InsightsPage extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.black,
-
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+        },
+      ),
     );
   }
+
+  List<LineChartBarData> getChartData() {
+    switch (selectedPeriod) {
+      case TimePeriod.week:
+        return showExpense ? [weeklyExpenseData()] : [weeklyIncomeData()];
+      case TimePeriod.month:
+        return showExpense ? [monthlyExpenseData()] : [monthlyIncomeData()];
+      case TimePeriod.year:
+        return showExpense ? [yearlyExpenseData()] : [yearlyIncomeData()];
+      default:
+        return showExpense ? [monthlyExpenseData()] : [monthlyIncomeData()];
+    }
+  }
+
+  // Helper method to create expense data
+  LineChartBarData expenseData() {
+    return LineChartBarData(
+      spots: [
+        FlSpot(0, 8000),
+        FlSpot(1, 8500),
+        FlSpot(2, 9000),
+        FlSpot(3, 8700),
+        FlSpot(4, 8600),
+      ],
+      isCurved: true,
+      color: Colors.blue,
+      barWidth: 5,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: true),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+  // Helper method to create income data
+  LineChartBarData incomeData() {
+    return LineChartBarData(
+      spots: [
+        FlSpot(0, 12000),
+        FlSpot(1, 12500),
+        FlSpot(2, 13000),
+        FlSpot(3, 12800),
+        FlSpot(4, 13200),
+      ],
+      isCurved: true,
+      color: Colors.green,
+      barWidth: 5,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: true),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+  // Define your data points here. In a real app, these would come from your data source.
+  final List<FlSpot> weeklyExpenseSpots = [
+    FlSpot(0, 150), // Saturday
+    FlSpot(1, 120), // Sunday
+    FlSpot(2, 170), // Monday
+    FlSpot(3, 100), // Tuesday
+    FlSpot(4, 200), // Wednesday
+    FlSpot(5, 90),  // Thursday
+    FlSpot(6, 160), // Friday
+  ];
+
+  final List<FlSpot> weeklyIncomeSpots = [
+    FlSpot(0, 180), // Saturday
+    FlSpot(1, 200), // Sunday
+    FlSpot(2, 220), // Monday
+    FlSpot(3, 210), // Tuesday
+    FlSpot(4, 230), // Wednesday
+    FlSpot(5, 250), // Thursday
+    FlSpot(6, 240), // Friday
+  ];
+
+  final List<FlSpot> monthlyExpenseSpots = [
+    FlSpot(0, 800),  // Week 1
+    FlSpot(1, 900),  // Week 2
+    FlSpot(2, 750),  // Week 3
+    FlSpot(3, 950),  // Week 4
+  ];
+
+  final List<FlSpot> monthlyIncomeSpots = [
+    FlSpot(0, 1000), // Week 1
+    FlSpot(1, 1200), // Week 2
+    FlSpot(2, 1100), // Week 3
+    FlSpot(3, 1300), // Week 4
+  ];
+
+  final List<FlSpot> yearlyExpenseSpots = [
+    FlSpot(0, 10000),  // January
+    FlSpot(1, 10500),  // February
+    FlSpot(2, 9800),   // March
+    FlSpot(3, 11000),  // April
+    FlSpot(4, 9500),   // May
+    FlSpot(5, 10500),  // June
+    FlSpot(6, 12000),  // July
+    FlSpot(7, 11500),  // August
+    FlSpot(8, 11000),  // September
+    FlSpot(9, 10800),  // October
+    FlSpot(10, 11200), // November
+    FlSpot(11, 9500),  // December
+  ];
+
+  final List<FlSpot> yearlyIncomeSpots = [
+    FlSpot(0, 12000),  // January
+    FlSpot(1, 12300),  // February
+    FlSpot(2, 12700),  // March
+    FlSpot(3, 13000),  // April
+    FlSpot(4, 12500),  // May
+    FlSpot(5, 13200),  // June
+    FlSpot(6, 13800),  // July
+    FlSpot(7, 13500),  // August
+    FlSpot(8, 14000),  // September
+    FlSpot(9, 13600),  // October
+    FlSpot(10, 13900), // November
+    FlSpot(11, 13000), // December
+  ];
+
+// Weekly expense data
+  LineChartBarData weeklyExpenseData() {
+    return LineChartBarData(
+      spots: weeklyExpenseSpots,
+      isCurved: true,
+      color: Colors.red,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+// Weekly income data
+  LineChartBarData weeklyIncomeData() {
+    return LineChartBarData(
+      spots: weeklyIncomeSpots,
+      isCurved: true,
+      color: Colors.green,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+// Monthly expense data
+  LineChartBarData monthlyExpenseData() {
+    return LineChartBarData(
+      spots: monthlyExpenseSpots,
+      isCurved: true,
+      color: Colors.red,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+// Monthly income data
+  LineChartBarData monthlyIncomeData() {
+    return LineChartBarData(
+      spots: monthlyIncomeSpots,
+      isCurved: true,
+      color: Colors.green,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+// Yearly expense data
+  LineChartBarData yearlyExpenseData() {
+    return LineChartBarData(
+      spots: yearlyExpenseSpots,
+      isCurved: true,
+      color: Colors.red,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+// Yearly income data
+  LineChartBarData yearlyIncomeData() {
+    return LineChartBarData(
+      spots: yearlyIncomeSpots,
+      isCurved: true,
+      color: Colors.green,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+
 }
+

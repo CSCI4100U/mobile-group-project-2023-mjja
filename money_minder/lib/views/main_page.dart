@@ -4,7 +4,7 @@
 // import 'package:flutter/material.dart';
 // import 'reminders_page.dart' as reminders;
 // import 'under_construction.dart' as setup;
-// import 'insights_page.dart' as insights;
+// import 'investment_insight.dart' as insights;
 // import 'package:intl/intl.dart';
 // import 'profile_page.dart' as profilePage;
 // import 'goals_page.dart';
@@ -229,7 +229,7 @@
 // import 'package:flutter/material.dart';
 // import 'reminders_page.dart' as reminders;
 // import 'under_construction.dart' as setup;
-// import 'insights_page.dart' as insights;
+// import 'investment_insight.dart' as insights;
 // import 'package:intl/intl.dart';
 // import 'profile_page.dart' as profilePage;
 // import 'goals_page.dart';
