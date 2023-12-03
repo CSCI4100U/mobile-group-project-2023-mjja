@@ -61,6 +61,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Text('Reminders'),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => RemindersPage(),
+                  ));
                   // Handle the Financial Insights page tap
                 },
               ),
@@ -206,7 +209,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Reminders page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => UnderConstructionPage()),
+              MaterialPageRoute(builder: (context) => RemindersPage()),
             );
             break;
           case 4:
