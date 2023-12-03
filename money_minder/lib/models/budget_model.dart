@@ -1,5 +1,5 @@
 /**
- * BudgetDatabase: This class contains all the method realted to Budget class
+ * BudgetDatabase: This class contains all the method related to Budget class
  */
 
 import 'package:sqflite/sqflite.dart';
