@@ -136,55 +136,12 @@ class _FinancialInsightsPageState extends State<FinancialInsightsPage> {
                       SizedBox(height: 20),
                       Container(
                         height: 200,
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: LineChart(
-                          LineChartData(
-                            gridData: FlGridData(show: true),
-                            titlesData: FlTitlesData(
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: (double value, TitleMeta meta) {
-                                    const style = TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    );
-                                    String text = '';
-                                    // Change labels based on the selected time period
-                                    switch (selectedPeriod) {
-                                      case TimePeriod.week:
-                                        final labels = ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-                                        text = labels[value.toInt() % labels.length];
-                                        break;
-                                      case TimePeriod.month:
-                                        final labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                                        text = labels[value.toInt() % labels.length];
-                                        break;
-                                      case TimePeriod.year:
-                                        final labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                                        text = labels[value.toInt() % labels.length];
-                                        break;
-                                    }
-                                    return SideTitleWidget(
-                                      axisSide: meta.axisSide,
-                                      space: 8.0,
-                                      child: Text(text, style: style),
-                                    );
-                                  },
-                                  reservedSize: 40,
-                                ),
-                              ),
-                              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                              leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                            ),
-                            borderData: FlBorderData(show: true),
-                            // lineBarsData: showExpense ? [expenseData()] : [incomeData()], // Use the new helper methods
-                            lineBarsData: getChartData(),  // Update to use a new method
-
-                          ),
+                          generateChartData(),
                         ),
                       ),
+
                       // Additional UI elements can be added here
                     ],
                   ),
@@ -204,18 +161,116 @@ class _FinancialInsightsPageState extends State<FinancialInsightsPage> {
       ),
     );
   }
+  LineChartData generateChartData() {
+    List<LineChartBarData> chartData = getChartData();
+
+    return LineChartData(
+      gridData: FlGridData(show: true),
+      titlesData: FlTitlesData(
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (double value, TitleMeta meta) {
+              const style = TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              );
+              String text = '';
+              switch (selectedPeriod) {
+                case TimePeriod.week:
+                  final labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                  text = labels[value.toInt() % labels.length];
+                  break;
+                case TimePeriod.month:
+                  final labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                  text = labels[value.toInt() % labels.length];
+                  break;
+                case TimePeriod.year:
+                  final labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                  text = labels[value.toInt() % labels.length];
+                  break;
+              }
+              return SideTitleWidget(
+                axisSide: meta.axisSide,
+                space: 8.0,
+                child: Text(text, style: style),
+              );
+            },
+            reservedSize: 30,
+          ),
+        ),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (double value, TitleMeta meta) {
+              return SideTitleWidget(
+                axisSide: meta.axisSide,
+                space: 4.0,
+                child: Text(
+                  '${value.toInt()}',
+                  style: TextStyle(color: Colors.grey, fontSize: 10),
+                ),
+              );
+            },
+            reservedSize: 40,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(show: true),
+      lineBarsData: chartData,
+    );
+  }
 
   List<LineChartBarData> getChartData() {
     switch (selectedPeriod) {
       case TimePeriod.week:
-        return showExpense ? [weeklyExpenseData()] : [weeklyIncomeData()];
+        return [weeklyData()];
       case TimePeriod.month:
-        return showExpense ? [monthlyExpenseData()] : [monthlyIncomeData()];
+        return [monthlyData()];
       case TimePeriod.year:
-        return showExpense ? [yearlyExpenseData()] : [yearlyIncomeData()];
+        return [yearlyData()];
       default:
-        return showExpense ? [monthlyExpenseData()] : [monthlyIncomeData()];
+        return [monthlyData()];
     }
+  }
+
+  LineChartBarData weeklyData() {
+    return LineChartBarData(
+      spots: showExpense ? weeklyExpenseSpots : weeklyIncomeSpots,
+      isCurved: true,
+      color: showExpense ? Colors.red : Colors.green,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+  LineChartBarData monthlyData() {
+    return LineChartBarData(
+      spots: showExpense ? monthlyExpenseSpots : monthlyIncomeSpots,
+      isCurved: true,
+      color: showExpense ? Colors.red : Colors.green,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
+  }
+
+  LineChartBarData yearlyData() {
+    return LineChartBarData(
+      spots: showExpense ? yearlyExpenseSpots : yearlyIncomeSpots,
+      isCurved: true,
+      color: showExpense ? Colors.red : Colors.green,
+      barWidth: 2,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: BarAreaData(show: false),
+    );
   }
 
   // Helper method to create expense data
