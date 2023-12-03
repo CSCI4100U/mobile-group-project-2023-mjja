@@ -34,11 +34,6 @@ Future<List<AccountInfo>> fetchAccountInfoFromSQLite() async {
   return accountinfos.map((accountinfo) => AccountInfo.fromMap(accountinfo.toMap())).toList();
 }
 
-// Future<List<Expense>> fetchExpensesFromSQLite() async {
-//   //final List<Expense> expenses = await ExpenseDatabase().readAllExpenses();
-//   // return expenses.map((expense) => Expense.fromMap(expense.toMap())).toList();
-// }
-
 Future<List<Income>> fetchIncomeFromSQLite() async {
   final List<Income> incomes = await IncomeDatabase().readAllIncomes();
   return incomes.map((income) => Income.fromMap(income.toMap())).toList();
