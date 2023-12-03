@@ -1,5 +1,5 @@
 /**
- * AccountInfoDatabase: This class contains all the method realted to accountInfo class
+ * AccountInfoDatabase: This class contains all the method related to accountInfo class
  */
 
 import 'package:sqflite/sqflite.dart';

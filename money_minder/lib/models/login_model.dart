@@ -1,5 +1,5 @@
 /**
- * LoginDatabase: This class contains all the method realted to Login class
+ * LoginDatabase: This class contains all the method related to Login class
  */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
