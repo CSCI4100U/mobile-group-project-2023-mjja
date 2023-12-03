@@ -12,6 +12,9 @@ import 'package:intl/intl.dart'; // Import intl to format dates
 import 'package:percent_indicator/percent_indicator.dart';
 import 'custom_navigation.dart';
 
+import '../models/expense_model.dart';
+import '../data/localDB/expense.dart';
+
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
 final Color textColor = Colors.white;
@@ -253,19 +256,6 @@ class _GoalCardState extends State<GoalCard> {
               return AlertDialog(
                 title: Text(widget.title),
                 content: SingleChildScrollView(
-
-
-
-
-
-
-
-
-
-
-
-
-
                   child: ListBody(
                     children: <Widget>[
                       Text('Description: ${widget.description}'),
