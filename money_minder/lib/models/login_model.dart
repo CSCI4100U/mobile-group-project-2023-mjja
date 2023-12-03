@@ -95,11 +95,8 @@ class LoginDatabase {
     return maps != null && maps.isNotEmpty;
   }
 
-  Future<bool> checkLoginCredentialsFirebase(
-      String emailAddress, String password) async {
+  Future<bool> checkLoginCredentialsFirebase(String emailAddress, String password) async {
     try {
-      //print('Calling the Firebase login method.');
-
       QuerySnapshot querySnapshot = await loginCollection
           .where('emailAddress', isEqualTo: emailAddress)
           .limit(1) // Limit to 1 result since you expect only one match

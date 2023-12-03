@@ -1,9 +1,10 @@
 /**
  * Expense: this class store the expense information of the user.
  */
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Expense {
-  int? id;             // unique Expense identifier
+  String? id;             // unique Expense identifier
   String? name;        // name of the expense
   String? category;    // category of the expense
   double? amount;      // amount of the expense
@@ -14,7 +15,7 @@ class Expense {
     this.name,
     this.category,
     this.amount,
-    this.date,
+    this.date
   });
 
   // generate a new Expense object from a map, typically from the database
@@ -31,12 +32,22 @@ class Expense {
   // convert an Expense object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      //'id': id,
       'name': name,
       'category': category,
       'amount': amount,
       'date': date?.toIso8601String(),
     };
+  }
+
+  factory Expense.fromSnapshot(DocumentSnapshot snapshot) {
+    return Expense(
+      id: snapshot.id,
+      name: snapshot['name'],
+      category: snapshot['category'],
+      amount: snapshot['amount'],
+      date: DateTime.parse(snapshot['date']),
+    );
   }
 
   @override

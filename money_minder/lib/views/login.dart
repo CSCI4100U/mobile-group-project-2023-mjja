@@ -161,8 +161,7 @@ class WelcomeBackPage extends StatelessWidget {
                           String email = getEmail();
                           String password = getPassword().trim();
 
-                          bool isLoggedIn =
-                          await loginDatabase.checkLoginCredentialsFirebase(email, password);
+                          bool isLoggedIn = await loginDatabase.checkLoginCredentialsFirebase(email, password);
 
                           if (isLoggedIn) {
                             Navigator.of(context).push(MaterialPageRoute(

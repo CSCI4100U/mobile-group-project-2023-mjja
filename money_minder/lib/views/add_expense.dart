@@ -1,9 +1,12 @@
 //Code to enter details of any transactions when the user clicks on the "+" icon
 
 import 'package:flutter/material.dart';
+import 'package:money_minder/data/localDB/expense.dart';
 import 'package:money_minder/views/expenses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/expense_model.dart';
 
 
 final Color backgroundColor = Colors.black;
@@ -21,14 +24,12 @@ class AddExpenseForm extends StatefulWidget {
 
 class _AddExpenseFormState extends State<AddExpenseForm> {
   final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
   final dateController = TextEditingController();
   final categoryController = TextEditingController();
   final amountController = TextEditingController();
-  final descriptionController = TextEditingController();
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  final ExpenseDatabase _expenseDatabase = ExpenseDatabase();
 
   // Dropdown options for category
   List<String> categories = [
@@ -49,12 +50,32 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
   //controllers for every fields
   @override
   void dispose() {
+    nameController.dispose();
     dateController.dispose();
     categoryController.dispose();
     amountController.dispose();
-    descriptionController.dispose();
     super.dispose();
   }
+  Future<void> _saveExpenseToFirebase() async {
+    print("inside save expense to firebase emthod");
+    try {
+      await _expenseDatabase.createExpense(Expense(
+        name: nameController.text,
+        category: selectedCategory,
+        amount: double.parse(amountController.text),
+        date: DateTime.parse(dateController.text),
+      ));
+
+    } catch (e) {
+      print('Error saving expense to Firebase: $e');
+    }
+
+  Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => ExpensesPage()),
+  );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +107,30 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
               key: _formKey,
               child: Column(
                 children: <Widget>[
+                  //name
+                  TextFormField(
+                    controller: nameController,
+                    style: TextStyle(color: textColor),
+                    decoration: InputDecoration(
+                      labelText: 'Name *',
+                      hintText: 'Enter where you did the transaction.',
+                      labelStyle: TextStyle(color: textColor),
+                      hintStyle: TextStyle(color: textColor),
+                      suffix: Text(
+                        '*', // Red star indicating required field
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required!';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+
                   // Date Picker
                   InkWell(
                     onTap: () async {
@@ -104,21 +149,36 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                         controller: dateController,
                         style: TextStyle(color: textColor),
                         decoration: InputDecoration(
-                          labelText: 'Date',
-                          hintText: 'Select the date of the expense',
+                          labelText: 'Date *',
+                          hintText: 'Select the date of the transaction',
                           labelStyle: TextStyle(color: textColor),
                           hintStyle: TextStyle(color: textColor),
+                          suffix: Text(
+                            '*', // Red star indicating required field
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
                         keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
                   SizedBox(height: 20.0),
+
                   // Category Dropdown
                   DropdownButtonFormField<String>(
                     decoration: InputDecoration(
-                      labelText: 'Category',
+                      labelText: 'Category *',
                       labelStyle: TextStyle(color: textColor),
+                      suffix: Text(
+                        '*', // Red star indicating required field
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
                     style: TextStyle(color: textColor),
                     dropdownColor: Colors.black,
@@ -134,37 +194,48 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
                         selectedCategory = value;
                       });
                     },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(height: 20.0),
+
                   // Amount
                   TextFormField(
                     controller: amountController,
                     style: TextStyle(color: textColor),
                     decoration: InputDecoration(
-                      labelText: 'Amount',
-                      hintText: 'Enter the amount of the expense',
+                      labelText: 'Amount (CAD)*',
+                      hintText: '0.00',
                       labelStyle: TextStyle(color: textColor),
                       hintStyle: TextStyle(color: textColor),
                     ),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      // Convert the amount to double before saving to Firebase
+                      if (value != null && value.isNotEmpty) {
+                        amountController.value = double.parse(value) as TextEditingValue;
+                      }
+                    },
                   ),
                   SizedBox(height: 20.0),
-                  // Description
-                  TextFormField(
-                    controller: descriptionController,
-                    style: TextStyle(color: textColor),
-                    decoration: InputDecoration(
-                      labelText: 'Description',
-                      hintText: 'Enter a description of the expense',
-                      labelStyle: TextStyle(color: textColor),
-                      hintStyle: TextStyle(color: textColor),
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(height: 20.0),
+
+                  //Submit button
                   ElevatedButton(
                     onPressed: () {
-                      // Add your submit logic here
+                      // Validate the form before submitting
+                      if (_formKey.currentState!.validate()) {
+                        _saveExpenseToFirebase();
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       primary: purpleColor,

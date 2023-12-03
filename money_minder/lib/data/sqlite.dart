@@ -11,7 +11,7 @@ import '../models/income_model.dart';
 import '../data/localDB/accountInfo.dart';
 import '../data/localDB/signup.dart';
 import '../data/localDB/login.dart';
-import '../data/localDB/expenses.dart';
+import '../data/localDB/expense.dart';
 import '../data/localDB/budget.dart';
 import '../data/localDB/goals.dart';
 import '../data/localDB/income.dart';
@@ -31,7 +31,7 @@ import 'dart:async';
 
 Future<void> testSQLite() async {
   await testSignup();
-  await testExpense();
+  // await testExpense();
   await testLogin();
   await testAccountInfo();
   await testBudget();
@@ -62,80 +62,6 @@ void printAccountInfoRecords(List<AccountInfo> accountInfos) {
     print(accountInfo.toMap());
   });
 }
-
-Future<void> testExpense() async {
-  final db = ExpenseDatabase();
-
-  // Create expense records
-  final expense1 = Expense(
-    id: 1,
-    name: 'Groceries',
-    category: 'Food',
-    amount: 50.0,
-    date: DateTime.now().add(Duration(days: 30)),
-  );
-  final expense2 = Expense(
-    id: 2,
-    name: 'Subway',
-    category: 'Food',
-    amount: 100.0,
-    date: DateTime.now().add(Duration(days: 3)),
-  );
-
-  // Test createExpense method
-  await db.createExpense(expense1);
-  await db.createExpense(expense2);
-
-  // Read all expenses
-  List<Expense> expenses = await db.readAllExpenses();
-  print('********************* Expenses records after creation ****************************');
-  for (final exp in expenses) {
-    print(
-        'id: ${exp.id}, Expense: ${exp.name}, Amount: ${exp.amount}, date: ${exp.date}');
-  }
-
-  // Test updateExpense method
-  if (expenses.isNotEmpty) {
-    Expense expenseToUpdate = expenses.first;
-    Expense updatedExpense = Expense(
-      id: expenseToUpdate.id,
-      name: 'Updated ${expenseToUpdate.name}',
-      category: expenseToUpdate.category,
-      amount: expenseToUpdate.amount! + 10.0,
-      date: expenseToUpdate.date!.add(Duration(days: 5)),
-    );
-    await db.updateExpense(updatedExpense);
-    print('Updated expense record with ID: ${updatedExpense.id}');
-  } else {
-    print('No expense records to update.');
-  }
-
-  // Read expenses after update
-  expenses = await db.readAllExpenses();
-  print('********************* Expenses records after update ****************************');
-  for (final exp in expenses) {
-    print(
-        'id: ${exp.id}, Expense: ${exp.name}, Amount: ${exp.amount}, date: ${exp.date}');
-  }
-
-  // Test deleteExpense method
-  if (expenses.isNotEmpty) {
-    int expenseToDeleteId = expenses.first.id!;
-    await db.deleteExpense(expenseToDeleteId);
-    print('Deleted expense record with ID: $expenseToDeleteId');
-  } else {
-    print('No expense records to delete.');
-  }
-
-  // Read expenses after delete
-  expenses = await db.readAllExpenses();
-  print('********************* Expenses records after delete ****************************');
-  for (final exp in expenses) {
-    print(
-        'id: ${exp.id}, Expense: ${exp.name}, Amount: ${exp.amount}, date: ${exp.date}');
-  }
-}
-
 
 Future<void> testLogin() async {
   final login1 = Login(

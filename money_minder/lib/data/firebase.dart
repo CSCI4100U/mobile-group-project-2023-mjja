@@ -12,7 +12,7 @@ import '../models/income_model.dart';
 import '../data/localDB/accountInfo.dart';
 import '../data/localDB/signup.dart';
 import '../data/localDB/login.dart';
-import '../data/localDB/expenses.dart';
+import '../data/localDB/expense.dart';
 import '../data/localDB/budget.dart';
 import '../data/localDB/goals.dart';
 import '../data/localDB/income.dart';
@@ -32,11 +32,6 @@ Future<List<Signup>> fetchSignupsFromSQLite() async {
 Future<List<AccountInfo>> fetchAccountInfoFromSQLite() async {
   final List<AccountInfo> accountinfos = await AccountInfoDatabase().readAccountInfo();
   return accountinfos.map((accountinfo) => AccountInfo.fromMap(accountinfo.toMap())).toList();
-}
-
-Future<List<Expense>> fetchExpensesFromSQLite() async {
-  final List<Expense> expenses = await ExpenseDatabase().readAllExpenses();
-  return expenses.map((expense) => Expense.fromMap(expense.toMap())).toList();
 }
 
 Future<List<Income>> fetchIncomeFromSQLite() async {
@@ -89,7 +84,7 @@ Future<void> syncDataToFirebase() async {
   final List<Login> logins = await fetchLoginsFromSQLite();
   final List<Signup> signups = await fetchSignupsFromSQLite();
   final List<AccountInfo> accountinfos = await fetchAccountInfoFromSQLite();
-  final List<Expense> expenses = await fetchExpensesFromSQLite();
+  //final List<Expense> expenses = await fetchExpensesFromSQLite();
   final List<Income> incomes = await fetchIncomeFromSQLite();
   final List<Budget> budgets = await fetchBudgetFromSQLite();
 
@@ -130,9 +125,9 @@ Future<void> syncDataToFirebase() async {
   }
 
   // Add expenses to the batch
-  for (final expense in expenses) {
-    batch.set(expensesCollection.doc(expense.id.toString()), expense.toMap(), SetOptions(merge: true));
-  }
+  // for (final expense in expenses) {
+  //   batch.set(expensesCollection.doc(expense.id.toString()), expense.toMap(), SetOptions(merge: true));
+  // }
 
   // Add incomes to the batch
   for (final income in incomes) {
