@@ -18,8 +18,10 @@ class GoalDatabase {
       CREATE TABLE IF NOT EXISTS goal(
               id INTEGER PRIMARY KEY,
               name TEXT,
+              description TEXT,
               amount REAL,
-              endDate TEXT
+              endDate TEXT,
+              isCompleted INTEGER
             )
     ''');
     } catch (e) {
