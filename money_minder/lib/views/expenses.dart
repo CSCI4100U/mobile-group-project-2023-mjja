@@ -6,10 +6,12 @@
 //shows option to add transaction for new user
 
 import 'package:flutter/material.dart';
+import '../models/expense_model.dart';
 import 'custom_navigation.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import '../data/localDB/expense.dart';
 
 
 final Color backgroundColor = Colors.black;
@@ -17,21 +19,19 @@ final Color purpleColor =
 Color(0xFF5E17EB); // Replace with your exact color code
 final Color textColor = Colors.white;
 
-class Expense {
-  int? id;
-  String name;
+class Expense_data{
+  String? id;
+  late String name;
   String? category;
   double? amount;
-  String? date;
-  String? description;
+  DateTime? date;
 
-  Expense({
+  Expense_data({
     this.id,
     required this.name,
     this.category,
     this.amount,
     this.date,
-    this.description,
   });
 
   //get icons for each category
@@ -59,12 +59,15 @@ class Expense {
   }
 }
 
+
+//method to show expenses between date range selected
 Future<DateTimeRange?> showCustomDateRangePicker({
   required BuildContext context,
   required DateTime firstDate,
   required DateTime lastDate,
-  DateTimeRange? initialDateRange, // Corrected the parameter name
+  DateTimeRange? initialDateRange,
 }) async {
+
   DateTimeRange? pickedRange;
 
   return showDialog<DateTimeRange>(
@@ -117,6 +120,21 @@ class ExpensesPage extends StatefulWidget {
 class _ExpensesPageState extends State<ExpensesPage> {
   String _selectedTransactionType = 'All'; // Default selection
   DateTimeRange? _selectedDateRange;
+  final ExpenseDatabase _expenseDatabase = ExpenseDatabase();
+  List<Expense_data> _transactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAndSetExpenses(); // Fetch and set the expenses when the widget is initialized
+  }
+
+  Future<void> _fetchAndSetExpenses() async {
+    final List<Expense_data> expenses = await _fetchExpensesFromFirestore();
+    setState(() {
+      _transactions = expenses;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +143,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
       backgroundColor: Colors.black,
       body: Column(
         children: <Widget>[
-          _buildTotalBalanceCard(),
+          _buildTotalBalanceCard(_transactions),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -149,7 +167,21 @@ class _ExpensesPageState extends State<ExpensesPage> {
     );
   }
 
-  Widget _buildTotalBalanceCard() {
+  Widget _buildTotalBalanceCard(List<Expense_data> transactions) {
+    double totalIncome = 0.0;
+    double totalExpense = 0.0;
+
+    // Calculate total income and total expense
+    for (var transaction in transactions) {
+      if (transaction.category == 'Income') {
+        totalIncome += transaction.amount ?? 0.0;
+      } else {
+        totalExpense += transaction.amount ?? 0.0;
+      }
+    }
+
+    double totalBalance = totalIncome - totalExpense;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -163,7 +195,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text('Total Balance', style: TextStyle(color: Colors.black)),
-                  Text('\$13,250',
+                  Text('\$${totalBalance.toStringAsFixed(2)}',
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold, color: purpleColor)
                   ),
@@ -255,34 +287,18 @@ class _ExpensesPageState extends State<ExpensesPage> {
   }
 
   Widget _buildRecentTransactionList() {
-    // Hardcoded sample data
-    List<Expense> transactions = [
-      Expense(
-          name: "FreshCo",
-          category: "Shopping",
-          amount: 45.90,
-          date: "2023-11-19",
-          description: "Grocery Store"),
-      Expense(
-          name: "Metro",
-          category: "Transport",
-          amount: 2.75,
-          date: "2023-11-19",
-          description: "Bus Ticket"),
-      Expense(
-          name: "Freelance",
-          category: "Income",
-          amount: 100.00,
-          date: "2023-11-18",
-          description: "Freelance Payment"),
-      Expense(
-          name: "Amazon",
-          category: "Income",
-          amount: 250.00,
-          date: "2023-11-17",
-          description: "Work Payment")
-      // Add more transactions as needed
-    ];
+    print("build transaction list is called");
+    return FutureBuilder<List<Expense_data>>(
+        future: _fetchExpensesFromFirestore(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Show loading indicator while fetching data
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Text('No transactions available.');
+          } else {
+            List<Expense_data> transactions = snapshot.data ?? [];
 
     // Filter transactions based on the selected type i.e. All, Icome or Expense
     if (_selectedTransactionType != 'All') {
@@ -297,31 +313,36 @@ class _ExpensesPageState extends State<ExpensesPage> {
     // Filter transactions based on the selected date range
     if (_selectedDateRange != null) {
       transactions = transactions.where((tx) {
-        DateTime txDate = DateTime.parse(tx.date!);
+        DateTime txDate = tx.date!;
         return (txDate.isAfter(_selectedDateRange!.start) ||
-                txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
+            txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
             (txDate.isBefore(_selectedDateRange!.end.add(Duration(days: 1))) ||
                 txDate.isAtSameMomentAs(_selectedDateRange!.end));
-      }).toList();
+        }).toList();
     }
 
     // Group transactions by date to display on the screen
-    Map<String, List<Expense>> groupedTransactions = {};
+    Map<String, List<Expense_data>> groupedTransactions = {};
     for (var transaction in transactions) {
-      String formattedDate =
-          DateFormat('yyyy-MM-dd').format(DateTime.parse(transaction.date!));
+      String formattedDate = DateFormat('yyyy-MM-dd').format(transaction.date!);
       if (!groupedTransactions.containsKey(formattedDate)) {
         groupedTransactions[formattedDate] = [];
       }
       groupedTransactions[formattedDate]!.add(transaction);
     }
 
+    List<String> sortedDates = groupedTransactions.keys.toList();
+    sortedDates.sort((a, b) => DateTime.parse(b).compareTo(DateTime.parse(a)));
+
+
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: groupedTransactions.entries.length,
+      itemCount: sortedDates.length,
+      //itemCount: groupedTransactions.entries.length,
       itemBuilder: (context, index) {
-        String date = groupedTransactions.entries.elementAt(index).key;
-        List<Expense> dailyTransactions = groupedTransactions[date]!;
+        String date = sortedDates[index];
+        //String date = groupedTransactions.entries.elementAt(index).key;
+        List<Expense_data> dailyTransactions = groupedTransactions[date]!;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,5 +402,16 @@ class _ExpensesPageState extends State<ExpensesPage> {
         );
       },
     );
+  }
+    }
+  );
+}
+  Future<List<Expense_data>> _fetchExpensesFromFirestore() async {
+    try {
+      return await _expenseDatabase.readAllExpenses();
+    } catch (e) {
+      print('Error fetching expenses from Firestore: $e');
+      return [];
+    }
   }
 }
