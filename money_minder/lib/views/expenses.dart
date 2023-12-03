@@ -141,27 +141,20 @@ class _ExpensesPageState extends State<ExpensesPage> {
     return Scaffold(
       appBar: CustomAppBar(),
       backgroundColor: Colors.black,
-      body: Column(
-        children: <Widget>[
-          _buildTotalBalanceCard(_transactions),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  _buildTransactionTypeButtons(),
-                  _buildRecentTransactionsTitle(),
-                  _buildRecentTransactionList(),
-                ],
-              ),
-            ),
-          ),
-        ],
+      body: SingleChildScrollView( // This makes your column scrollable
+        child: Column(
+          children: <Widget>[
+            _buildTotalBalanceCard(_transactions),
+            _buildTransactionTypeButtons(),
+            _buildRecentTransactionsTitle(),
+            _buildRecentTransactionList(),
+          ],
+        ),
       ),
-
-      // Handle bottom navigation bar item taps
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 0,
         onTap: (index) {
+          // Handle bottom navigation bar item taps
         },
       ),
     );
@@ -337,6 +330,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
     return ListView.builder(
       shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: sortedDates.length,
       //itemCount: groupedTransactions.entries.length,
       itemBuilder: (context, index) {
