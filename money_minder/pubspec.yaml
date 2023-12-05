@@ -54,7 +54,12 @@ dependencies:
   firebase_auth: ^4.0.0
   flutter_localizations:
     sdk: flutter
-
+  share: ^2.0.4
+  csv: ^5.0.0
+  file_picker: ^5.0.1
+  share_extend: ^2.0.0
+  share_plus: ^4.0.4
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:

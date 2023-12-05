@@ -13,6 +13,11 @@ import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../data/localDB/expense.dart';
 
+//for saving transaction data
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:share_plus/share_plus.dart';
+import 'package:share_extend/share_extend.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor =
@@ -136,6 +141,31 @@ class _ExpensesPageState extends State<ExpensesPage> {
     });
   }
 
+  String _convertTransactionsToCsv(List<Expense_data> transactions) {
+    StringBuffer csvBuffer = StringBuffer();
+    csvBuffer.writeln("ID,Name,Category,Amount,Date");
+    for (var transaction in transactions) {
+      csvBuffer.writeln('"${transaction.id}","${transaction.name}","${transaction.category}",'
+          '"${transaction.amount}","${DateFormat('yyyy-MM-dd').format(transaction.date!)}"');
+    }
+    return csvBuffer.toString();
+  }
+
+  // Function to share the CSV file to external apps
+  Future<void> _shareCsvFile() async {
+    List<Expense_data> expenses = await _fetchExpensesFromFirestore();
+    String csvData = _convertTransactionsToCsv(expenses);
+
+    final directory = await getTemporaryDirectory(); // Use temporary directory for temporary file
+    final path = '${directory.path}/expenses.csv';
+    final file = File(path);
+    await file.writeAsString(csvData);
+
+    // Share the file with any app that can handle it
+    Share.shareFiles([path], text: 'Here are your expenses in CSV format');
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,12 +224,15 @@ class _ExpensesPageState extends State<ExpensesPage> {
                   ),
                 ],
               ),
-              IconButton(
-                icon: Icon(Icons.share, color: Colors.black),
-                onPressed: () {
-                  // Implement the export & share functionality
-                },
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center, // Adjust this for different spacing effects
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.share, color: Colors.black),
+                    onPressed: _shareCsvFile,
+                  ),
+                ],
+              )
             ],
           ),
         ),
