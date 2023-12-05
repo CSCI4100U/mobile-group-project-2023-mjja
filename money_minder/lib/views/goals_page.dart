@@ -1,19 +1,12 @@
-// ## Acknowledgments
-// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
-
-// DONE: make UI for progress bar for the goal
-//TO DO: goals should be completed based on goal completion/when the progress bar hits 100%
-//       "Complete" button has been implemented for now 
-//       _calculateProgress method has a mock amount for saved money ($50).
-//       Find a way for the goals to know which expense/savings to keep track of in the progress bar
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Import intl to format dates
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import '../data/localDB/goals.dart';
+import '../models/goal_model.dart';
 import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
-final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
+final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
 class GoalsPage extends StatefulWidget {
@@ -22,19 +15,29 @@ class GoalsPage extends StatefulWidget {
 }
 
 class _GoalsPageState extends State<GoalsPage> {
-  List<Map<String, dynamic>> goalsList = [];
+  GoalDatabase _goalDatabase = GoalDatabase();
+  List<Goal> goalsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGoals();
+  }
+
+  void _loadGoals() async {
+    List<Goal> goals = await _goalDatabase.readAllGoals();
+    setState(() {
+      goalsList = goals;
+    });
+  }
 
   void _addNewGoal() {
-    String goalTitle = '';
-    String goalDescription = '';
-    DateTime? deadline;
-    double? goalAmount;
-
     // Define controllers for text fields
+    TextEditingController titleController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
     TextEditingController amountController = TextEditingController();
     TextEditingController deadlineController = TextEditingController();
 
-    //add a new goal
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -44,21 +47,17 @@ class _GoalsPageState extends State<GoalsPage> {
             child: ListBody(
               children: <Widget>[
                 TextFormField(
+                  controller: titleController,
                   autofocus: true,
                   decoration: InputDecoration(
                     labelText: 'Goal Title',
                   ),
-                  onChanged: (value) {
-                    goalTitle = value;
-                  },
                 ),
                 TextFormField(
+                  controller: descriptionController,
                   decoration: InputDecoration(
                     labelText: 'Description',
                   ),
-                  onChanged: (value) {
-                    goalDescription = value;
-                  },
                 ),
                 TextFormField(
                   controller: amountController,
@@ -67,9 +66,6 @@ class _GoalsPageState extends State<GoalsPage> {
                     prefixIcon: Icon(Icons.attach_money),
                   ),
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  onChanged: (value) {
-                    goalAmount = double.tryParse(value);
-                  },
                 ),
                 TextFormField(
                   controller: deadlineController,
@@ -81,15 +77,15 @@ class _GoalsPageState extends State<GoalsPage> {
                     hintStyle: TextStyle(color: Colors.black),
                   ),
                   onTap: () async {
-                    FocusScope.of(context).requestFocus(new FocusNode()); // to prevent opening default keyboard
-                    deadline = await showDatePicker(
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                    DateTime? deadline = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime.now(),
                       lastDate: DateTime(2101),
                     );
                     if (deadline != null) {
-                      deadlineController.text = DateFormat.yMMMd().format(deadline!);
+                      deadlineController.text = DateFormat.yMMMd().format(deadline);
                     }
                   },
                 ),
@@ -105,16 +101,26 @@ class _GoalsPageState extends State<GoalsPage> {
             ),
             TextButton(
               child: Text('Save', style: TextStyle(color: purpleColor)),
-              onPressed: () {
-                setState(() {
-                  goalsList.add({
-                    'title': goalTitle,
-                    'description': goalDescription,
-                    'deadline': deadline,
-                    'goalAmount': goalAmount,
-                    'isCompleted': false,
-                  });
-                });
+              onPressed: () async {
+                // Create a new Goal object with the entered details
+                Goal newGoal = Goal(
+                  name: titleController.text,
+                  description: descriptionController.text,
+                  amount: double.tryParse(amountController.text) ?? 0.0,
+                  endDate: DateFormat.yMMMd().parse(deadlineController.text),
+                  isCompleted: 0, // Assuming the default is not completed
+                );
+
+                // Add the new goal to the database
+                int? result = await _goalDatabase.createGoal(newGoal);
+                if (result != null) {
+                  // Goal added successfully, reload goals
+                  _loadGoals();
+                } else {
+                  // Handle error, e.g., show a snackbar or log the error
+                  print('Failed to add new goal.');
+                }
+                // Close the dialog
                 Navigator.of(context).pop();
               },
             ),
@@ -124,75 +130,146 @@ class _GoalsPageState extends State<GoalsPage> {
     );
   }
 
-  void _toggleGoalCompletion(int index, bool isCompleted) {
-    if (!goalsList[index]['isCompleted'] && isCompleted) {
-      // Show snack bar when the task is marked as completed
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Task ${goalsList[index]['title']} is complete!'),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    }
 
-    setState(() {
-      goalsList[index]['isCompleted'] = isCompleted;
-    });
+  void _toggleGoalCompletion(int index, bool isCompleted) async {
+    Goal goal = goalsList[index];
+    goal.isCompleted = isCompleted ? 1 : 0;
+    await _goalDatabase.updateGoal(goal);
+    _loadGoals();
+  }
+
+  // Add this method to show a confirmation dialog
+  void _showDeleteConfirmationDialog(BuildContext context, Goal goal, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Goal'),
+          content: Text('Are you sure you want to delete this goal?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Delete', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                // User confirmed deletion, delete the goal
+                _deleteGoal(index);
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Add this method to handle goal deletion
+  void _deleteGoal(int index) async {
+    Goal goal = goalsList[index];
+    await _goalDatabase.deleteGoal(goal.id!);
+    _loadGoals();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-
       backgroundColor: Colors.black,
-      body: ListView.builder(
-        itemCount: goalsList.length,
-        itemBuilder: (context, index) {
-          var goal = goalsList[index];
-          return GoalCard(
-            title: goal['title'],
-            description: goal['description'],
-            deadline: goal['deadline'],
-            goalAmount: goal['goalAmount'],
-            isCompleted: goal['isCompleted'],
-            onCompletionChanged: (bool newVal) {
-              _toggleGoalCompletion(index, newVal);
-            },
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Text(
+              'Goals',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              'Track and achieve your financial goals',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 14.0,
+              ),
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: goalsList.length,
+                itemBuilder: (context, index) {
+                  var goal = goalsList[index];
+                  return Dismissible(
+                    key: Key(goal.id.toString()), // Assuming each goal has a unique ID
+                    onDismissed: (direction) {
+                      // Show a confirmation dialog before deleting the goal
+                      _showDeleteConfirmationDialog(context, goal, index);
+                    },
+                    background: Container(
+                      color: Colors.red, // Background color when swiping
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 36.0,
+                      ),
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(right: 20.0),
+                    ),
+                    child: GoalCard(
+                    name: goal.name ?? "Default Goal Name",
+                    description: goal.description ?? "Default Goal Description",
+                    endDate: goal.endDate,
+                    goalAmount: goal.amount,
+                    isCompleted: goal.isCompleted == 1,
+                    onCompletionChanged: (bool newVal) {
+                      _toggleGoalCompletion(index, newVal);
+                    },
+                  )
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addNewGoal,
+        onPressed: () {
+          _addNewGoal();
+        },
         tooltip: 'Add Goal',
         child: Icon(Icons.add),
         backgroundColor: purpleColor,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: 1, // Set the current index according to the GoalsPage
         onTap: (index) {
           // Handle bottom navigation bar item taps
         },
       ),
-
     );
   }
 }
 
 class GoalCard extends StatefulWidget {
-  final String title;
+  final String name;
   final String description;
-  final DateTime? deadline;
+  final DateTime? endDate;
   final double? goalAmount;
   final bool isCompleted;
   final Function(bool) onCompletionChanged;
 
   const GoalCard({
     Key? key,
-    required this.title,
+    required this.name,
     this.description = '',
-    this.deadline,
+    this.endDate,
     this.goalAmount,
     required this.isCompleted,
     required this.onCompletionChanged,
@@ -212,8 +289,7 @@ class _GoalCardState extends State<GoalCard> {
   }
 
   double _calculateProgress(double? goalAmount) {
-    // Mocking saved amount as $50
-    double savedAmount = 50.0;
+    double savedAmount = isCompleted ? goalAmount ?? 0.0 : 0.0;
     if (goalAmount != null && goalAmount > 0) {
       return savedAmount / goalAmount;
     }
@@ -230,14 +306,13 @@ class _GoalCardState extends State<GoalCard> {
       ),
       child: ListTile(
         title: Text(
-          widget.title,
+          widget.name,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 18, // Slightly larger text
+            fontSize: 18,
           ),
         ),
-
         subtitle: isCompleted
             ? Text(
           'Completed',
@@ -246,26 +321,12 @@ class _GoalCardState extends State<GoalCard> {
             : null,
         onTap: () {
           double progress = _calculateProgress(widget.goalAmount);
-          // Show dialog with details on tap
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text(widget.title),
+                title: Text(widget.name),
                 content: SingleChildScrollView(
-
-
-
-
-
-
-
-
-
-
-
-
-
                   child: ListBody(
                     children: <Widget>[
                       Text('Description: ${widget.description}'),
@@ -279,7 +340,7 @@ class _GoalCardState extends State<GoalCard> {
                         ),
                       ),
                       Text('Progress: ${progress * 100}% of the goal'),
-                      Text('Due: ${widget.deadline != null ? DateFormat.yMMMd().format(widget.deadline!) : 'No deadline'}')
+                      Text('Due: ${widget.endDate != null ? DateFormat.yMMMd().format(widget.endDate!) : 'No deadline'}')
                     ],
                   ),
                 ),

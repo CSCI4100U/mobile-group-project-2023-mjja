@@ -1,5 +1,5 @@
 /**
- * IncomeDatabase: This class contains all the method realted to Income class
+ * IncomeDatabase: This class contains all the method related to Income class
  */
 
 import 'package:sqflite/sqflite.dart';

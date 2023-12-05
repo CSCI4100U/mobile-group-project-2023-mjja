@@ -1,5 +1,5 @@
 /**
- * GoalsDatabase: This class contains all the method realted to Goal class
+ * GoalsDatabase: This class contains all the method related to Goal class
  */
 
 import 'package:sqflite/sqflite.dart';
@@ -18,8 +18,10 @@ class GoalDatabase {
       CREATE TABLE IF NOT EXISTS goal(
               id INTEGER PRIMARY KEY,
               name TEXT,
+              description TEXT,
               amount REAL,
-              endDate TEXT
+              endDate TEXT,
+              isCompleted INTEGER
             )
     ''');
     } catch (e) {

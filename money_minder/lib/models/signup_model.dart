@@ -1,5 +1,5 @@
 /**
- * SignUpDatabase: This class contains all the method realted to Signup class
+ * SignUpDatabase: This class contains all the method related to Signup class
  */
 
 import 'package:sqflite/sqflite.dart';
