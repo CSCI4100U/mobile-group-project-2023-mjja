@@ -194,7 +194,7 @@ class _GoalsPageState extends State<GoalsPage> {
               ),
             ),
             Text(
-              'Track and achieve your financial goals',
+              'Track and achieve your financial goals.',
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 14.0,
