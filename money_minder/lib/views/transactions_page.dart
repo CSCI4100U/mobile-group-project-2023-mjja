@@ -182,7 +182,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1,
+        currentIndex: 0,
         onTap: (index) {
           // Handle bottom navigation bar item taps
         },

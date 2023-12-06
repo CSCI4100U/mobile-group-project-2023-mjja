@@ -7,7 +7,6 @@ import 'add_transaction.dart';
 import 'setting_page.dart';
 import 'financial_insights.dart';
 import 'budget_goals_page.dart';
-import 'home_page.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -23,8 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.black,
           itemBuilder: (BuildContext context) {
             return [
-              _buildPopupMenuItem(Icons.home, 'Home', HomePage(), context),
-              _buildPopupMenuItem(Icons.receipt_long,'Transactions', TransactionsPage(), context),
+              _buildPopupMenuItem(Icons.home,'Home', TransactionsPage(), context),
               _buildPopupMenuItem(Icons.insights, 'Financial Insights', FinancialInsightsPage(), context),
               _buildPopupMenuItem(Icons.stacked_line_chart_rounded,'Investment Insights', InsightsPage(), context),
               _buildPopupMenuItem(Icons.receipt_sharp,'Budget Goals', GoalsPage(), context),
@@ -133,20 +131,20 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.receipt_long),
-          label: 'Transactions',
+          icon: Icon(Icons.insights),
+          label: 'Insights',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add),
           label: 'Add',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.insights),
-          label: 'Insights',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.notifications),
           label: 'Reminders',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
       currentIndex: currentIndex,
@@ -162,14 +160,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => TransactionsPage()),
             );
             break;
           case 1:
             // Navigate to the Insights page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => TransactionsPage()),
+              MaterialPageRoute(builder: (context) => FinancialInsightsPage()),
             );
             break;
           case 2:
@@ -183,14 +181,14 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Reminders page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => FinancialInsightsPage()),
+              MaterialPageRoute(builder: (context) => RemindersPage()),
             );
             break;
           case 4:
             // Navigate to the Settings page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => RemindersPage()),
+              MaterialPageRoute(builder: (context) => SettingsPage()),
             );
             break;
         }

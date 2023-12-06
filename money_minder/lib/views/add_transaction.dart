@@ -264,7 +264,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
       ),
       ),
         bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: 1,
+          currentIndex: 2,
           onTap: (index) {
             // Handle bottom navigation bar item taps
           },

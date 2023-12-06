@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import '../models/login_model.dart';
 import 'sign_up.dart';
-import 'home_page.dart';
 import 'forgot_password.dart';
 
 class WelcomeBackPage extends StatelessWidget {
@@ -165,7 +164,7 @@ class WelcomeBackPage extends StatelessWidget {
 
                           if (isLoggedIn) {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => HomePage(),
+                              builder: (context) => TransactionsPage(),
                             ));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

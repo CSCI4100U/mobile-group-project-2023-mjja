@@ -157,7 +157,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
         ],
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 3, // Set the current index to Financial Insights
+        currentIndex: 1, // Set the current index to Financial Insights
         onTap: (index) { // Handle bottom navigation bar item taps
       },
     ),
