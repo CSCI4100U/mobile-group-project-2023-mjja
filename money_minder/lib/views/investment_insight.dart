@@ -10,10 +10,6 @@ final Color purpleColor =
 final Color textColor = Colors.white;
 
 class InsightsPage extends StatefulWidget {
-  // final TabController tabController;
-  //
-  // InsightsPage({required this.tabController});
-
   @override
   _InsightsPageState createState() => _InsightsPageState();
 }
@@ -21,6 +17,7 @@ class InsightsPage extends StatefulWidget {
 class _InsightsPageState extends State<InsightsPage> {
   List<Stock> allStocks = [];
   List<Stock> displayedStocks = [];
+  bool stockNotFound = false;
 
   TextEditingController stockSymbolController = TextEditingController();
   TextEditingController searchController = TextEditingController();
@@ -36,14 +33,14 @@ class _InsightsPageState extends State<InsightsPage> {
   }
 
   Future<void> fetchStockData(String symbol) async {
-    final apiKey = 'sk_6f40cfef1d134af0813a654ce59df8fc'; // IEX Cloud Key
-    final apiUrl =
-        'https://cloud.iexapis.com/stable/stock/$symbol/quote?token=$apiKey';
+    final apiKey = 'sk_6f6239c6a8854732a8b818026ff04068'; // IEX Cloud Key
+    final apiUrl = 'https://cloud.iexapis.com/stable/stock/$symbol/quote?token=$apiKey';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        print(data);
 
         final price = data['latestPrice'].toDouble();
         final previousClose = data['previousClose'].toDouble();
@@ -60,6 +57,7 @@ class _InsightsPageState extends State<InsightsPage> {
         setState(() {
           allStocks.add(stock);
           displayedStocks.add(stock);
+          print("stocks saved on the screen");
         });
       } else {
         throw Exception(
@@ -73,6 +71,7 @@ class _InsightsPageState extends State<InsightsPage> {
   void filterStocks(String query) {
     final lowercaseQuery = query.toLowerCase();
     setState(() {
+      final filteredStocks = allStocks;
       displayedStocks = allStocks
           .where((stock) =>
               stock.name.toLowerCase().contains(lowercaseQuery) ||
@@ -94,7 +93,9 @@ class _InsightsPageState extends State<InsightsPage> {
               controller: searchController,
               onChanged: filterStocks,
               decoration: InputDecoration(
-                labelText: 'Search Stocks',
+                hintText: 'Search Stocks',
+                labelStyle: TextStyle(color: Colors.blueGrey),
+                // labelText: 'Search Stocks',
                 prefixIcon: Icon(Icons.search),
                 filled: true,
                 fillColor: Colors.white,
@@ -165,7 +166,7 @@ class _InsightsPageState extends State<InsightsPage> {
                 title: Text('Add Stock'),
                 content: TextField(
                   controller: stockSymbolController,
-                  decoration: InputDecoration(labelText: 'Stock Symbol'),
+                  decoration: InputDecoration(labelText: 'Stock Symbol or Full company name'),
                   style: TextStyle(color: Colors.black),
                 ),
                 actions: [

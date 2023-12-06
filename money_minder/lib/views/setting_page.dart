@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/home_page.dart';
 import 'package:money_minder/views/landing_page.dart';
 import 'package:money_minder/views/under_construction.dart';
 import 'custom_navigation.dart';

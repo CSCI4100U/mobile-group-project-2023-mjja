@@ -7,7 +7,6 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/home_page.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import 'custom_navigation.dart';
 import '../models/transaction_model.dart';

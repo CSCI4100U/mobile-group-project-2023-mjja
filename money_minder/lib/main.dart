@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/home_page.dart';
 
 // models and views import
 import 'views/login_page.dart';
@@ -15,9 +14,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'views/notifications_service.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'views/reminders_page.dart';
-import 'views/home_page.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
