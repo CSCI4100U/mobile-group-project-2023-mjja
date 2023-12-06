@@ -1,3 +1,10 @@
+/// A StatefulWidget that provides financial insights by visualizing transaction data
+/// in the form of charts.
+
+/// It displays two types of charts:
+/// - A pie chart for expenses, categorized by the type of expense.
+/// - A bar chart for income and expenses, grouped by week.
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions.dart';
@@ -11,6 +18,8 @@ class FinancialInsightsPage extends StatefulWidget {
   _FinancialInsightsState createState() => _FinancialInsightsState();
 }
 
+/// A StatelessWidget that represents a single legend item in the pie chart.
+/// each colour represents a different category of expenses
 class LegendItem extends StatelessWidget {
   final Color color;
   final String text;
@@ -37,6 +46,8 @@ class LegendItem extends StatelessWidget {
   }
 }
 
+/// The State class for the financial insights page which manages the state
+/// of the charts and handles the fetching and displaying of transaction data.
 class _FinancialInsightsState extends State<FinancialInsightsPage> {
   int touchedIndex = -1;
   List<Transaction_data> transactions = [];
@@ -113,7 +124,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
             ),
           ),
           Expanded(
-            child: showExpenses ? buildExpenseChart() : buildIncomeChart(),
+            child: showExpenses ? buildPieChart() : buildTransactionChart(),
           ),
         ],
         ),
@@ -126,8 +137,11 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     );
   }
 
-
-  Widget buildExpenseChart() {
+  /// Builds the bar chart for income and expenses by week.
+  ///
+  /// The chart is created with grouped bars representing income and expenses side by side
+  /// for each week to compare the two values visually.
+  Widget buildPieChart() {
     return AspectRatio(
         aspectRatio: 1.3,
         child: Row(
@@ -171,22 +185,27 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     );
   }
 
-  //widget to shoe legend beside the pie chart
+  //widget to show legend beside the pie chart
   Widget buildLegend() {
     Set<String> uniqueCategories = transactions
         .where((transaction) => transaction.category != "Income")
         .map((transaction) => transaction.category!)
         .toSet();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: uniqueCategories
+    //ensures that our legend is aligned to the left
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: uniqueCategories
           .map((category) =>
           LegendItem(
             color: categoryColors[category] ?? Colors.black,
             text: category,
           ))
           .toList(),
+        ),
     );
   }
 
@@ -267,7 +286,8 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
         .inDays) / 7).ceil();
   }
 
-  Widget buildIncomeChart() {
+  /// Builds the bar chart for income and expenses by week.
+  Widget buildTransactionChart() {
     // Group transactions by week
     Map<int, List<Transaction_data>> transactionsByWeek =
     groupTransactionsByWeek(transactions);
@@ -278,11 +298,12 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
       double totalExpenses = 0;
       double totalIncome = 0;
 
+      //Used assistance of ChatGPT - OpenAI to debug logic
       transactionsByWeek[week]!.forEach((transaction) {
-        if (transaction.amount! < 0) {
-          totalExpenses += transaction.amount!;
-        } else {
+        if (transaction.category == "Income") {
           totalIncome += transaction.amount!;
+        } else {
+          totalExpenses += transaction.amount!;
         }
       });
 
@@ -296,6 +317,9 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
           BarChartRodData(
             toY: totalIncome,
             color: Colors.greenAccent,
+            rodStackItems: [
+              BarChartRodStackItem(0, totalIncome, Colors.greenAccent),
+            ],
           ),
         ],
       );
@@ -303,7 +327,6 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
 
     return Column(
       children: [
-        // You can customize this container to add labels or any other information
         Container(
           height: 20, // Adjust the height as needed
           child: Center(
@@ -314,32 +337,58 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
           ),
         ),
         Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+
           child: BarChart(
-            BarChartData(
-              barGroups: barGroups,
-              alignment: BarChartAlignment.spaceAround,
-              titlesData: FlTitlesData(
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 10,
-                    interval: 500,
+              BarChartData(
+                barGroups: barGroups,
+                alignment: BarChartAlignment.spaceAround,
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 40,
+                      getTitlesWidget: (double value, TitleMeta meta) {
+                        return Text(
+                          '\$${value.toInt()}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        );
+                      },
+                      interval: 500,
+                    ),
                 ),
-              ),
-              ),
-              borderData: FlBorderData(show: true),
-              barTouchData: BarTouchData(
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.blueAccent,
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 10,
+                      getTitlesWidget: (double value, TitleMeta meta) {
+                        return Text(
+                          'Week ${value.toInt()}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
+                borderData: FlBorderData(show: true),
+                barTouchData: BarTouchData(
+                  touchTooltipData: BarTouchTooltipData(
+                    tooltipBgColor: Colors.blueAccent,
+                  ),
+                ),
+                gridData: FlGridData(show: false),
               ),
-              gridData: FlGridData(show: false),
+            ),
             ),
           ),
-        ),
-      ],
+        ],
     );
-
   }
-
 }
