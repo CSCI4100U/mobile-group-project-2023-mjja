@@ -1,21 +1,26 @@
+// reminders_page.dart
+// Defines the RemindersPage widget to manage and display reminders.
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tzdata;
 import 'custom_navigation.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'notifications_service.dart';
 
-
+//Colour scheme of UI design
 final Color backgroundColor = Colors.black;
-final Color purpleColor = Color(0xFF5E17EB); // Replace with your exact color code
+final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
+/// A StatefulWidget that represents the reminders page of the app.
+/// Displays a list of reminders with options to add, delete, and view details of reminders.
 class RemindersPage extends StatefulWidget {
   @override
   _RemindersPageState createState() => _RemindersPageState();
 }
 
+/// The State for RemindersPage.
+/// Handles the UI and logic for managing reminders.
 class _RemindersPageState extends State<RemindersPage> {
   List<Reminder> reminders = [];
   String searchQuery = '';
@@ -36,8 +41,7 @@ class _RemindersPageState extends State<RemindersPage> {
         children: [
           _buildSearchBar(),
           Expanded(
-            child: _buildReminderList(context, urgentOnly: true),
-
+            child: _buildReminderList(context, urgentOnly: false),
           ),
         ],
       ),
@@ -49,12 +53,27 @@ class _RemindersPageState extends State<RemindersPage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 3,
         onTap: (index) {
-          // Handle bottom navigation bar item taps
         },
       ),
     );
   }
 
+  ///Function called to delete reminders
+  void _deleteReminder(int index) {
+    setState(() {
+      reminders.removeAt(index);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Reminder deleted successfully'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  ///Search specific reminders based on words in description
+  //logic assisted by chatGPT - OpenAI
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -86,37 +105,52 @@ class _RemindersPageState extends State<RemindersPage> {
         .toList();
 
     return ListView.builder(
-
       itemCount: filteredReminders.length,
       itemBuilder: (context, index) {
         final reminder = filteredReminders[index];
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          decoration: BoxDecoration(
-            color: Colors.grey[850], // You can choose any shade of grey.
-            borderRadius: BorderRadius.circular(10.0), // Rounded corners
+
+        //provides the ability to delete a reminders card upon swiping
+        return Dismissible(
+          key: Key(reminder.title),
+          background: Container(
+            color: Colors.red,
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Icon(Icons.delete, color: Colors.white),
           ),
-          child: ListTile(
-            leading: Icon(
-              reminder.completed ? Icons.check_circle : (reminder.isUrgent ? Icons.warning : Icons.task_alt),
-              color: reminder.completed ? Colors.green : (reminder.isUrgent ? Colors.red : Colors.grey),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            _deleteReminder(index);
+          },
+
+          //display reminders list as a card design with the reminder name and due date
+          // UI design for card assisted by chatGPT - OpenAI
+          child: Card( // Using Card for better UI
+            color: Colors.grey[850],
+            margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+            child: ListTile(
+              leading: Icon(
+                reminder.completed ? Icons.check_circle : (reminder.isUrgent ? Icons.warning : Icons.task_alt),
+                color: reminder.completed ? Colors.green : (reminder.isUrgent ? Colors.red : Colors.grey),
+              ),
+              title: Text(
+                reminder.title,
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                'Due on ${DateFormat('yyyy-MM-dd – kk:mm').format(reminder.dueDate)}',
+                style: TextStyle(color: Colors.grey[400]),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
+              onTap: () => _showReminderDetails(context, reminder),
             ),
-            title: Text(
-              reminder.title,
-              style: TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              'Due on ${DateFormat('yyyy-MM-dd – kk:mm').format(reminder.dueDate)}',
-              style: TextStyle(color: Colors.grey[400]), // Lighter grey for subtitle
-            ),
-            trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
-            onTap: () => _showReminderDetails(context, reminder),
           ),
         );
       },
     );
   }
 
+  ///pop up window that will display all the details and prompt completion option
   void _showReminderDetails(BuildContext context, Reminder reminder) {
     showDialog(
       context: context,
@@ -133,13 +167,16 @@ class _RemindersPageState extends State<RemindersPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Cancel',
+                  style: TextStyle(color: purpleColor)),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             TextButton(
-              child: Text('Completed'),
+              // complete button to be pressed by user
+              child: Text('Completed',
+                style: TextStyle(color: purpleColor)),
               onPressed: () {
                 setState(() {
                   reminder.completed = true;
@@ -149,8 +186,18 @@ class _RemindersPageState extends State<RemindersPage> {
                 // Show the SnackBar after marking a reminder as completed
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Reminder marked as completed'),
-                    duration: Duration(seconds: 2),
+                    content: Text('Reminder marked as completed!'),
+                    backgroundColor: purpleColor,
+                    duration: Duration(seconds: 3),
+                    action: SnackBarAction(
+                      label: 'UNDO',
+                      textColor: Colors.white,
+                      onPressed: () {
+                        setState(() {
+                          reminder.completed = false;
+                        });
+                      },
+                    ),
                   ),
                 );
               },
@@ -161,6 +208,8 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///method to add information of reminder: title, description, urgency and due date
+  ///will appear as a pop up window
   void _showAddReminderDialog(BuildContext context) {
     String title = '';
     String description = '';
@@ -168,6 +217,7 @@ class _RemindersPageState extends State<RemindersPage> {
     DateTime dueDate = DateTime.now();
 
     // Function to call DatePicker and TimePicker
+    //Date and time picking functionality assisted by ChatGPT - OpenAI
     Future<void> _selectDateTime(BuildContext context) async {
       final DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -193,7 +243,6 @@ class _RemindersPageState extends State<RemindersPage> {
         }
       }
     }
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -226,7 +275,6 @@ class _RemindersPageState extends State<RemindersPage> {
                   trailing: Icon(Icons.calendar_today),
                   onTap: () {
                     _selectDateTime(context).then((_) {
-                      // Update the UI
                     });
                   },
                 ),
@@ -235,13 +283,13 @@ class _RemindersPageState extends State<RemindersPage> {
           ),
           actions: <Widget>[
       TextButton(
-      child: Text('Cancel'),
+      child: Text('Cancel', style: TextStyle(color: purpleColor)),
     onPressed: () {
     Navigator.of(context).pop(); // Close the dialog
     },
     ),
     TextButton(
-    child: Text('Done'),
+    child: Text('Done', style: TextStyle(color: purpleColor)),
     onPressed: () {
     setState(() {
     var newReminder = Reminder(
@@ -272,6 +320,7 @@ class _RemindersPageState extends State<RemindersPage> {
       SnackBar(
         content: Text('You have set a new reminder'),
         duration: Duration(seconds: 2),
+
       ),
     );
     },
@@ -284,6 +333,8 @@ class _RemindersPageState extends State<RemindersPage> {
 
 }
 
+/// A class representing a reminder.
+/// Contains the title, description, urgency flag, completion status, and due date of the reminder.
 class Reminder {
   String title;
   String description;

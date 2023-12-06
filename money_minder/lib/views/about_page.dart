@@ -58,22 +58,22 @@ class _AboutPageState extends State<AboutPage> {
             ),
             SizedBox(height: 20),
             Text(
-              'MoneyMinder is a finance app that is designed to make daily tasks easier and effecient. '
-                  'The purpose of this application is to develop a orbust and user-friendly mobile application '
+              'MoneyMinder is a finance app that is designed to make daily tasks easier and efficient. '
+                  'The purpose of this application is to develop a robust and user-friendly mobile application '
                   'to track expenses, analyze spending patterns, and manage budgets and stocks. '
                   'The developers of this application aim to provide users with a comprehensive tool to organize'
-                  'and manage thier daily expenses ',
+                  'and manage their daily expenses. ',
 
               style: TextStyle(fontSize: 16.0, color: textColor),
             ),
       SizedBox(height: 20),
       Text(
-          'Developed by: Jessica Patel, Mansi Patel, Aanisha Newaz, Jahanvi Mathukia, Ethan  Randle-Bragg ',
+          'Developed by: Jessica Patel, Mansi Patel, Aanisha Newaz, Jahanvi Mathukia, Ethan Randle-Bragg',
         style: TextStyle(fontSize: 16.0, color: textColor),
       ),
             SizedBox(height: 20),
             Text(
-              'Thank you for choosing MoneyMinder We hope it makes your life a little easier and a lot more organized',
+              'Thank you for choosing MoneyMinder. We hope it makes your life a little easier and a lot more organized.',
               style: TextStyle(fontSize: 16.0, color: textColor),
             ),
             // Add more content as needed
