@@ -65,8 +65,8 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     'Other': Colors.orangeAccent,
   };
 
-  // Expense or Income mode
-  bool showExpenses = true;
+///mode to view pie chart or bar graph
+  bool showPieChart = true;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     fetchTransactions();
   }
 
-  // Function to fetch transactions from Firebase
+  /// Function to fetch transactions from Firebase
   void fetchTransactions() async {
     try {
       List<Transaction_data> fetchedTransactions = await transactionDatabase
@@ -103,28 +103,28 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    'Expenses',
+                    'Expenses breakdown',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
-                    'Income',
+                    'Transactions in-and-out',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],
               onPressed: (int index) {
                 setState(() {
-                  showExpenses = index == 0;
+                  showPieChart = index == 0;
                 });
               },
-              isSelected: [showExpenses, !showExpenses],
+              isSelected: [showPieChart, !showPieChart],
             ),
           ),
           Expanded(
-            child: showExpenses ? buildPieChart() : buildTransactionChart(),
+            child: showPieChart ? buildPieChart() : buildTransactionChart(),
           ),
         ],
         ),
@@ -144,6 +144,18 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
   Widget buildPieChart() {
     return AspectRatio(
         aspectRatio: 1.3,
+        child: Column( // Wrap your content in a Column widget
+          children: [
+          Container(
+          height: 20, // Adjust the height as needed
+          child: Center(
+            child: Text(
+              'Expenses by Category',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ),
+        ),
+      Expanded( // Use Expanded to fill the remaining space in the column
         child: Row(
             children: <Widget>[
               const SizedBox(
@@ -181,18 +193,21 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
               SizedBox(height: 10),
               buildLegend(),
             ]
-        )
+          )
+          )
+        ]
+      )
     );
   }
 
-  //widget to show legend beside the pie chart
+  ///widget to show legend beside the pie chart
   Widget buildLegend() {
     Set<String> uniqueCategories = transactions
         .where((transaction) => transaction.category != "Income")
         .map((transaction) => transaction.category!)
         .toSet();
 
-    //ensures that our legend is aligned to the left
+   ///ensures that our legend is aligned to the left
     return Align(
         alignment: Alignment.centerLeft,
         child: Column(
@@ -209,7 +224,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     );
   }
 
-  //method to calculate the area of each section on pie chart based on category
+  ///method to calculate the area of each section on pie chart based on category
   List<PieChartSectionData> showingSections() {
     Map<String, double> categoryAmounts = {};
 
@@ -246,7 +261,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     });
   }
 
-  // method to calculate total amount
+  /// method to calculate total amount
   double getTotalAmount() {
     double totalAmount = 0;
     transactions.forEach((transaction) {
@@ -255,7 +270,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     return totalAmount;
   }
 
-  //method to calculate total income
+  ///method to calculate total income
   double getTotalIncome() {
     double totalIncome = 0;
     transactions.where((transaction) => transaction.category == "Income")
@@ -265,7 +280,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     return totalIncome;
   }
 
-// Helper function to group transactions by week
+/// Helper function to group transactions by week
   Map<int, List<Transaction_data>> groupTransactionsByWeek(
       List<Transaction_data> transactions) {
     return transactions.fold(
@@ -279,7 +294,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     });
   }
 
-// Helper function to get the week number from a DateTime
+/// Helper function to get the week number from a DateTime
   int getWeekNumber(DateTime date) {
     return ((date
         .difference(DateTime(2023, 11, 1))
@@ -328,17 +343,18 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     return Column(
       children: [
         Container(
-          height: 20, // Adjust the height as needed
+          height: 30,
           child: Center(
             child: Text(
-              'Income Chart',
+              'Transactions This Month',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
         ),
-        Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        Container(
+          height: 500,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
 
           child: BarChart(
               BarChartData(
