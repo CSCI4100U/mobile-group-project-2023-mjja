@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions.dart';
-
+import 'custom_navigation.dart';
 import '../models/transaction_model.dart';
 
 class FinancialInsightsPage extends StatefulWidget {
@@ -79,40 +79,50 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: ToggleButtons(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Expenses',
-                  style: TextStyle(color: Colors.white),
+    return Scaffold(
+      appBar: CustomAppBar(),
+      backgroundColor: Colors.black,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: ToggleButtons(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    'Expenses',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  'Income',
-                  style: TextStyle(color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    'Income',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            ],
-            onPressed: (int index) {
-              setState(() {
-                showExpenses = index == 0;
-              });
-            },
-            isSelected: [showExpenses, !showExpenses],
+              ],
+              onPressed: (int index) {
+                setState(() {
+                  showExpenses = index == 0;
+                });
+              },
+              isSelected: [showExpenses, !showExpenses],
+            ),
           ),
+          Expanded(
+            child: showExpenses ? buildExpenseChart() : buildIncomeChart(),
+          ),
+        ],
         ),
-        Expanded(
-          child: showExpenses ? buildExpenseChart() : buildIncomeChart(),
-        ),
-      ],
+        bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1, // Set the current index to Financial Insights
+        onTap: (index) { // Handle bottom navigation bar item taps
+      },
+    ),
+
     );
   }
 
