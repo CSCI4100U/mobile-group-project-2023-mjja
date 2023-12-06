@@ -1,21 +1,26 @@
+// reminders_page.dart
+// Defines the RemindersPage widget to manage and display reminders.
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tzdata;
 import 'custom_navigation.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'notifications_service.dart';
 
-
+//Colour scheme of UI design
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
+/// A StatefulWidget that represents the reminders page of the app.
+/// Displays a list of reminders with options to add, delete, and view details of reminders.
 class RemindersPage extends StatefulWidget {
   @override
   _RemindersPageState createState() => _RemindersPageState();
 }
 
+/// The State for RemindersPage.
+/// Handles the UI and logic for managing reminders.
 class _RemindersPageState extends State<RemindersPage> {
   List<Reminder> reminders = [];
   String searchQuery = '';
@@ -53,7 +58,7 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
-  //function called to delete reminder
+  ///Function called to delete reminders
   void _deleteReminder(int index) {
     setState(() {
       reminders.removeAt(index);
@@ -67,7 +72,8 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
-  //search specific reminders
+  ///Search specific reminders based on words in description
+  //logic assisted by chatGPT - OpenAI
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -144,7 +150,7 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
-  //pop up window that will display all the details and prompt completion option
+  ///pop up window that will display all the details and prompt completion option
   void _showReminderDetails(BuildContext context, Reminder reminder) {
     showDialog(
       context: context,
@@ -202,8 +208,8 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
-  //method to add information of reminder: title, description, urgency and due date
-  //will appear as a pop up window
+  ///method to add information of reminder: title, description, urgency and due date
+  ///will appear as a pop up window
   void _showAddReminderDialog(BuildContext context) {
     String title = '';
     String description = '';
@@ -327,6 +333,8 @@ class _RemindersPageState extends State<RemindersPage> {
 
 }
 
+/// A class representing a reminder.
+/// Contains the title, description, urgency flag, completion status, and due date of the reminder.
 class Reminder {
   String title;
   String description;
