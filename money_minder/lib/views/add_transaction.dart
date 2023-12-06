@@ -1,35 +1,35 @@
 //Code to enter details of any transactions when the user clicks on the "+" icon
 
 import 'package:flutter/material.dart';
-import 'package:money_minder/data/localDB/expense.dart';
-import 'package:money_minder/views/expenses.dart';
+import 'package:money_minder/data/localDB/transaction.dart';
+import 'package:money_minder/views/transactions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/expense_model.dart';
+import '../models/transaction_model.dart';
 
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
-class AddExpenseForm extends StatefulWidget {
-  final Function(Expense) onExpenseAdded;
+class AddTransactionForm extends StatefulWidget {
+  final Function(Transaction) onExpenseAdded;
 
-  AddExpenseForm({required this.onExpenseAdded});
+  AddTransactionForm({required this.onExpenseAdded});
 
   @override
-  _AddExpenseFormState createState() => _AddExpenseFormState();
+  _AddTransactionFormState createState() => _AddTransactionFormState();
 }
 
-class _AddExpenseFormState extends State<AddExpenseForm> {
+class _AddTransactionFormState extends State<AddTransactionForm> {
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final dateController = TextEditingController();
   final categoryController = TextEditingController();
   final amountController = TextEditingController();
 
-  final ExpenseDatabase _expenseDatabase = ExpenseDatabase();
+  final TransactionDatabase _transactionDatabase = TransactionDatabase();
 
   // Dropdown options for category
   List<String> categories = [
@@ -57,9 +57,11 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
     super.dispose();
   }
   Future<void> _saveExpenseToFirebase() async {
-    print("inside save expense to firebase emthod");
+    print("inside save transaction to firebase method");
+
+    //await _transactionDatabase.initializeDatabase();
     try {
-      await _expenseDatabase.createExpense(Expense(
+      await _transactionDatabase.createTransaction(TransactionClass(
         name: nameController.text,
         category: selectedCategory,
         amount: double.parse(amountController.text),
@@ -67,12 +69,12 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
       ));
 
     } catch (e) {
-      print('Error saving expense to Firebase: $e');
+      print('Error saving transaction to Firebase: $e');
     }
 
   Navigator.pushReplacement(
   context,
-  MaterialPageRoute(builder: (context) => ExpensesPage()),
+  MaterialPageRoute(builder: (context) => TransactionsPage()),
   );
   }
 
@@ -94,7 +96,7 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
             // Navigate back to the ExpensePage
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ExpensesPage()),
+              MaterialPageRoute(builder: (context) => TransactionsPage()),
             );
           },
         ),
@@ -255,3 +257,6 @@ class _AddExpenseFormState extends State<AddExpenseForm> {
     );
   }
 }
+
+
+

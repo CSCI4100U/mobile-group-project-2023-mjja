@@ -4,49 +4,45 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/localDB/db_utils.dart';
-import '../data/localDB/expense.dart';
-import '../views/expenses.dart';
+import '../data/localDB/transaction.dart';
+import '../views/transactions.dart';
 
-class ExpenseDatabase {
+class TransactionDatabase {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final dbUtils = DBUtils();
 
+  // the colelction is already initialized in the firestore
+
   // Future<void> initializeDatabase() async {
   //   try {
   //     //  ensure that the collection 'expenses' exists.
-  //     await _firestore.collection('expenses').doc('default_data')
-  //         .set({
-  //       'name': 'FreshCo',
-  //       'category': 'Shopping',
-  //       'amount': 45.90,
-  //       'date': '2023-11-19'});
+  //     await _firestore.collection('transactions');
   //     print('Firestore collection initialized successfully');
   //   } catch (e) {
   //     print('Error initializing the Firestore collection: $e');
   //   }
   // }
 
-  Future<void> createExpense(Expense expense) async {
+  Future<void> createTransaction(TransactionClass transaction) async {
     print("inside create expense");
     try {
-      //await initializeDatabase();
-      print("before adding expense to Firestore: $expense");
-      await _firestore.collection('expenses').add(expense.toMap());
+      // await initializeDatabase();
+      print("before adding expense to Firestore: $transaction");
+      await _firestore.collection('transactions').add(transaction.toMap());
       print("Expense added to Firestore successfully");
     } catch (e) {
       print('Error creating expense: $e');
     }
   }
 
-  Future<List<Expense_data>> readAllExpenses() async {
+  Future<List<Transaction_data>> readAllTransactions() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('expenses').get();
-      List<Expense> expenses = querySnapshot.docs.map((doc) => Expense.fromSnapshot(doc)).toList();
+      QuerySnapshot querySnapshot = await _firestore.collection('transactions').get();
+      List<TransactionClass> expenses = querySnapshot.docs.map((doc) => TransactionClass.fromSnapshot(doc)).toList();
 
-      // Convert List<Expense> to List<Expense_data>
-      List<Expense_data> expenseDataList = expenses.map((expense) {
-        return Expense_data(
+      List<Transaction_data> expenseDataList = expenses.map((expense) {
+        return Transaction_data(
           id: expense.id,
           name: expense.name!,
           category: expense.category,
@@ -62,17 +58,17 @@ class ExpenseDatabase {
     }
   }
 
-  Future<void> updateExpense(Expense expense) async {
+  Future<void> updateTransactions(TransactionClass expense) async {
     try {
-      await _firestore.collection('expenses').doc(expense.id).update(expense.toMap());
+      await _firestore.collection('transactions').doc(expense.id).update(expense.toMap());
     } catch (e) {
       print('Error updating expense: $e');
     }
   }
 
-  Future<void> deleteExpense(String id) async {
+  Future<void> deleteTransactions(String id) async {
     try {
-      await _firestore.collection('expenses').doc(id).delete();
+      await _firestore.collection('transactions').doc(id).delete();
     } catch (e) {
       print('Error deleting expense: $e');
     }

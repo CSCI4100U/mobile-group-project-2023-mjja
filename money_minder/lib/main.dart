@@ -33,12 +33,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // home: Scaffold(
-      //   appBar: AppBar(
-      //     title: Text('Money Minder'),
-      //   ),
-      // ignore: prefer_const_literals_to_create_immutables
-
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -51,15 +45,6 @@ class MyApp extends StatelessWidget {
       ],
       home: SignInScreen(),
 
-      // body: Center(
-      //   child: ElevatedButton(
-      //     onPressed: () async {
-      //       await testAllFunctionality();
-      //     },
-      //     child: Text('Test All Functionality'),
-      //   ),
-      // ),
-      //),
     );
   }
 }

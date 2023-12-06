@@ -1,458 +1,335 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'custom_navigation.dart';
+import 'package:flutter/material.dart';
+import 'package:money_minder/views/transactions.dart';
 
-enum TimePeriod { week, month, year }
+import '../models/transaction_model.dart';
 
 class FinancialInsightsPage extends StatefulWidget {
+  const FinancialInsightsPage({super.key});
 
   @override
-  _FinancialInsightsPageState createState() => _FinancialInsightsPageState();
+  _FinancialInsightsState createState() => _FinancialInsightsState();
 }
 
-class _FinancialInsightsPageState extends State<FinancialInsightsPage> {
-  // New state variable to track if we're showing Expense or Income
-  bool showExpense = true;
-  final Color purpleColor =
-  Color(0xFF5E17EB);
-  TimePeriod selectedPeriod = TimePeriod.month;  // Default to month
+class LegendItem extends StatelessWidget {
+  final Color color;
+  final String text;
 
+  const LegendItem({Key? key, required this.color, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // show balance
-            Card(
-              color: purpleColor, // Purple color for the card
-              elevation: 4.0,
-              margin: const EdgeInsets.all(20.0),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Total Balance',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white, // White color for the text
-                      ),
-                    ),
-                    SizedBox(height: 8), // Provides spacing between text elements
-                    Text(
-                      '\$13,250', // This should be a variable holding the balance value
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white, // White color for the balance figure
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Card(
-                elevation: 4.0,
-                color: Colors.black,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          ElevatedButton(
-                            child: Text('Expense'),
-                            style: ElevatedButton.styleFrom(primary: showExpense ? Colors.blue : Colors.grey),
-                            onPressed: () {
-                              setState(() {
-                                showExpense = true;
-                              });
-                            },
-                          ),
-                          ElevatedButton(
-                            child: Text('Income'),
-                            style: ElevatedButton.styleFrom(primary: showExpense ? Colors.grey : Colors.green),
-                            onPressed: () {
-                              setState(() {
-                                showExpense = false;
-                              });
-                            },
-                          ),
-
-                          // Removed the 'Budgets' button for clarity
-                        ],
-                      ),
-                      // Toggle buttons for Week/Month/Year
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          ElevatedButton(
-                            child: Text('Week'),
-                            style: ElevatedButton.styleFrom(
-                              primary: selectedPeriod == TimePeriod.week ? Colors.purple : Colors.grey,
-                              onPrimary: Colors.white, // Text Color
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                selectedPeriod = TimePeriod.week;
-                              });
-                            },
-                          ),
-                          ElevatedButton(
-                            child: Text('Month'),
-                            style: ElevatedButton.styleFrom(
-                              primary: selectedPeriod == TimePeriod.month ? Colors.purple : Colors.grey,
-                              onPrimary: Colors.white, // Text Color
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                selectedPeriod = TimePeriod.month;
-                              });
-                            },
-                          ),
-                          ElevatedButton(
-                            child: Text('Year'),
-                            style: ElevatedButton.styleFrom(
-                              primary: selectedPeriod == TimePeriod.year ? Colors.purple : Colors.grey,
-                              onPrimary: Colors.white, // Text Color
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                selectedPeriod = TimePeriod.year;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 20),
-                      Container(
-                        height: 200,
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: LineChart(
-                          generateChartData(),
-                        ),
-                      ),
-
-                      // Additional UI elements can be added here
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // Continue with other UI elements as needed
-          ],
-        ),
-      ),
-      backgroundColor: Colors.black,
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {
-          // Handle bottom navigation bar item taps
-        },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Container(
+            width: 16,
+            height: 16,
+            color: color,
+          ),
+          SizedBox(width: 8),
+          Text(text,
+              style: TextStyle(fontSize: 7, color: Colors.white)),
+        ],
       ),
     );
   }
-  LineChartData generateChartData() {
-    List<LineChartBarData> chartData = getChartData();
+}
 
-    return LineChartData(
-      gridData: FlGridData(show: true),
-      titlesData: FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: (double value, TitleMeta meta) {
-              const style = TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              );
-              String text = '';
-              switch (selectedPeriod) {
-                case TimePeriod.week:
-                  final labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                  text = labels[value.toInt() % labels.length];
-                  break;
-                case TimePeriod.month:
-                  final labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-                  text = labels[value.toInt() % labels.length];
-                  break;
-                case TimePeriod.year:
-                  final labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                  text = labels[value.toInt() % labels.length];
-                  break;
-              }
-              return SideTitleWidget(
-                axisSide: meta.axisSide,
-                space: 8.0,
-                child: Text(text, style: style),
-              );
-            },
-            reservedSize: 30,
-          ),
-        ),
-        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: (double value, TitleMeta meta) {
-              return SideTitleWidget(
-                axisSide: meta.axisSide,
-                space: 4.0,
-                child: Text(
-                  '${value.toInt()}',
-                  style: TextStyle(color: Colors.grey, fontSize: 10),
-                ),
-              );
-            },
-            reservedSize: 40,
-          ),
-        ),
-      ),
-      borderData: FlBorderData(show: true),
-      lineBarsData: chartData,
-    );
+class _FinancialInsightsState extends State<FinancialInsightsPage> {
+  int touchedIndex = -1;
+  List<Transaction_data> transactions = [];
+  TransactionDatabase transactionDatabase = TransactionDatabase();
+
+  // Map to associate each category with a color
+  Map<String, Color> categoryColors = {
+    'Food': Colors.cyanAccent,
+    'Shopping': Colors.lightBlueAccent,
+    'Travel': Colors.greenAccent,
+    'Bills': Colors.lightBlueAccent,
+    'Education': Colors.indigoAccent,
+    'Subscriptions': Colors.redAccent,
+    'Home': Colors.deepOrangeAccent,
+    'Other': Colors.orangeAccent,
+  };
+
+  // Expense or Income mode
+  bool showExpenses = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch transactions when the widget is initialized
+    fetchTransactions();
   }
 
-  List<LineChartBarData> getChartData() {
-    switch (selectedPeriod) {
-      case TimePeriod.week:
-        return [weeklyData()];
-      case TimePeriod.month:
-        return [monthlyData()];
-      case TimePeriod.year:
-        return [yearlyData()];
-      default:
-        return [monthlyData()];
+  // Function to fetch transactions from Firebase
+  void fetchTransactions() async {
+    try {
+      List<Transaction_data> fetchedTransactions = await transactionDatabase
+          .readAllTransactions();
+      print("the fetched transactions: ${fetchedTransactions}");
+      setState(() {
+        transactions = fetchedTransactions;
+      });
+    } catch (e) {
+      print('Error fetching transactions: $e');
     }
   }
 
-  LineChartBarData weeklyData() {
-    return LineChartBarData(
-      spots: showExpense ? weeklyExpenseSpots : weeklyIncomeSpots,
-      isCurved: true,
-      color: showExpense ? Colors.red : Colors.green,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-  LineChartBarData monthlyData() {
-    return LineChartBarData(
-      spots: showExpense ? monthlyExpenseSpots : monthlyIncomeSpots,
-      isCurved: true,
-      color: showExpense ? Colors.red : Colors.green,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-  LineChartBarData yearlyData() {
-    return LineChartBarData(
-      spots: showExpense ? yearlyExpenseSpots : yearlyIncomeSpots,
-      isCurved: true,
-      color: showExpense ? Colors.red : Colors.green,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-  // Helper method to create expense data
-  LineChartBarData expenseData() {
-    return LineChartBarData(
-      spots: [
-        FlSpot(0, 8000),
-        FlSpot(1, 8500),
-        FlSpot(2, 9000),
-        FlSpot(3, 8700),
-        FlSpot(4, 8600),
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: ToggleButtons(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Expenses',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Income',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+            onPressed: (int index) {
+              setState(() {
+                showExpenses = index == 0;
+              });
+            },
+            isSelected: [showExpenses, !showExpenses],
+          ),
+        ),
+        Expanded(
+          child: showExpenses ? buildExpenseChart() : buildIncomeChart(),
+        ),
       ],
-      isCurved: true,
-      color: Colors.blue,
-      barWidth: 5,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
     );
   }
 
-  // Helper method to create income data
-  LineChartBarData incomeData() {
-    return LineChartBarData(
-      spots: [
-        FlSpot(0, 12000),
-        FlSpot(1, 12500),
-        FlSpot(2, 13000),
-        FlSpot(3, 12800),
-        FlSpot(4, 13200),
+
+  Widget buildExpenseChart() {
+    return AspectRatio(
+        aspectRatio: 1.3,
+        child: Row(
+            children: <Widget>[
+              const SizedBox(
+                height: 18,
+              ),
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: PieChart(
+                    PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                          setState(() {
+                            if (!event.isInterestedForInteractions ||
+                                pieTouchResponse == null ||
+                                pieTouchResponse.touchedSection == null) {
+                              touchedIndex = -1;
+                              return;
+                            }
+                            touchedIndex = pieTouchResponse.touchedSection!
+                                .touchedSectionIndex;
+                          });
+                        },
+                      ),
+                      borderData: FlBorderData(
+                        show: false,
+                      ),
+                      sectionsSpace: 5,
+                      centerSpaceRadius: 40,
+                      sections: showingSections(),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              buildLegend(),
+            ]
+        )
+    );
+  }
+
+  //widget to shoe legend beside the pie chart
+  Widget buildLegend() {
+    Set<String> uniqueCategories = transactions
+        .where((transaction) => transaction.category != "Income")
+        .map((transaction) => transaction.category!)
+        .toSet();
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: uniqueCategories
+          .map((category) =>
+          LegendItem(
+            color: categoryColors[category] ?? Colors.black,
+            text: category,
+          ))
+          .toList(),
+    );
+  }
+
+  //method to calculate the area of each section on pie chart based on category
+  List<PieChartSectionData> showingSections() {
+    Map<String, double> categoryAmounts = {};
+
+    transactions.forEach((transaction) {
+      if (transaction.category != null && transaction.amount != null &&
+          transaction.category != "Income") {
+        categoryAmounts.update(
+            transaction.category!, (value) => value + transaction.amount!,
+            ifAbsent: () => transaction.amount!);
+      }
+    });
+
+    return List.generate(categoryAmounts.length, (i) {
+      final category = categoryAmounts.keys.elementAt(i);
+      final amount = categoryAmounts[category]!;
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 18.0 : 12.0;
+      final radius = isTouched ? 60.0 : 50.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+      return PieChartSectionData(
+        color: categoryColors[category] ?? Colors.black,
+        value: amount,
+        title: '${(amount / (getTotalAmount() - getTotalIncome()) * 100)
+            .toStringAsFixed(1)}%',
+        radius: radius,
+        titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.white, // Adjust the color as needed
+          shadows: shadows,
+        ),
+      );
+    });
+  }
+
+  // method to calculate total amount
+  double getTotalAmount() {
+    double totalAmount = 0;
+    transactions.forEach((transaction) {
+      totalAmount += transaction.amount!;
+    });
+    return totalAmount;
+  }
+
+  //method to calculate total income
+  double getTotalIncome() {
+    double totalIncome = 0;
+    transactions.where((transaction) => transaction.category == "Income")
+        .forEach((transaction) {
+      totalIncome += transaction.amount!;
+    });
+    return totalIncome;
+  }
+
+// Helper function to group transactions by week
+  Map<int, List<Transaction_data>> groupTransactionsByWeek(
+      List<Transaction_data> transactions) {
+    return transactions.fold(
+        <int, List<Transaction_data>>{}, (map, transaction) {
+      int week = getWeekNumber(transaction.date!);
+      if (!map.containsKey(week)) {
+        map[week] = [];
+      }
+      map[week]!.add(transaction);
+      return map;
+    });
+  }
+
+// Helper function to get the week number from a DateTime
+  int getWeekNumber(DateTime date) {
+    return ((date
+        .difference(DateTime(2023, 11, 1))
+        .inDays) / 7).ceil();
+  }
+
+  Widget buildIncomeChart() {
+    // Group transactions by week
+    Map<int, List<Transaction_data>> transactionsByWeek =
+    groupTransactionsByWeek(transactions);
+
+    // Extract data for total expenses and total income for each week
+    List<BarChartGroupData> barGroups =
+    transactionsByWeek.keys.map((week) {
+      double totalExpenses = 0;
+      double totalIncome = 0;
+
+      transactionsByWeek[week]!.forEach((transaction) {
+        if (transaction.amount! < 0) {
+          totalExpenses += transaction.amount!;
+        } else {
+          totalIncome += transaction.amount!;
+        }
+      });
+
+      return BarChartGroupData(
+        x: week.toInt(),
+        barRods: [
+          BarChartRodData(
+            toY: totalExpenses.abs(),
+            color: Colors.redAccent,
+          ),
+          BarChartRodData(
+            toY: totalIncome,
+            color: Colors.greenAccent,
+          ),
+        ],
+      );
+    }).toList();
+
+    return Column(
+      children: [
+        // You can customize this container to add labels or any other information
+        Container(
+          height: 20, // Adjust the height as needed
+          child: Center(
+            child: Text(
+              'Income Chart',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ),
+        ),
+        Expanded(
+          child: BarChart(
+            BarChartData(
+              barGroups: barGroups,
+              alignment: BarChartAlignment.spaceAround,
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 10,
+                    interval: 500,
+                ),
+              ),
+              ),
+              borderData: FlBorderData(show: true),
+              barTouchData: BarTouchData(
+                touchTooltipData: BarTouchTooltipData(
+                  tooltipBgColor: Colors.blueAccent,
+                ),
+              ),
+              gridData: FlGridData(show: false),
+            ),
+          ),
+        ),
       ],
-      isCurved: true,
-      color: Colors.green,
-      barWidth: 5,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: true),
-      belowBarData: BarAreaData(show: false),
     );
+
   }
-  // Define your data points here. In a real app, these would come from your data source.
-  final List<FlSpot> weeklyExpenseSpots = [
-    FlSpot(0, 150), // Saturday
-    FlSpot(1, 120), // Sunday
-    FlSpot(2, 170), // Monday
-    FlSpot(3, 100), // Tuesday
-    FlSpot(4, 200), // Wednesday
-    FlSpot(5, 90),  // Thursday
-    FlSpot(6, 160), // Friday
-  ];
-
-  final List<FlSpot> weeklyIncomeSpots = [
-    FlSpot(0, 180), // Saturday
-    FlSpot(1, 200), // Sunday
-    FlSpot(2, 220), // Monday
-    FlSpot(3, 210), // Tuesday
-    FlSpot(4, 230), // Wednesday
-    FlSpot(5, 250), // Thursday
-    FlSpot(6, 240), // Friday
-  ];
-
-  final List<FlSpot> monthlyExpenseSpots = [
-    FlSpot(0, 800),  // Week 1
-    FlSpot(1, 900),  // Week 2
-    FlSpot(2, 750),  // Week 3
-    FlSpot(3, 950),  // Week 4
-  ];
-
-  final List<FlSpot> monthlyIncomeSpots = [
-    FlSpot(0, 1000), // Week 1
-    FlSpot(1, 1200), // Week 2
-    FlSpot(2, 1100), // Week 3
-    FlSpot(3, 1300), // Week 4
-  ];
-
-  final List<FlSpot> yearlyExpenseSpots = [
-    FlSpot(0, 10000),  // January
-    FlSpot(1, 10500),  // February
-    FlSpot(2, 9800),   // March
-    FlSpot(3, 11000),  // April
-    FlSpot(4, 9500),   // May
-    FlSpot(5, 10500),  // June
-    FlSpot(6, 12000),  // July
-    FlSpot(7, 11500),  // August
-    FlSpot(8, 11000),  // September
-    FlSpot(9, 10800),  // October
-    FlSpot(10, 11200), // November
-    FlSpot(11, 9500),  // December
-  ];
-
-  final List<FlSpot> yearlyIncomeSpots = [
-    FlSpot(0, 12000),  // January
-    FlSpot(1, 12300),  // February
-    FlSpot(2, 12700),  // March
-    FlSpot(3, 13000),  // April
-    FlSpot(4, 12500),  // May
-    FlSpot(5, 13200),  // June
-    FlSpot(6, 13800),  // July
-    FlSpot(7, 13500),  // August
-    FlSpot(8, 14000),  // September
-    FlSpot(9, 13600),  // October
-    FlSpot(10, 13900), // November
-    FlSpot(11, 13000), // December
-  ];
-
-// Weekly expense data
-  LineChartBarData weeklyExpenseData() {
-    return LineChartBarData(
-      spots: weeklyExpenseSpots,
-      isCurved: true,
-      color: Colors.red,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-// Weekly income data
-  LineChartBarData weeklyIncomeData() {
-    return LineChartBarData(
-      spots: weeklyIncomeSpots,
-      isCurved: true,
-      color: Colors.green,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-// Monthly expense data
-  LineChartBarData monthlyExpenseData() {
-    return LineChartBarData(
-      spots: monthlyExpenseSpots,
-      isCurved: true,
-      color: Colors.red,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-// Monthly income data
-  LineChartBarData monthlyIncomeData() {
-    return LineChartBarData(
-      spots: monthlyIncomeSpots,
-      isCurved: true,
-      color: Colors.green,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-// Yearly expense data
-  LineChartBarData yearlyExpenseData() {
-    return LineChartBarData(
-      spots: yearlyExpenseSpots,
-      isCurved: true,
-      color: Colors.red,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
-// Yearly income data
-  LineChartBarData yearlyIncomeData() {
-    return LineChartBarData(
-      spots: yearlyIncomeSpots,
-      isCurved: true,
-      color: Colors.green,
-      barWidth: 2,
-      isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-    );
-  }
-
 
 }
-

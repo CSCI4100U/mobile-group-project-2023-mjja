@@ -3,7 +3,7 @@
 // Gives option to Sign Up if don't have an account
 
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/expenses.dart';
+import 'package:money_minder/views/transactions.dart';
 import '../models/login_model.dart';
 import 'sign_up.dart';
 import 'home_page.dart';
@@ -165,7 +165,7 @@ class WelcomeBackPage extends StatelessWidget {
 
                           if (isLoggedIn) {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ExpensesPage(),
+                              builder: (context) => TransactionsPage(),
                             ));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

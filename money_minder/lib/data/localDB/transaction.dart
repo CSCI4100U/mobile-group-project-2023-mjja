@@ -3,14 +3,14 @@
  */
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Expense {
+class TransactionClass {
   String? id;             // unique Expense identifier
   String? name;        // name of the expense
   String? category;    // category of the expense
   double? amount;      // amount of the expense
   DateTime? date;      // date of the Expense
 
-  Expense({
+  TransactionClass({
     this.id,
     this.name,
     this.category,
@@ -19,8 +19,8 @@ class Expense {
   });
 
   // generate a new Expense object from a map, typically from the database
-  factory Expense.fromMap(Map<String, dynamic> map) {
-    return Expense(
+  factory TransactionClass.fromMap(Map<String, dynamic> map) {
+    return TransactionClass(
       id: map['id'],
       name: map['name'],
       category: map['category'],
@@ -40,8 +40,8 @@ class Expense {
     };
   }
 
-  factory Expense.fromSnapshot(DocumentSnapshot snapshot) {
-    return Expense(
+  factory TransactionClass.fromSnapshot(DocumentSnapshot snapshot) {
+    return TransactionClass(
       id: snapshot.id,
       name: snapshot['name'],
       category: snapshot['category'],

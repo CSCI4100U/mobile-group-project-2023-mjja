@@ -6,12 +6,12 @@
 //shows option to add transaction for new user
 
 import 'package:flutter/material.dart';
-import '../models/expense_model.dart';
+import '../models/transaction_model.dart';
 import 'custom_navigation.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import '../data/localDB/expense.dart';
+import '../data/localDB/transaction.dart';
 
 
 final Color backgroundColor = Colors.black;
@@ -19,14 +19,14 @@ final Color purpleColor =
 Color(0xFF5E17EB); // Replace with your exact color code
 final Color textColor = Colors.white;
 
-class Expense_data{
+class Transaction_data{
   String? id;
   late String name;
   String? category;
   double? amount;
   DateTime? date;
 
-  Expense_data({
+  Transaction_data({
     this.id,
     required this.name,
     this.category,
@@ -112,16 +112,16 @@ Future<DateTimeRange?> showCustomDateRangePicker({
   );
 }
 
-class ExpensesPage extends StatefulWidget {
+class TransactionsPage extends StatefulWidget {
   @override
-  _ExpensesPageState createState() => _ExpensesPageState();
+  _TransactionsPageState createState() => _TransactionsPageState();
 }
 
-class _ExpensesPageState extends State<ExpensesPage> {
+class _TransactionsPageState extends State<TransactionsPage> {
   String _selectedTransactionType = 'All'; // Default selection
   DateTimeRange? _selectedDateRange;
-  final ExpenseDatabase _expenseDatabase = ExpenseDatabase();
-  List<Expense_data> _transactions = [];
+  final TransactionDatabase _expenseDatabase = TransactionDatabase();
+  List<Transaction_data> _transactions = [];
 
   @override
   void initState() {
@@ -130,7 +130,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
   }
 
   Future<void> _fetchAndSetExpenses() async {
-    final List<Expense_data> expenses = await _fetchExpensesFromFirestore();
+    final List<Transaction_data> expenses = await _fetchExpensesFromFirestore();
     setState(() {
       _transactions = expenses;
     });
@@ -160,7 +160,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
     );
   }
 
-  Widget _buildTotalBalanceCard(List<Expense_data> transactions) {
+  Widget _buildTotalBalanceCard(List<Transaction_data> transactions) {
     double totalIncome = 0.0;
     double totalExpense = 0.0;
 
@@ -281,7 +281,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
   Widget _buildRecentTransactionList() {
     print("build transaction list is called");
-    return FutureBuilder<List<Expense_data>>(
+    return FutureBuilder<List<Transaction_data>>(
         future: _fetchExpensesFromFirestore(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -291,7 +291,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Text('No transactions available.');
           } else {
-            List<Expense_data> transactions = snapshot.data ?? [];
+            List<Transaction_data> transactions = snapshot.data ?? [];
 
     // Filter transactions based on the selected type i.e. All, Icome or Expense
     if (_selectedTransactionType != 'All') {
@@ -315,7 +315,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
     }
 
     // Group transactions by date to display on the screen
-    Map<String, List<Expense_data>> groupedTransactions = {};
+    Map<String, List<Transaction_data>> groupedTransactions = {};
     for (var transaction in transactions) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(transaction.date!);
       if (!groupedTransactions.containsKey(formattedDate)) {
@@ -336,7 +336,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
       itemBuilder: (context, index) {
         String date = sortedDates[index];
         //String date = groupedTransactions.entries.elementAt(index).key;
-        List<Expense_data> dailyTransactions = groupedTransactions[date]!;
+        List<Transaction_data> dailyTransactions = groupedTransactions[date]!;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -400,9 +400,9 @@ class _ExpensesPageState extends State<ExpensesPage> {
     }
   );
 }
-  Future<List<Expense_data>> _fetchExpensesFromFirestore() async {
+  Future<List<Transaction_data>> _fetchExpensesFromFirestore() async {
     try {
-      return await _expenseDatabase.readAllExpenses();
+      return await _expenseDatabase.readAllTransactions();
     } catch (e) {
       print('Error fetching expenses from Firestore: $e');
       return [];

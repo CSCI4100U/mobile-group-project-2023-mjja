@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/expenses.dart';
+import 'package:money_minder/views/transactions.dart';
 import 'reminders_page.dart';
-import 'under_construction.dart';
 import 'investment_insight.dart';
-import 'goals_page.dart';
-import 'package:money_minder/views/home_page.dart';
-import 'package:intl/intl.dart';
 import 'profile_page.dart';
-import 'add_expense.dart';
-import 'budgets.dart';
+import 'add_transaction.dart';
 import 'setting_page.dart';
 import 'financial_insights.dart';
 
@@ -17,100 +12,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: Builder(
-        builder: (context) => PopupMenuButton(
+
+        // the routes to different pages
+        // from the popup menu that appears when clicking on the hamburger icon on the top left of the app.
+
+      builder: (context) => PopupMenuButton(
           icon: Icon(Icons.menu, color: Colors.white),
+          color: Colors.black,
           itemBuilder: (BuildContext context) {
             return [
-              // PopupMenuItem(
-              //   child: Text('Home'),
-              //   onTap: () {
-              //     // Handle the menu item tap
-              //     Navigator.pop(context); // Close the menu
-              //     // Navigate to the Home page or perform any other action
-              //     Navigator.of(context).push(MaterialPageRoute(
-              //       builder: (context) => ExpensesPage(),
-              //     ));
-              //   },
-              // ),
-              PopupMenuItem(
-                child: Text('Home'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ExpensesPage(),
-                  ));
-                  // Handle the Expenses page tap
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Financial Insights'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // Handle the Financial Insights page tap
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Budgets'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // Handle the Budgets page tap
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => BudgetsPage(),
-                  ));
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Reminders'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => RemindersPage(),
-                  ));
-                  // Handle the Financial Insights page tap
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Goals'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // Handle the Financial Insights page tap
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => GoalsPage(),
-                  ));
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Investment Insights'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => InsightsPage(),
-                  ));
-                  // Handle the Financial Insights page tap
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Net Worth'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // Handle the Financial Insights page tap
-                },
-              ),
-              PopupMenuItem(
-                child: Text('Settings'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SettingsPage(),
-                  ));
-                  // Handle the Financial Insights page tap
-                },
-              ),
-              // Add more menu items as needed
+              _buildPopupMenuItem(Icons.home, 'Home', TransactionsPage(), context),
+              _buildPopupMenuItem(Icons.insights, 'Financial Insights', FinancialInsightsPage(), context),
+              _buildPopupMenuItem(Icons.stacked_line_chart_rounded,'Investment Insights', InsightsPage(), context),
+              _buildPopupMenuItem(Icons.notifications, 'Reminders', RemindersPage(), context),
+              _buildPopupMenuItem(Icons.settings, 'Settings', SettingsPage(), context),
             ];
           },
         ),
       ),
+
+      //design for center of the top nav bar
       title: Center(
         child: Container(
           height: 40,
@@ -145,10 +66,54 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  //method to design the hamburger popup menu
+  PopupMenuItem _buildPopupMenuItem(IconData icon, String text, Widget destination, BuildContext context) {
+    return PopupMenuItem(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              if (destination != null) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => destination,
+                ));
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(icon, color: Colors.white),
+                      SizedBox(width: 8.0), // Spacing between icon and text
+                      Text(
+                        text,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Icon(Icons.arrow_forward, color: Colors.white), // Arrow icon to indicate the menu item
+                ],
+              ),
+            ),
+          ),
+          Divider(color: Colors.white), // White horizontal line
+        ],
+      ),
+    );
+  }
+
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
+//class for the bottom nav bar
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -187,13 +152,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
         // Call the onTap function provided when creating the widget
         onTap(index);
 
-        // Add logic to navigate to specific pages based on the selected index
+        // logic to navigate to specific pages based on the selected index
         switch (index) {
           case 0:
             // Navigate to the Home page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ExpensesPage()),
+              MaterialPageRoute(builder: (context) => TransactionsPage()),
             );
             break;
           case 1:
@@ -207,7 +172,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             // Navigate to the Add page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => AddExpenseForm(onExpenseAdded: (Expense ) {  },)),
+              MaterialPageRoute(builder: (context) => AddTransactionForm(onExpenseAdded: (Expense ) {  },)),
             );
             break;
           case 3:
