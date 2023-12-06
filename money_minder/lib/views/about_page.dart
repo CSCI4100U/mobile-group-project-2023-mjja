@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'custom_navigation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -44,7 +45,10 @@ class _AboutPageState extends State<AboutPage> {
           children: <Widget>[
             Text(
               appName,
-              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: purpleColor),
+              style: TextStyle(
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.bold,
+                  color: purpleColor),
             ),
             SizedBox(height: 10),
             Text(
@@ -58,22 +62,17 @@ class _AboutPageState extends State<AboutPage> {
             ),
             SizedBox(height: 20),
             Text(
-              'MoneyMinder is a finance app that is designed to make daily tasks easier and efficient. '
-                  'The purpose of this application is to develop a robust and user-friendly mobile application '
-                  'to track expenses, analyze spending patterns, and manage budgets and stocks. '
-                  'The developers of this application aim to provide users with a comprehensive tool to organize'
-                  'and manage their daily expenses. ',
-
+              AppLocalizations.of(context)!.statement,
               style: TextStyle(fontSize: 16.0, color: textColor),
             ),
-      SizedBox(height: 20),
-      Text(
-          'Developed by: Jessica Patel, Mansi Patel, Aanisha Newaz, Jahanvi Mathukia, Ethan Randle-Bragg',
-        style: TextStyle(fontSize: 16.0, color: textColor),
-      ),
             SizedBox(height: 20),
             Text(
-              'Thank you for choosing MoneyMinder. We hope it makes your life a little easier and a lot more organized.',
+              AppLocalizations.of(context)!.developed_by,
+              style: TextStyle(fontSize: 16.0, color: textColor),
+            ),
+            SizedBox(height: 20),
+            Text(
+              AppLocalizations.of(context)!.thank_you,
               style: TextStyle(fontSize: 16.0, color: textColor),
             ),
             // Add more content as needed
