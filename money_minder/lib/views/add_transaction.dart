@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:money_minder/data/localDB/transaction.dart';
-import 'package:money_minder/views/transactions.dart';
+import 'package:money_minder/views/custom_navigation.dart';
+import 'package:money_minder/views/transactions_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -83,28 +84,35 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        title: Text(
-          'Add Expense',
-          style: TextStyle(color: textColor),
-        ),
-        backgroundColor: purpleColor,
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Navigate back to the ExpensePage
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => TransactionsPage()),
-            );
-          },
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Center(
-          child: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+        // Back Arrow and Title
+        Row(
+        children: <Widget>[
+        IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.grey), // Adjust color accordingly
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => TransactionsPage()),
+          );
+
+        },
+      ),
+      SizedBox(width: 8.0),
+      Text(
+        "     Add Transactions",
+        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: purpleColor), // Adjust styling as needed
+      ),
+      ],
+    ),
+    SizedBox(height: 20.0),
+
+    SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
@@ -252,8 +260,15 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
               ),
             ),
           ),
-        ),
+        ],
       ),
+      ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: 1,
+          onTap: (index) {
+            // Handle bottom navigation bar item taps
+          },
+        )
     );
   }
 }

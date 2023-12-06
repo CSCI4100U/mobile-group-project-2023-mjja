@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/login.dart';
+import 'package:money_minder/views/login_page.dart';
 import '../models/signup_model.dart';
 import '../data/localDB/signup.dart';
 import '../data/firebase.dart';

@@ -21,7 +21,7 @@ import 'package:share_extend/share_extend.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor =
-Color(0xFF5E17EB); // Replace with your exact color code
+Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
 class Transaction_data{
@@ -182,7 +182,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: 1,
         onTap: (index) {
           // Handle bottom navigation bar item taps
         },

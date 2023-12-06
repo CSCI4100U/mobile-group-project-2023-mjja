@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/home_page.dart';
 
 // models and views import
-import 'views/login.dart';
+import 'views/login_page.dart';
 import 'views/landing_page.dart';
 import 'views/custom_navigation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

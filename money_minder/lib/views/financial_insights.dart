@@ -7,7 +7,8 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:money_minder/views/transactions.dart';
+import 'package:money_minder/views/home_page.dart';
+import 'package:money_minder/views/transactions_page.dart';
 import 'custom_navigation.dart';
 import '../models/transaction_model.dart';
 
@@ -17,6 +18,11 @@ class FinancialInsightsPage extends StatefulWidget {
   @override
   _FinancialInsightsState createState() => _FinancialInsightsState();
 }
+
+final Color backgroundColor = Colors.black;
+final Color purpleColor =
+Color(0xFF5E17EB);
+final Color textColor = Colors.white;
 
 /// A StatelessWidget that represents a single legend item in the pie chart.
 /// each colour represents a different category of expenses
@@ -96,6 +102,28 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Back Arrow and Title
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0),
+          //   child: Row(
+          //     children: <Widget>[
+          //       IconButton(
+          //         icon: Icon(Icons.arrow_back, color: Colors.white), // Adjust color accordingly
+          //         onPressed: () {
+          //           Navigator.pushReplacement(
+          //             context,
+          //             MaterialPageRoute(builder: (context) => HomePage()),
+          //           );
+          //         },
+          //       ),
+          //       SizedBox(width: 8.0),
+          //       // Text(
+          //       //   "Financial Insights",
+          //       //   style: TextStyle(fontSize: 25.0, color: purpleColor, fontWeight: FontWeight.bold), // Adjust styling as needed
+          //       // ),
+          //     ],
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 16.0),
             child: ToggleButtons(
@@ -129,7 +157,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
         ],
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1, // Set the current index to Financial Insights
+        currentIndex: 3, // Set the current index to Financial Insights
         onTap: (index) { // Handle bottom navigation bar item taps
       },
     ),

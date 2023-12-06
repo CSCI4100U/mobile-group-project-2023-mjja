@@ -5,7 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/localDB/db_utils.dart';
 import '../data/localDB/transaction.dart';
-import '../views/transactions.dart';
+import '../views/transactions_page.dart';
 
 class TransactionDatabase {
 

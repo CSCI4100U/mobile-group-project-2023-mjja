@@ -3,6 +3,7 @@ import 'package:money_minder/views/home_page.dart';
 import 'package:money_minder/views/landing_page.dart';
 import 'package:money_minder/views/under_construction.dart';
 import 'custom_navigation.dart';
+import 'privacy_security.dart';
 import 'profile_page.dart';
 import 'about_page.dart';
 
@@ -57,7 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onTap: () {
               // Add logic to handle user logout
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UnderConstructionPage(),
+                builder: (context) => PrivacySecurityPage(),
               ));
             },
             trailing: Icon(Icons.lock , color: textColor),
