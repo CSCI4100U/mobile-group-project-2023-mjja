@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/landing_page.dart';
-import 'package:money_minder/views/under_construction.dart';
 import 'custom_navigation.dart';
 import 'privacy_security.dart';
 import 'profile_page.dart';
 import 'about_page.dart';
+import 'help_support_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -66,7 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Text('Help & Support', style: TextStyle(color: textColor,  fontWeight: FontWeight.bold,)),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UnderConstructionPage(),
+                builder: (context) => HelpSupportPage(),
               ));
             },
             trailing: Icon( Icons.help_center , color: textColor),

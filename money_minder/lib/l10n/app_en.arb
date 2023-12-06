@@ -14,5 +14,49 @@
   "agree_terms_and_cond": "By continuing you agree to terms and conditions",
   "@agree_terms_and_cond": {
     "description": "Agrees to terms and conditions statement"
+  },
+    "statement": "MoneyMinder is a finance app that is designed to make daily tasks easier and efficient. The purpose of this application is to develop a robust and user-friendly mobile application to track expenses, analyze spending patterns, and manage budgets and stocks. The developers of this application aim to provide users with a comprehensive tool to organize and manage their daily expenses. ",
+  "@statement": {
+    "description": "Money Minder description statement"
+  },
+  "developed_by": "Developed by: Jessica Patel, Mansi Patel, Aanisha Newaz, Jahanvi Mathukia, Ethan Randle-Bragg",
+  "@developed_by": {
+    "description": "developed by statement"
+  },
+  "thank_you": "Thank you for choosing MoneyMinder. We hope it makes your life a little easier and a lot more organized.",
+  "@thank_you": {
+    "description": "Thank you statement"
+  },
+  "add_transaction": "    Add Transactions",
+  "@add_transaction": {
+    "description": "Add transactions"
+  },
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit Text"
+  },
+  "name_star": "Name *",
+  "@name_star": {
+    "description": "name text with a asterisk"
+  },
+  "date_star": "Date *",
+  "@date_star": {
+    "description": "date text with a asterisk"
+  },
+  "category_star": "Category *",
+  "@category_star": {
+    "description": "Category text with a asterisk"
+  },
+  "amount_star": "Amount (CAD)*",
+  "@amount_star": {
+    "description": "Amount text with a asterisk"
+  },
+  "enter_where": "Enter where you did the transaction",
+  "@enter_where": {
+    "description": "enter hint text"
+  },
+  "this_field_req": "This field is required!",
+  "@this_field_req": {
+    "description": "This is a required field text"
   }
 }

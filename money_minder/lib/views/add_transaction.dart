@@ -87,9 +87,8 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
       appBar: CustomAppBar(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+        child: ListView(
+          children: <Widget>[
         // Back Arrow and Title
         Row(
         children: <Widget>[
@@ -112,8 +111,7 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
     ),
     SizedBox(height: 20.0),
 
-    SingleChildScrollView(
-            child: Form(
+    Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
@@ -259,7 +257,6 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
                 ],
               ),
             ),
-          ),
         ],
       ),
       ),

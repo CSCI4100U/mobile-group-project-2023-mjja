@@ -4,6 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../data/localDB/goals.dart';
 import '../models/goal_model.dart';
 import 'custom_navigation.dart';
+import 'transactions_page.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
@@ -185,21 +186,25 @@ class _GoalsPageState extends State<GoalsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
-            Text(
-              'Goals',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+          Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.grey), // Adjust color accordingly
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => TransactionsPage()),
+                  );
+
+                },
               ),
-            ),
-            Text(
-              'Track and achieve your financial goals.',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 14.0,
+              SizedBox(width: 8.0),
+              Text(
+                "        Budget Goals",
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: purpleColor), // Adjust styling as needed
               ),
-            ),
+            ],
+          ),
             SizedBox(height: 20),
             Expanded(
               child: ListView.builder(

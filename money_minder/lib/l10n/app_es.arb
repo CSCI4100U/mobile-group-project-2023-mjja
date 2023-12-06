@@ -2,5 +2,16 @@
     "sign_in_with_email": "Iniciar sesión con correo electrónico",
     "mm_slogan": "Administre sus finanzas diarias en una ubicación central",
     "sign_up": "Inscribirse",
-    "agree_terms_and_cond": "Al continuar aceptas los términos y condiciones."
+    "agree_terms_and_cond": "Al continuar aceptas los términos y condiciones.",
+    "statement": "MoneyMinder es una aplicación financiera diseñada para hacer que las tareas diarias sean más fáciles y eficientes. El propósito de esta aplicación es desarrollar una aplicación móvil robusta y fácil de usar para realizar un seguimiento de los gastos, analizar patrones de gastos y gestionar presupuestos y existencias. Los desarrolladores de Esta aplicación tiene como objetivo proporcionar a los usuarios una herramienta integral para organizar y gestionar sus gastos diarios.",
+    "developed_by": "Desarrollado por: Jessica Patel, Mansi Patel, Aanisha Newaz, Jahanvi Mathukia, Ethan Randle-Bragg",
+    "thank_you": "Gracias por elegir MoneyMinder. Esperamos que te haga la vida un poco más fácil y mucho más organizada.",
+    "add_transaction": "   Agregar transacciones",
+    "submit": "Entregar",
+    "name_star": "Nombre*",
+    "date_star": "Fecha*",
+    "category_star": "Categoría*",
+    "amount_star": "Importe (CAD)*",
+    "enter_where": "Ingrese dónde realizó la transacción.",
+    "this_field_req" : "¡Este campo es obligatorio!"
 }
