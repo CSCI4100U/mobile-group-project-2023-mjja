@@ -141,7 +141,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     });
   }
 
-  String _convertTransactionsToCsv(List<Expense_data> transactions) {
+  String _convertTransactionsToCsv(List<Transaction_data> transactions) {
     StringBuffer csvBuffer = StringBuffer();
     csvBuffer.writeln("ID,Name,Category,Amount,Date");
     for (var transaction in transactions) {
@@ -153,7 +153,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   // Function to share the CSV file to external apps
   Future<void> _shareCsvFile() async {
-    List<Expense_data> expenses = await _fetchExpensesFromFirestore();
+    List<Transaction_data> expenses = await _fetchExpensesFromFirestore();
     String csvData = _convertTransactionsToCsv(expenses);
 
     final directory = await getTemporaryDirectory(); // Use temporary directory for temporary file
