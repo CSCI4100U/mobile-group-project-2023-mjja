@@ -1,3 +1,14 @@
+//Acknowledgments
+//The code in this project was developed with the assistance of an AI tool (cited below)
+//OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
+
+/// A StatefulWidget that display the About Page and informs the user
+/// about the MoneyMinder application
+
+/// It displays:
+  /// Version, Package, App Info, and Developer Info
+
+
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'custom_navigation.dart';
@@ -11,6 +22,7 @@ class _AboutPageState extends State<AboutPage> {
   final Color backgroundColor = Colors.black;
   final Color textColor = Colors.white;
   final Color purpleColor = Color(0xFF5E17EB);
+  // Initialize variables for package info
   String appName = '';
   String packageName = '';
   String version = '';
@@ -22,6 +34,7 @@ class _AboutPageState extends State<AboutPage> {
     _initPackageInfo();
   }
 
+  //Get package information from the platform
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
@@ -78,7 +91,6 @@ class _AboutPageState extends State<AboutPage> {
               'Thank you for choosing MoneyMinder. We hope it makes your life a little easier and a lot more organized.',
               style: TextStyle(fontSize: 16.0, color: textColor),
             ),
-            // Add more content as needed
           ],
         ),
       ),
