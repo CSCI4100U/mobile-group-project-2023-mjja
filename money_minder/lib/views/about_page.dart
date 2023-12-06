@@ -36,7 +36,9 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: Text('About'),
+    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
