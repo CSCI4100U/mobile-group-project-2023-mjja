@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
+//color code used for the entire app
 final Color purpleColor =
     Color(0xFF5E17EB); // Replace with your exact color code
 final Color textColor = Colors.white;
@@ -18,6 +19,7 @@ class InsightsPage extends StatefulWidget {
 }
 
 class _InsightsPageState extends State<InsightsPage> {
+  //list of stcks
   List<Stock> allStocks = [];
   List<Stock> displayedStocks = [];
   bool stockNotFound = false;
@@ -29,7 +31,7 @@ class _InsightsPageState extends State<InsightsPage> {
   void initState() {
     super.initState();
 
-    // Fetch initial stock data for GOOG, AAPL, and TSLA
+    // Fetch initial stock data for GOOG, AAPL, and TSLA, etc.
     fetchStockData('GOOG');
     fetchStockData('AAPL');
     fetchStockData('TSLA');
@@ -42,11 +44,12 @@ class _InsightsPageState extends State<InsightsPage> {
     fetchStockData('ADBE');
   }
 
+//Fetchs stock data from IEX cloud free stock API
   Future<void> fetchStockData(String symbol) async {
     final apiKey = 'sk_bf99b81898b649bb84952d702e939384'; // IEX Cloud Key
     final apiUrl =
         'https://cloud.iexapis.com/stable/stock/$symbol/quote?token=$apiKey';
-
+    //parses the response json data and also prints to consol for verification, in a try catch loop
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
@@ -57,14 +60,14 @@ class _InsightsPageState extends State<InsightsPage> {
         final previousClose = data['previousClose'].toDouble();
         final percentageChange =
             ((price - previousClose) / previousClose) * 100;
-
+        //Stock class
         final stock = Stock(
           symbol: data['symbol'],
           name: data['companyName'],
           price: price,
           percentageChange: percentageChange,
         );
-
+        //sets the state of the widget to refresh display with stocks when added
         setState(() {
           allStocks.add(stock);
           displayedStocks.add(stock);
@@ -79,6 +82,7 @@ class _InsightsPageState extends State<InsightsPage> {
     }
   }
 
+  // filtering the stocks allows for users to search using the searchbox at the top
   void filterStocks(String query) {
     final lowercaseQuery = query.toLowerCase();
     setState(() {
@@ -106,7 +110,7 @@ class _InsightsPageState extends State<InsightsPage> {
               decoration: InputDecoration(
                 hintText: 'Search Stocks',
                 labelStyle: TextStyle(color: Colors.blueGrey),
-                // labelText: 'Search Stocks',
+                // Search controller used to update the UI immediatly while typing in your stock
                 prefixIcon: Icon(Icons.search),
                 filled: true,
                 fillColor: Colors.white,
@@ -122,11 +126,13 @@ class _InsightsPageState extends State<InsightsPage> {
             ),
           ),
           Expanded(
+            //expanded widget to make sure that overflow does not occur
             child: ListView.builder(
               itemCount: displayedStocks.length,
               itemBuilder: (context, index) {
                 final stock = displayedStocks[index];
                 return Card(
+                  //stocks are displayed in cards to allow for customization beyond listtile
                   color: Colors.white,
                   margin: EdgeInsets.all(8.0),
                   shape: RoundedRectangleBorder(
@@ -145,6 +151,7 @@ class _InsightsPageState extends State<InsightsPage> {
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        //Converts the stock price and percentage change is called to display + as green and - stocks daily price as red
                         Text(
                           '\$${stock.price.toStringAsFixed(2)}',
                           style: TextStyle(
@@ -167,6 +174,7 @@ class _InsightsPageState extends State<InsightsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        //floating action button for adding new stocks
         backgroundColor: purpleColor,
         onPressed: () {
           showDialog(
@@ -178,6 +186,7 @@ class _InsightsPageState extends State<InsightsPage> {
                 content: TextField(
                   controller: stockSymbolController,
                   decoration: InputDecoration(
+                      //label text for the popup alert dialog instructing user to input a stocks symbol
                       labelText: 'Stock Symbol or Full company name'),
                   style: TextStyle(color: Colors.black),
                 ),
@@ -187,10 +196,12 @@ class _InsightsPageState extends State<InsightsPage> {
                       Navigator.of(context).pop();
                     },
                     child:
+                        //cancellation of adding stock button/alert dialog
                         Text('Cancel', style: TextStyle(color: Colors.black)),
                   ),
                   TextButton(
                     onPressed: () {
+                      //clears the controller and pops the context to refresh the stock data with the newly added stock
                       fetchStockData(stockSymbolController.text);
                       stockSymbolController.clear();
                       Navigator.of(context).pop();
@@ -207,7 +218,7 @@ class _InsightsPageState extends State<InsightsPage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 1,
         onTap: (index) {
-          // Handle bottom navigation bar item taps
+          // Handles bottom navigation bar item taps
         },
       ),
     );
@@ -218,7 +229,7 @@ class StockSearch extends SearchDelegate<Stock> {
   final List<Stock> allStocks;
 
   StockSearch(this.allStocks);
-
+//stock search widget for query the stocks
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -260,7 +271,7 @@ class StockSearch extends SearchDelegate<Stock> {
             stock.name.toLowerCase().contains(lowercaseQuery) ||
             stock.symbol.toLowerCase().contains(lowercaseQuery))
         .toList();
-
+//listview with builder for searching as well as implementing the daily change
     return ListView.builder(
       itemCount: filteredStocks.length,
       itemBuilder: (context, index) {
@@ -286,6 +297,7 @@ class StockSearch extends SearchDelegate<Stock> {
   }
 }
 
+//stock class and builder
 class Stock {
   final String symbol;
   final String name;
@@ -298,7 +310,7 @@ class Stock {
     required this.price,
     this.percentageChange = 0.0,
   });
-
+//color function for converting red and green
   Color get percentageChangeColor =>
       percentageChange >= 0 ? Colors.green : Colors.red;
 }
