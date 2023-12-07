@@ -14,17 +14,12 @@
 import 'package:flutter/material.dart';
 
 // models and views import
-import 'views/login_page.dart';
 import 'views/landing_page.dart';
-import 'views/custom_navigation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // firebase dependencies
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'views/notifications_service.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
-import 'views/reminders_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
