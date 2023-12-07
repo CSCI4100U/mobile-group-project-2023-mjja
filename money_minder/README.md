@@ -1,13 +1,13 @@
 # Project README
 
 ### Group Members Name and SID
-Member 1: [Jahanvi Mathukia] - [SID]
-Member 2: [Aanisha Newaz] - [100788588] - @Aanisha02
-Member 3: [Jessica Patel] - [SID]
-Member 4: [Mansi Patel] - [SID]
-Member 5: [Ethan Randle-Bragg] - [SID]
+#### Member 1: Jahanvi Mathukia - [SID]
+#### Member 2: Aanisha Newaz - 100788588 - @Aanisha02
+#### Member 3: Jessica Patel - [SID]
+#### Member 4: Mansi Patel - [SID]
+#### Member 5: Ethan Randle-Bragg - [SID]
 
-##Changes from the Proposal
+## Changes from the Proposal
 ### Additions
 Internationalization: Content and writings in Money Minder is translated to Spanish.
 ### Modification
