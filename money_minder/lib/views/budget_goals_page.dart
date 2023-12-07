@@ -1,3 +1,14 @@
+/// budget_goals_page.dart
+///
+/// A screen that displays the user's budget goals.
+///
+/// This page  allows the user to view, add, and delete goals, as well as marking
+/// them as completed.
+
+// ## Acknowledgments
+// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
+
+//All necessary imports
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -15,6 +26,9 @@ class GoalsPage extends StatefulWidget {
   _GoalsPageState createState() => _GoalsPageState();
 }
 
+/// The state for GoalsPage.
+///
+/// Manages the list of goals, and handles database interactions to load and update goals.
 class _GoalsPageState extends State<GoalsPage> {
   GoalDatabase _goalDatabase = GoalDatabase();
   List<Goal> goalsList = [];
@@ -25,6 +39,7 @@ class _GoalsPageState extends State<GoalsPage> {
     _loadGoals();
   }
 
+  /// Loads goals from the database and updates the UI.
   void _loadGoals() async {
     List<Goal> goals = await _goalDatabase.readAllGoals();
     setState(() {
@@ -32,6 +47,9 @@ class _GoalsPageState extends State<GoalsPage> {
     });
   }
 
+  /// Method to create a pop up window to add a new goal.
+  ///
+  /// The window contains form fields for the goal's title, description, amount, and deadline.
   void _addNewGoal() {
     // Define controllers for text fields
     TextEditingController titleController = TextEditingController();
@@ -104,12 +122,13 @@ class _GoalsPageState extends State<GoalsPage> {
               child: Text('Save', style: TextStyle(color: purpleColor)),
               onPressed: () async {
                 // Create a new Goal object with the entered details
+                // we will set the goal to '!isComplete'
                 Goal newGoal = Goal(
                   name: titleController.text,
                   description: descriptionController.text,
                   amount: double.tryParse(amountController.text) ?? 0.0,
                   endDate: DateFormat.yMMMd().parse(deadlineController.text),
-                  isCompleted: 0, // Assuming the default is not completed
+                  isCompleted: 0,
                 );
 
                 // Add the new goal to the database
@@ -118,10 +137,16 @@ class _GoalsPageState extends State<GoalsPage> {
                   // Goal added successfully, reload goals
                   _loadGoals();
                 } else {
-                  // Handle error, e.g., show a snackbar or log the error
-                  print('Failed to add new goal.');
+                  // Show a snackbar message if the goal cannot be saved
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Could not save your budgeting goal'),
+                      backgroundColor: purpleColor,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                 }
-                // Close the dialog
+                // Close the window/dialog
                 Navigator.of(context).pop();
               },
             ),
@@ -131,7 +156,9 @@ class _GoalsPageState extends State<GoalsPage> {
     );
   }
 
-
+  /// Method to toggle the completion status of a goal.
+  ///
+  /// Updates the goal's 'isCompleted' status in the database and refreshes the goal list.
   void _toggleGoalCompletion(int index, bool isCompleted) async {
     Goal goal = goalsList[index];
     goal.isCompleted = isCompleted ? 1 : 0;
@@ -139,7 +166,9 @@ class _GoalsPageState extends State<GoalsPage> {
     _loadGoals();
   }
 
-  // Add this method to show a confirmation dialog
+  /// Method to show a confirmation dialog before deleting a goal.
+  ///
+  /// Once if confirmed, it calls [_deleteGoal] to remove the goal from the database.
   void _showDeleteConfirmationDialog(BuildContext context, Goal goal, int index) {
     showDialog(
       context: context,
@@ -168,7 +197,7 @@ class _GoalsPageState extends State<GoalsPage> {
     );
   }
 
-// Add this method to handle goal deletion
+  /// Method to delete a goal from the database and update the UI.
   void _deleteGoal(int index) async {
     Goal goal = goalsList[index];
     await _goalDatabase.deleteGoal(goal.id!);
@@ -252,6 +281,9 @@ class _GoalsPageState extends State<GoalsPage> {
   }
 }
 
+/// A card widget that represents a single goal.
+///
+/// Displays the goal's title, description, progress, and allows the user to mark it as complete.
 class GoalCard extends StatefulWidget {
   final String name;
   final String description;
@@ -274,6 +306,9 @@ class GoalCard extends StatefulWidget {
   _GoalCardState createState() => _GoalCardState();
 }
 
+/// The state for [GoalCard].
+///
+/// Manages the display of the goal's progress and interaction with the goal card.
 class _GoalCardState extends State<GoalCard> {
   late bool isCompleted;
 
@@ -283,6 +318,10 @@ class _GoalCardState extends State<GoalCard> {
     isCompleted = widget.isCompleted;
   }
 
+  /// This method calculates the progress towards the goal as a percentage.
+  ///
+  /// The progress is calculated based on the [goalAmount] and the amount saved so far.
+  // Progress bar and percentage UI and functionality was developed with the assistance of ChatGPT - openAI
   double _calculateProgress(double? goalAmount) {
     double savedAmount = isCompleted ? goalAmount ?? 0.0 : 0.0;
     if (goalAmount != null && goalAmount > 0) {
@@ -290,7 +329,9 @@ class _GoalCardState extends State<GoalCard> {
     }
     return 0.0;
   }
-
+  /// Build method for pop up dialog that shows up when a goal card is clicked on
+  /// The window shows the title, description, goal amount, and the due date of the goal.
+  /// This window shows the progress bar that visualizes how close the user is to achieving the goal.
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -315,6 +356,7 @@ class _GoalCardState extends State<GoalCard> {
         )
             : null,
         onTap: () {
+              //show details of the budgeting goal
           double progress = _calculateProgress(widget.goalAmount);
           showDialog(
             context: context,
