@@ -1,3 +1,10 @@
+/// Defines the RemindersPage widget to manage and display reminder
+/// and send notifications.
+
+// ## Acknowledgments
+// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
+
+//all necessary imports
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'custom_navigation.dart';
@@ -5,15 +12,20 @@ import 'notifications_service.dart';
 import '../data/localDB/reminders.dart';
 import '../models/reminder_model.dart';
 
+//Colour scheme of UI design
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
+///A StatefulWidget that represents the reminders page of the app.
+/// Displays a list of reminders with options to add, delete, and view details of reminders.
 class RemindersPage extends StatefulWidget {
   @override
   _RemindersPageState createState() => _RemindersPageState();
 }
 
+/// The State for RemindersPage.
+/// Handles the UI and logic for managing reminders.
 class _RemindersPageState extends State<RemindersPage> {
   List<Reminder> reminders = [];
   String searchQuery = '';
@@ -33,6 +45,7 @@ class _RemindersPageState extends State<RemindersPage> {
     });
   }
 
+  ///Overall main UI of the page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,12 +86,16 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///method to add information of reminder: title, description, urgency and due date
+  ///will appear as a pop up window
   void _showAddReminderDialog(BuildContext context) {
     String title = '';
     String description = '';
     bool isUrgent = false;
     DateTime dueDate = DateTime.now();
 
+    // Function to call DatePicker and TimePicker
+    //Date and time picking functionality assisted by ChatGPT - OpenAI
     Future<void> _selectDateTime(BuildContext context) async {
       final DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -106,6 +123,8 @@ class _RemindersPageState extends State<RemindersPage> {
       }
     }
 
+
+    ///pop up window that will display all the details and prompt completion option
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -176,7 +195,7 @@ class _RemindersPageState extends State<RemindersPage> {
                   scheduled: true,
                   interval: secondsBeforeDueDate,
                 );
-
+                // Show the SnackBar after marking a reminder as completed
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('You have set a new reminder'),
@@ -192,6 +211,7 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///pop up window that will display all the details and prompt completion option
   void _showReminderDetails(BuildContext context, Reminder reminder) {
     showDialog(
       context: context,
@@ -244,14 +264,8 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///Method that creates a Widget that display a list of of reminders
   Widget _buildReminderList(BuildContext context, {required bool urgentOnly}) {
-    //final filteredReminders = reminders
-    //     .where((reminder) =>
-    // (urgentOnly ? reminder.isUrgent : true) &&
-    //     (reminder.title!.toLowerCase().contains(searchQuery.toLowerCase()) ||
-    //         reminder.description!.toLowerCase().contains(searchQuery.toLowerCase())))
-    //     .toList();
-
     final filteredReminders = reminders
         .where((reminder) =>
     (reminder.title?.toLowerCase() ?? '').contains(searchQuery.toLowerCase()) ||
@@ -275,6 +289,7 @@ class _RemindersPageState extends State<RemindersPage> {
           onDismissed: (direction) async {
             await _deleteReminder(reminder.id!);
           },
+          // UI design for card and icon logic was developed with assistance of ChatGPT - OpenAI
           child: Card(
             color: Colors.grey[850],
             margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -304,6 +319,7 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///Function called to delete reminders
   Future<void> _deleteReminder(int id) async {
     await _reminderDatabase.deleteReminder(id);
     _loadRemindersFromDatabase();
@@ -316,6 +332,8 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///Function to search specific reminders based on words in description
+  //The searchbar functionality was developed with the assistance of ChatGPT - OpenAI
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
