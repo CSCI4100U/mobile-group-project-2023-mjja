@@ -1,6 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/Ejc5gqh5)
 # CSCI4100 Group Project
-
+##PLEASE REVIEW OUR README INSIDE OF MONEY_MINDER IT IS THERE
 ## Phase 2: Prototype
 Please navigate yourself to the project_prototype folder to access phase 2.
 https://github.com/CSCI4100U/mobile-group-project-2023-mjja/tree/main/project_prototype
