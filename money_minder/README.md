@@ -77,7 +77,7 @@ Worked on the user interface of the MoneyMinder application, more specifically w
 #### Mansi Patel: 
 - Main Focus on the backend side integrating UI with Firebase and/or SQLite
 - End to end implementation of signup and login from UI to firebase
-- End to end implementation of bufegt-goals and reminders from UI to SQLite
+- End to end implementation of budget-goals and reminders from UI to SQLite
 - Setup the Firebase and SQLite DB structure for the project.  
 
 #### Ethan Randle-Bragg: 
