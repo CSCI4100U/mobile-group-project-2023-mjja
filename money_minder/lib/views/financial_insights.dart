@@ -1,4 +1,10 @@
-/// A StatefulWidget that provides financial insights by visualizing transaction data
+//Acknowledgments
+//The code in this project was developed with the assistance of an AI tool (cited below)
+//OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
+
+/// File: financial_insights.dart
+/// Description: A Flutter Dart file containing the implementation of A StatefulWidget that
+/// provides financial insights by visualizing transaction data
 /// in the form of charts.
 
 /// It displays two types of charts:
@@ -43,7 +49,7 @@ class LegendItem extends StatelessWidget {
           ),
           SizedBox(width: 8),
           Text(text,
-              style: TextStyle(fontSize: 7, color: Colors.white)),
+              style: TextStyle(fontSize: 15, color: Colors.white)),
         ],
       ),
     );
@@ -100,44 +106,34 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Back Arrow and Title
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 16.0),
-          //   child: Row(
-          //     children: <Widget>[
-          //       IconButton(
-          //         icon: Icon(Icons.arrow_back, color: Colors.white), // Adjust color accordingly
-          //         onPressed: () {
-          //           Navigator.pushReplacement(
-          //             context,
-          //             MaterialPageRoute(builder: (context) => HomePage()),
-          //           );
-          //         },
-          //       ),
-          //       SizedBox(width: 8.0),
-          //       // Text(
-          //       //   "Financial Insights",
-          //       //   style: TextStyle(fontSize: 25.0, color: purpleColor, fontWeight: FontWeight.bold), // Adjust styling as needed
-          //       // ),
-          //     ],
-          //   ),
-          // ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
+          const SizedBox(
+            height: 28,
+          ),
+          //implement toggle button to change view for type of chart
+          Center(
             child: ToggleButtons(
+              fillColor: Colors.white,
+              selectedColor: purpleColor,
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4.0),
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                   child: Text(
                     'Expenses breakdown',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     'Transactions in-and-out',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+
                   ),
                 ),
               ],
@@ -149,6 +145,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
               isSelected: [showPieChart, !showPieChart],
             ),
           ),
+          SizedBox(height: 16),
           Expanded(
             child: showPieChart ? buildPieChart() : buildTransactionChart(),
           ),
@@ -168,12 +165,13 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
   /// The chart is created with grouped bars representing income and expenses side by side
   /// for each week to compare the two values visually.
   Widget buildPieChart() {
+    double chartAspectRatio = 1;
     return AspectRatio(
         aspectRatio: 1.3,
-        child: Column( // Wrap your content in a Column widget
+        child: Column(
           children: [
           Container(
-          height: 20, // Adjust the height as needed
+          height: 20,
           child: Center(
             child: Text(
               'Expenses by Category',
@@ -181,11 +179,11 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
             ),
           ),
         ),
-      Expanded( // Use Expanded to fill the remaining space in the column
-        child: Row(
+      Expanded(
+        child: Column(
             children: <Widget>[
               const SizedBox(
-                height: 18,
+                height: 28,
               ),
               Expanded(
                 child: AspectRatio(
@@ -210,14 +208,16 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
                         show: false,
                       ),
                       sectionsSpace: 5,
-                      centerSpaceRadius: 40,
+                      centerSpaceRadius: 60,
                       sections: showingSections(),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              buildLegend(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: buildLegend(),
+              ),
             ]
           )
           )
@@ -233,20 +233,20 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
         .map((transaction) => transaction.category!)
         .toSet();
 
-   ///ensures that our legend is aligned to the left
+    ///ensures that our legend is aligned to the left
     return Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
+      alignment: Alignment.centerLeft,
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: uniqueCategories
-          .map((category) =>
-          LegendItem(
-            color: categoryColors[category] ?? Colors.black,
-            text: category,
-          ))
-          .toList(),
-        ),
+            .map((category) =>
+            LegendItem(
+              color: categoryColors[category] ?? Colors.black,
+              text: category,
+            ))
+            .toList(),
+      ),
     );
   }
 
@@ -280,7 +280,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
         titleStyle: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.bold,
-          color: Colors.white, // Adjust the color as needed
+          color: Colors.white,
           shadows: shadows,
         ),
       );

@@ -1,16 +1,31 @@
+//Acknowledgments
+//The code in this project was developed with the assistance of an AI tool (cited below)
+//OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
+
+/// File: about_page.dart
+/// Description: A Flutter Dart file containing the implementation of the 'AboutPage' widget.
+/// The widget displays information about the MoneyMinder application, including version details,
+/// package information, and developer information.
+
+
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'custom_navigation.dart';
+
 
 class AboutPage extends StatefulWidget {
   @override
   _AboutPageState createState() => _AboutPageState();
 }
 
+/// Description: The state class associated with the AboutPage widget.
+/// It contains the implementation for fetching and displaying package information.
 class _AboutPageState extends State<AboutPage> {
   final Color backgroundColor = Colors.black;
   final Color textColor = Colors.white;
   final Color purpleColor = Color(0xFF5E17EB);
+
+  // Initialize variables for package info
   String appName = '';
   String packageName = '';
   String version = '';
@@ -22,6 +37,9 @@ class _AboutPageState extends State<AboutPage> {
     _initPackageInfo();
   }
 
+  /// Function: _initPackageInfo
+  /// Description: Asynchronous function to fetch package information from the platform
+  /// using the 'package_info' package.
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
@@ -78,7 +96,6 @@ class _AboutPageState extends State<AboutPage> {
               'Thank you for choosing MoneyMinder. We hope it makes your life a little easier and a lot more organized.',
               style: TextStyle(fontSize: 16.0, color: textColor),
             ),
-            // Add more content as needed
           ],
         ),
       ),
