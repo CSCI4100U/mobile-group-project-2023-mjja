@@ -19,8 +19,7 @@ class FinancialInsightsPage extends StatefulWidget {
 }
 
 final Color backgroundColor = Colors.black;
-final Color purpleColor =
-Color(0xFF5E17EB);
+final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
 /// A StatelessWidget that represents a single legend item in the pie chart.

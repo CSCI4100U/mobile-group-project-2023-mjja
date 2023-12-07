@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
         // Navigate to the home page
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => WelcomeBackPage(),
+          builder: (context) => LoginPage(),
         ));
       }
     } catch (e) {
@@ -202,7 +202,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WelcomeBackPage(),
+                              builder: (context) => LoginPage(),
                             ));
                           },
                           child: Text(

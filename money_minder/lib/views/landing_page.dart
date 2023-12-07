@@ -48,7 +48,7 @@ class SignInScreen extends StatelessWidget {
                   onPressed: () {
                     // Navigate to the LogIn when the button is pressed
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WelcomeBackPage(),
+                      builder: (context) => LoginPage(),
                     ));
                   },
                   child: Text(

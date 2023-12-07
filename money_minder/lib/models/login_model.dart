@@ -3,6 +3,7 @@
  */
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../data/localDB/login.dart';
@@ -92,10 +93,16 @@ class LoginDatabase {
       whereArgs: [emailAddress, password],
     );
 
+    if (maps.isNotEmpty) {
+      final retrievedEmail = maps.first['emailAddress'];
+      print('Retrieved email address from Login table: $retrievedEmail');
+    }
+
     return maps != null && maps.isNotEmpty;
   }
 
   Future<bool> checkLoginCredentialsFirebase(String emailAddress, String password) async {
+
     try {
       QuerySnapshot querySnapshot = await loginCollection
           .where('emailAddress', isEqualTo: emailAddress)

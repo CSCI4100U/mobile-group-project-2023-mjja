@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import 'reminders_page.dart';
 import 'investment_insight.dart';
-import 'profile_page.dart';
 import 'add_transaction.dart';
 import 'setting_page.dart';
 import 'financial_insights.dart';
@@ -53,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             // Navigate to the ProfilePage when the icon is selected
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              MaterialPageRoute(builder: (context) => SettingsPage()),
             );
           },
         ),

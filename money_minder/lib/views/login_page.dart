@@ -8,7 +8,12 @@ import '../models/login_model.dart';
 import 'sign_up.dart';
 import 'forgot_password.dart';
 
-class WelcomeBackPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final Color backgroundColor = Colors.black;
   final Color purpleColor = Color(0xFF5E17EB);
   final Color textColor = Colors.white;
@@ -19,6 +24,7 @@ class WelcomeBackPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _isObscure = true; // Initially, password is obscured
 
   // Email regex pattern for validation
   final RegExp emailRegex = RegExp(
@@ -120,7 +126,21 @@ class WelcomeBackPage extends StatelessWidget {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: textColor),
                         ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                          child: Icon(
+                            _isObscure
+                            ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: textColor,
+                          )
+                        ),
                       ),
+
                       style: TextStyle(color: textColor),
                       obscureText: true,
                       validator: (value) {
