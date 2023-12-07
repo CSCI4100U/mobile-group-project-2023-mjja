@@ -186,17 +186,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
   // Transaction information conversion was developed with the assistance of ChatGPT - OpenAI
   String _convertTransactionsToCsv(List<Transaction_data> transactions) {
     StringBuffer csvBuffer = StringBuffer();
-    csvBuffer.writeln("ID,Name,Category,Amount,Date");
+    csvBuffer.writeln("Name,Category,Amount,Date");
     // format all transactions in the desired format
     for (var transaction in transactions) {
       csvBuffer.writeln(
-          '"${transaction.id}","${transaction.name}","${transaction.category}",'
+          '"${transaction.name}","${transaction.category}",'
           '"${transaction.amount}","${DateFormat('yyyy-MM-dd').format(transaction.date!)}"');
     }
     return csvBuffer.toString();
   }
 
-  /// Function to share the CSV file to external apps(Google Drive and Email)
+  /// Function to share the CSV file to external apps(eg. Google Drive and Email)
   Future<void> _shareCsvFile() async {
     List<Transaction_data> transactions = await _fetchExpensesFromFirestore();
     String csvData = _convertTransactionsToCsv(transactions);
@@ -208,7 +208,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     // Write the formatted transaction list into the .csv file
     await file.writeAsString(csvData);
 
-    // Share the file with gmail or google drive
+    // Share/upload the file through apps that are compatible with the device
     Share.shareFiles([path], text: 'Here are my transactions in CSV format');
   }
 
