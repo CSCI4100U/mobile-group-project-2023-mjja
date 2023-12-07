@@ -1,21 +1,12 @@
-/// budget_goals_page.dart
-///
-/// A screen that displays the user's budget goals.
-///
-/// This page  allows the user to view, add, and delete goals, as well as marking
-/// them as completed.
+/// Displays the user's budget goals.
+/// This page  allows the user to view, add, and delete goals, as well as marking them as completed.
+/// The user has to manually keep track of the budget goals, and mark them complete when they have completed their goals
 
-// ## Acknowledgments
-// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
-
-//All necessary imports
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import '../data/localDB/goals.dart';
 import '../models/goal_model.dart';
 import 'custom_navigation.dart';
-import 'transactions_page.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
@@ -26,8 +17,6 @@ class GoalsPage extends StatefulWidget {
   _GoalsPageState createState() => _GoalsPageState();
 }
 
-/// The state for GoalsPage.
-///
 /// Manages the list of goals, and handles database interactions to load and update goals.
 class _GoalsPageState extends State<GoalsPage> {
   GoalDatabase _goalDatabase = GoalDatabase();
@@ -47,8 +36,89 @@ class _GoalsPageState extends State<GoalsPage> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(),
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Row(
+              children: <Widget>[
+                SizedBox(width: 8.0),
+                Text(
+                  "Budget Goals",
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: goalsList.length,
+                itemBuilder: (context, index) {
+                  var goal = goalsList[index];
+                  return Dismissible(
+                    //make sure each goal has a unique ID
+                    key: Key(goal.id.toString()),
+                    onDismissed: (direction) {
+                      // Show a confirmation dialog before deleting the goal
+                      _showDeleteConfirmationDialog(context, goal, index);
+                    },
+                    background: Container(
+                      color: Colors.red,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 36.0,
+                      ),
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(right: 20.0),
+                    ),
+                    child: GoalCard(
+                      name: goal.name ?? "Default Goal Name",
+                      description:
+                      goal.description ?? "Default Goal Description",
+                      endDate: goal.endDate,
+                      goalAmount: goal.amount,
+                      isCompleted: goal.isCompleted == 1,
+                      onCompletionChanged: (bool newVal) {
+                        _toggleGoalCompletion(index, newVal);
+                      },
+                    )
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _addNewGoal();
+        },
+        tooltip: 'Add Goal',
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: purpleColor,
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1, // Set the current index according to the GoalsPage
+        onTap: (index) {},
+      ),
+    );
+  }
+
   /// Method to create a pop up window to add a new goal.
-  ///
   /// The window contains form fields for the goal's title, description, amount, and deadline.
   void _addNewGoal() {
     // Define controllers for text fields
@@ -104,7 +174,8 @@ class _GoalsPageState extends State<GoalsPage> {
                       lastDate: DateTime(2101),
                     );
                     if (deadline != null) {
-                      deadlineController.text = DateFormat.yMMMd().format(deadline);
+                      deadlineController.text =
+                          DateFormat.yMMMd().format(deadline);
                     }
                   },
                 ),
@@ -164,7 +235,6 @@ class _GoalsPageState extends State<GoalsPage> {
   }
 
   /// Method to toggle the completion status of a goal.
-  ///
   /// Updates the goal's 'isCompleted' status in the database and refreshes the goal list.
   void _toggleGoalCompletion(int index, bool isCompleted) async {
     Goal goal = goalsList[index];
@@ -174,9 +244,9 @@ class _GoalsPageState extends State<GoalsPage> {
   }
 
   /// Method to show a confirmation dialog before deleting a goal.
-  ///
   /// Once if confirmed, it calls [_deleteGoal] to remove the goal from the database.
-  void _showDeleteConfirmationDialog(BuildContext context, Goal goal, int index) {
+  void _showDeleteConfirmationDialog(
+      BuildContext context, Goal goal, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -193,8 +263,7 @@ class _GoalsPageState extends State<GoalsPage> {
             TextButton(
               child: Text('Delete', style: TextStyle(color: Colors.red)),
               onPressed: () {
-                // User confirmed deletion, delete the goal
-                _deleteGoal(index);
+                _deleteGoal(index); // User confirmed deletion, delete the goal
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
@@ -217,86 +286,9 @@ class _GoalsPageState extends State<GoalsPage> {
     );
     _loadGoals();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(),
-      backgroundColor: Colors.black,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-          Row(
-            children: <Widget>[
-              SizedBox(width: 8.0),
-              Text(
-                "Budget Goals",
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white), // Adjust styling as needed
-              ),
-            ],
-          ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: goalsList.length,
-                itemBuilder: (context, index) {
-                  var goal = goalsList[index];
-                  return Dismissible(
-                    //make sure each goal has a unique ID
-                    key: Key(goal.id.toString()),
-                    onDismissed: (direction) {
-                      // Show a confirmation dialog before deleting the goal
-                      _showDeleteConfirmationDialog(context, goal, index);
-                    },
-                    background: Container(
-                      color: Colors.red, // Background color when swiping
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                        size: 36.0,
-                      ),
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(right: 20.0),
-                    ),
-                    child: GoalCard(
-                    name: goal.name ?? "Default Goal Name",
-                    description: goal.description ?? "Default Goal Description",
-                    endDate: goal.endDate,
-                    goalAmount: goal.amount,
-                    isCompleted: goal.isCompleted == 1,
-                    onCompletionChanged: (bool newVal) {
-                      _toggleGoalCompletion(index, newVal);
-                    },
-                  )
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addNewGoal();
-        },
-        tooltip: 'Add Goal',
-        child: Icon(Icons.add, color: Colors.white,),
-        backgroundColor: purpleColor,
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1, // Set the current index according to the GoalsPage
-        onTap: (index) {
-        },
-      ),
-    );
-  }
 }
 
 /// A card widget that represents a single goal.
-///
 /// Displays the goal's title, description, progress, and allows the user to mark it as complete.
 class GoalCard extends StatefulWidget {
   final String name;
@@ -321,7 +313,6 @@ class GoalCard extends StatefulWidget {
 }
 
 /// The state for [GoalCard].
-///
 /// Manages the display of the goal's progress and interaction with the goal card.
 class _GoalCardState extends State<GoalCard> {
   late bool isCompleted;
@@ -343,6 +334,7 @@ class _GoalCardState extends State<GoalCard> {
     }
     return 0.0;
   }
+
   /// Build method for pop up dialog that shows up when a goal card is clicked on
   /// The window shows the title, description, goal amount, and the due date of the goal.
   /// This window shows the progress bar that visualizes how close the user is to achieving the goal.
@@ -351,7 +343,8 @@ class _GoalCardState extends State<GoalCard> {
     return Card(
       color: Colors.grey[800],
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: isCompleted ? Colors.green : Colors.transparent, width: 2.0),
+        side: BorderSide(
+            color: isCompleted ? Colors.green : Colors.transparent, width: 2.0),
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
@@ -370,7 +363,7 @@ class _GoalCardState extends State<GoalCard> {
         )
             : null,
         onTap: () {
-              //show details of the budgeting goal
+          //show details of the budgeting goal
           double progress = _calculateProgress(widget.goalAmount);
           showDialog(
             context: context,
@@ -381,17 +374,20 @@ class _GoalCardState extends State<GoalCard> {
                   child: ListBody(
                     children: <Widget>[
                       Text('Description: ${widget.description}'),
-                      Text('Amount: ${widget.goalAmount != null ? '\$${widget.goalAmount!.toStringAsFixed(2)}' : 'No amount set'}'),
+                      Text(
+                          'Amount: ${widget.goalAmount != null ? '\$${widget.goalAmount!.toStringAsFixed(2)}' : 'No amount set'}'),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 10.0),
                         child: LinearProgressIndicator(
                           value: progress,
                           backgroundColor: Colors.grey[300],
-                          valueColor: AlwaysStoppedAnimation<Color>(purpleColor),
+                          valueColor:
+                          AlwaysStoppedAnimation<Color>(purpleColor),
                         ),
                       ),
                       Text('Progress: ${progress * 100}% of the goal'),
-                      Text('Due: ${widget.endDate != null ? DateFormat.yMMMd().format(widget.endDate!) : 'No deadline'}')
+                      Text(
+                          'Due: ${widget.endDate != null ? DateFormat.yMMMd().format(widget.endDate!) : 'No deadline'}')
                     ],
                   ),
                 ),
@@ -403,7 +399,8 @@ class _GoalCardState extends State<GoalCard> {
                     },
                   ),
                   TextButton(
-                    child: Text('Complete', style: TextStyle(color: purpleColor)),
+                    child:
+                    Text('Complete', style: TextStyle(color: purpleColor)),
                     onPressed: () {
                       if (!isCompleted) {
                         setState(() {

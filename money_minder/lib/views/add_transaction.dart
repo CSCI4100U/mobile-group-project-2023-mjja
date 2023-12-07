@@ -61,188 +61,187 @@ class _AddTransactionFormState extends State<AddTransactionForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: CustomAppBar(),
-        body: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: ListView(
-            children: <Widget>[
-              // Back Arrow and Title
-              Row(
+      backgroundColor: backgroundColor,
+      appBar: CustomAppBar(),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: ListView(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.grey),
+                  onPressed: () {
+                    // takes back to previous screen
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TransactionsPage()
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(width: 8.0),
+                Text(
+                  "Add Transactions",
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
+                ),
+              ],
+            ),
+
+            //Starting form fields
+            SizedBox(height: 20.0),
+            Form(
+              key: _formKey,
+              child: Column(
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.grey),
-                    onPressed: () {
-                      // takes back to previous screen
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TransactionsPage()
-                        ),
-                      );
+                  //name
+                  TextFormField(
+                    controller: nameController,
+                    style: TextStyle(color: textColor),
+                    decoration: InputDecoration(
+                      labelText: 'Name *',
+                      hintText: 'Enter name for the transaction.',
+                      labelStyle: TextStyle(color: textColor),
+                      hintStyle: TextStyle(color: textColor),
+                    ),
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required!';
+                      }
+                      return null;
                     },
                   ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    "Add Transactions",
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
+                  SizedBox(height: 20.0),
+
+                  // Date Picker
+                  InkWell(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2101),
+                      );
+                      if (pickedDate != null) {
+                        dateController.text =
+                        pickedDate.toLocal().toString().split(' ')[0];
+                      }
+                    },
+                    child: IgnorePointer(
+                      child: TextFormField(
+                        controller: dateController,
+                        style: TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          labelText: 'Date *',
+                          hintText: 'Select date of the transaction',
+                          labelStyle: TextStyle(color: textColor),
+                          hintStyle: TextStyle(color: textColor),
+                        ),
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+
+                  // Category Dropdown
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: 'Category *',
+                      labelStyle: TextStyle(color: textColor),
+                    ),
+                    style: TextStyle(color: textColor),
+                    dropdownColor: Colors.black,
+                    value: selectedCategory,
+                    items: categories.map((category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCategory = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+
+                  // Amount
+                  TextFormField(
+                    controller: amountController,
+                    style: TextStyle(color: textColor),
+                    decoration: InputDecoration(
+                      labelText: 'Amount (CAD)*',
+                      hintText: '00.00',
+                      labelStyle: TextStyle(color: textColor),
+                      hintStyle: TextStyle(color: textColor),
+                    ),
+                    keyboardType:
+                    TextInputType.numberWithOptions(decimal: true),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      // Convert the amount to double before saving to Firebase
+                      if (value != null && value.isNotEmpty) {
+                        amountController.value =
+                        double.parse(value) as TextEditingValue;
+                      }
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+
+                  //Submit button
+                  ElevatedButton(
+                    onPressed: () {
+                      // Validate each field has data before submitting
+                      if (_formKey.currentState!.validate()) {
+                        _saveTransactionToFirebase();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: purpleColor,
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    ),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(color: textColor, fontSize: 15),
                     ),
                   ),
                 ],
               ),
-
-              //Starting form fields
-              SizedBox(height: 20.0),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    //name
-                    TextFormField(
-                      controller: nameController,
-                      style: TextStyle(color: textColor),
-                      decoration: InputDecoration(
-                        labelText: 'Name *',
-                        hintText: 'Enter name for the transaction.',
-                        labelStyle: TextStyle(color: textColor),
-                        hintStyle: TextStyle(color: textColor),
-                      ),
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required!';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-
-                    // Date Picker
-                    InkWell(
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
-                        );
-                        if (pickedDate != null) {
-                          dateController.text =
-                          pickedDate.toLocal().toString().split(' ')[0];
-                        }
-                      },
-                      child: IgnorePointer(
-                        child: TextFormField(
-                          controller: dateController,
-                          style: TextStyle(color: textColor),
-                          decoration: InputDecoration(
-                            labelText: 'Date *',
-                            hintText: 'Select date of the transaction',
-                            labelStyle: TextStyle(color: textColor),
-                            hintStyle: TextStyle(color: textColor),
-                          ),
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'This field is required';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-
-                    // Category Dropdown
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        labelText: 'Category *',
-                        labelStyle: TextStyle(color: textColor),
-                      ),
-                      style: TextStyle(color: textColor),
-                      dropdownColor: Colors.black,
-                      value: selectedCategory,
-                      items: categories.map((category) {
-                        return DropdownMenuItem<String>(
-                          value: category,
-                          child: Text(category),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCategory = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-
-                    // Amount
-                    TextFormField(
-                      controller: amountController,
-                      style: TextStyle(color: textColor),
-                      decoration: InputDecoration(
-                        labelText: 'Amount (CAD)*',
-                        hintText: '00.00',
-                        labelStyle: TextStyle(color: textColor),
-                        hintStyle: TextStyle(color: textColor),
-                      ),
-                      keyboardType:
-                      TextInputType.numberWithOptions(decimal: true),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        // Convert the amount to double before saving to Firebase
-                        if (value != null && value.isNotEmpty) {
-                          amountController.value =
-                          double.parse(value) as TextEditingValue;
-                        }
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-
-                    //Submit button
-                    ElevatedButton(
-                      onPressed: () {
-                        // Validate each field has data before submitting
-                        if (_formKey.currentState!.validate()) {
-                          _saveTransactionToFirebase();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: purpleColor,
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                      ),
-                      child: Text(
-                        'Submit',
-                        style: TextStyle(color: textColor, fontSize: 15),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          currentIndex: 2,
-          onTap: (index) {
-            // Handle bottom navigation bar item taps
-          },
-        )
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 2,
+        onTap: (index) {
+          // Handle bottom navigation bar item taps
+        },
+      )
     );
   }
 
