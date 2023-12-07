@@ -1,7 +1,3 @@
-//Acknowledgments
-//The code in this project was developed with the assistance of an AI tool (cited below)
-//OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
-
 /// File: financial_insights.dart
 /// Description: A Flutter Dart file containing the implementation of A StatefulWidget that
 /// provides financial insights by visualizing transaction data

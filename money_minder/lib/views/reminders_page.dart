@@ -1,5 +1,5 @@
-// reminders_page.dart
-// Defines the RemindersPage widget to manage and display reminders.
+///File: reminders_page.dart
+/// Description: Defines the RemindersPage widget to manage and display reminders.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +12,7 @@ final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
-/// A StatefulWidget that represents the reminders page of the app.
+///A StatefulWidget that represents the reminders page of the app.
 /// Displays a list of reminders with options to add, delete, and view details of reminders.
 class RemindersPage extends StatefulWidget {
   @override
@@ -73,7 +73,6 @@ class _RemindersPageState extends State<RemindersPage> {
   }
 
   ///Search specific reminders based on words in description
-  //logic assisted by chatGPT - OpenAI
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(8.0),

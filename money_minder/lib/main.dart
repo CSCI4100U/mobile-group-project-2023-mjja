@@ -1,5 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+//Acknowledgments
+//The code in this project was developed with the assistance of an AI tool (cited below)
+//OpenAI. (2023). ChatGPT [Large language model]. https://chat.openai.com
+// https://github.com/Coding-Orbit/awesome_notification/blob/main/android/app/src/main/AndroidManifest.xml
+// Used the above link to help build awesome package notifications
+
+
 import 'package:flutter/material.dart';
 
 // models and views import
