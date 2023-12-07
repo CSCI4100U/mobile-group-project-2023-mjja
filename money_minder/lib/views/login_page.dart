@@ -185,6 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                             ));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: purpleColor,
                               content: Text('Invalid email or password'),
                             ));
                           }

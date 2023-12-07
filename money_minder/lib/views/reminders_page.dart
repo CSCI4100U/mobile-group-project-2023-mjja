@@ -84,6 +84,7 @@ class _RemindersPageState extends State<RemindersPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Reminder deleted successfully'),
+        backgroundColor: purpleColor,
         duration: Duration(seconds: 2),
       ),
     );
@@ -351,6 +352,7 @@ class _RemindersPageState extends State<RemindersPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('You have set a new reminder'),
+                    backgroundColor: purpleColor,
                     duration: Duration(seconds: 2),
                   ),
                 );

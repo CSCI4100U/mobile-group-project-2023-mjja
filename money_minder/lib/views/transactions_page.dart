@@ -428,6 +428,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                     // Show a snackbar to indicate the transaction is deleted
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
+                                        backgroundColor: purpleColor,
                                         content: Text('Transaction deleted'),
                                       ),
                                     );
@@ -470,6 +471,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               // Show a snackbar to indicate the transaction is deleted
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
+                                  backgroundColor: purpleColor,
                                   content: Text('Transaction deleted'),
                                 ),
                               );
