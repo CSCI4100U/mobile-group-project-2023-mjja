@@ -2,9 +2,7 @@
 // https://github.com/Coding-Orbit/awesome_notification/blob/main/android/app/src/main/AndroidManifest.xml
 // Used the above link to help build awesome package notifications
 
-///File: notifications_service.dart
-/// Description: Manages notification services using the Awesome Notifications package.
-
+///  Manages notification services using the Awesome Notifications package.
 
 import 'package:money_minder/main.dart';
 import 'package:money_minder/views/reminders_page.dart';
@@ -16,7 +14,8 @@ import 'package:flutter/material.dart';
 class NotificationService {
   // Initializes notification service.
   static Future<void> initializeNotification() async {
-    await AwesomeNotifications().initialize( // Initialize Awesome Notifications with channels and channel groups
+    await AwesomeNotifications().initialize(
+      // Initialize Awesome Notifications with channels and channel groups
       null,
       [
         NotificationChannel(
@@ -55,7 +54,6 @@ class NotificationService {
       onActionReceivedMethod: onActionReceivedMethod,
     );
   }
-
 
   /// when the user taps on a notification or action button
   static Future<void> onActionReceivedMethod(
@@ -108,8 +106,7 @@ class NotificationService {
         timeZone:
         await AwesomeNotifications().getLocalTimeZoneIdentifier(),
         preciseAlarm: true,
-      )
-          : null,
+      ) : null,
     );
   }
 }

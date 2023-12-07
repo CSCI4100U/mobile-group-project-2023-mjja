@@ -1,6 +1,6 @@
-// login page that allows user to enter an email and password to enter into an app.
-// also gives option to Forgot password, takes to password reset page by entering email address
-// Gives option to Sign Up if don't have an account
+/// login page that allows user to enter an email and password to enter into an app.
+/// also gives option to Forgot password, takes to password reset page by entering email address
+/// Gives option to Sign Up if don't have an account
 
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
@@ -127,7 +127,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: textColor,
                           ),
                           onPressed: () {
@@ -164,7 +166,8 @@ class _LoginPageState extends State<LoginPage> {
                           String email = getEmail();
                           String password = getPassword().trim();
 
-                          bool isLoggedIn = await loginDatabase.checkLoginCredentialsFirebase(email, password);
+                          bool isLoggedIn = await loginDatabase
+                              .checkLoginCredentialsFirebase(email, password);
 
                           if (isLoggedIn) {
                             Navigator.of(context).push(MaterialPageRoute(

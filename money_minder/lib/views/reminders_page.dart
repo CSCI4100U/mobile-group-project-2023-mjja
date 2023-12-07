@@ -1,5 +1,4 @@
-///File: reminders_page.dart
-/// Description: Defines the RemindersPage widget to manage and display reminder
+/// Defines the RemindersPage widget to manage and display reminder
 /// and send notifications.
 
 // ## Acknowledgments
@@ -9,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'custom_navigation.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'notifications_service.dart';
 
 //Colour scheme of UI design
@@ -51,7 +49,8 @@ class _RemindersPageState extends State<RemindersPage> {
               SizedBox(width: 8.0),
               Text(
                 "Reminders",
-                style: TextStyle(fontSize: 25.0,
+                style: TextStyle(
+                    fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                     color: textColor), // Adjust styling as needed
               ),
@@ -166,8 +165,7 @@ class _RemindersPageState extends State<RemindersPage> {
                 style: TextStyle(color: textColor),
               ),
               subtitle: Text(
-                'Due on ${DateFormat('yyyy-MM-dd – kk:mm').format(
-                    reminder.dueDate)}',
+                'Due on ${DateFormat('yyyy-MM-dd – kk:mm').format(reminder.dueDate)}',
                 style: TextStyle(color: Colors.grey[400]),
               ),
               trailing: Icon(Icons.arrow_forward_ios, color: Colors.white),
@@ -191,8 +189,7 @@ class _RemindersPageState extends State<RemindersPage> {
               children: <Widget>[
                 Text('Description: ${reminder.description}'),
                 Text(
-                    'Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(
-                        reminder.dueDate)}'),
+                    'Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(reminder.dueDate)}'),
               ],
             ),
           ),
@@ -273,6 +270,7 @@ class _RemindersPageState extends State<RemindersPage> {
         }
       }
     }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -302,8 +300,7 @@ class _RemindersPageState extends State<RemindersPage> {
                 ),
                 ListTile(
                   title: Text(
-                      'Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(
-                          dueDate)}'),
+                      'Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(dueDate)}'),
                   trailing: Icon(Icons.calendar_today),
                   onTap: () {
                     _selectDateTime(context).then((_) {});
@@ -364,6 +361,7 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 }
+
 /// A class representing a reminder.
 /// Contains the reminder ID, title, description, urgency flag, completion status, and due date of the reminder.
 class Reminder {

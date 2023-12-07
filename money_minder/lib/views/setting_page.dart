@@ -1,5 +1,4 @@
-/// File: settings_page.dart
-/// Description: A Flutter Dart file containing the implementation of the 'Settings' widget.
+/// containing the implementation of the 'Settings' widget.
 /// The widget displays the user settings of MoneyMinder
 
 import 'package:flutter/material.dart';
