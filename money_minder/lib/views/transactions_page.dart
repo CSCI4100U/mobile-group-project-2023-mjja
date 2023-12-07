@@ -3,9 +3,13 @@
 ///   Export button to save transactions as CSV
 ///   Allows sorting by:
 ///     - All transactions, only incomes, only expenses
-///     - All trasactions between range of dates selected from date picker
+///     - All transactions between range of dates selected from date picker
 ///   All the past transactions - name, category, amount, and, date directly from Firebase
 
+// ## Acknowledgments
+// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
+
+//all necessary imports
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/transaction_model.dart';
@@ -15,7 +19,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// Default UI features
+/// Default UI features and colours
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
@@ -165,6 +169,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  /// Fetch transactions list
   Future<void> _fetchAndSetExpenses() async {
     final List<Transaction_data> transactions = await _fetchExpensesFromFirestore();
     setState(() {
@@ -174,6 +179,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   /// Method called when exporting the transactions.
   /// Converts teh list of transactions into a CSV file
+  // Transaction information conversion was developed with the assistance of ChatGPT - OpenAI
   String _convertTransactionsToCsv(List<Transaction_data> transactions) {
     StringBuffer csvBuffer = StringBuffer();
     csvBuffer.writeln("ID,Name,Category,Amount,Date");
@@ -189,12 +195,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
     List<Transaction_data> transactions = await _fetchExpensesFromFirestore();
     String csvData = _convertTransactionsToCsv(transactions);
 
-    final directory = await getTemporaryDirectory(); // Use temporary directory for temporary file
+    // Use temporary directory for temporary file
+    final directory = await getTemporaryDirectory();
     final path = '${directory.path}/transactions.csv';
     final file = File(path);
     await file.writeAsString(csvData);
 
-    // Share the file with any app that can handle it
+    // Share the file with gmail and google drive
     Share.shareFiles([path], text: 'Here are your transactions in CSV format');
   }
 
@@ -299,11 +306,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text('Recent Transactions',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white,),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: textColor,),
           ),
           IconButton(
             // date picker to filter the transaction based on a range of dates.
-            icon: Icon(Icons.date_range, color: Colors.white),
+            icon: Icon(Icons.date_range, color: textColor),
             onPressed: () async {
               DateTimeRange? pickedRange = await showCustomDateRangePicker(
                 context: context,
@@ -391,7 +398,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white
+                            color: textColor
                         ),
                       ),
                     ),
