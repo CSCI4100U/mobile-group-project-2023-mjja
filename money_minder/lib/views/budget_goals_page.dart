@@ -239,7 +239,7 @@ class _GoalsPageState extends State<GoalsPage> {
           _addNewGoal();
         },
         tooltip: 'Add Goal',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
         backgroundColor: purpleColor,
       ),
       bottomNavigationBar: CustomBottomNavigationBar(

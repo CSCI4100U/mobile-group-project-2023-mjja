@@ -59,7 +59,7 @@ class _RemindersPageState extends State<RemindersPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddReminderDialog(context),
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white,),
         backgroundColor: purpleColor,
       ),
       bottomNavigationBar: CustomBottomNavigationBar(

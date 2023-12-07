@@ -1,8 +1,10 @@
-// ## Acknowledgments
-// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
-
-// the first page after signing into the app
-/// shows all the past transactions
+/// Displays:
+///   Total balance: TotalIncome - Total Expense
+///   Export button to save transactions as CSV
+///   Allows sorting by:
+///     - All transactions, only incomes, only expenses
+///     - All trasactions between range of dates selected from date picker
+///   All the past transactions - name, category, amount, and, date directly from Firebase
 
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -116,7 +118,7 @@ class TransactionsPage extends StatefulWidget {
   _TransactionsPageState createState() => _TransactionsPageState();
 }
 
-/// Displays all the past transactions along with the amount and category, and categorized based on dates
+/// Displays all the past transactions
 class _TransactionsPageState extends State<TransactionsPage> {
   String _selectedTransactionType = 'All'; // Default selection
   DateTimeRange? _selectedDateRange;
@@ -252,7 +254,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center, // Left align the buttons
+        mainAxisAlignment: MainAxisAlignment.start, // Left align the buttons
         children: <Widget>[
           _transactionTypeButton('All'),
           SizedBox(width: 4),
@@ -341,9 +343,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
               bool isIncome = _selectedTransactionType == 'Income';
               transactions = transactions
                   .where((tx) =>
-                    (isIncome && tx.category == 'Income') ||
-                    (!isIncome && tx.category != 'Income'))
-                .toList();
+              (isIncome && tx.category == 'Income') ||
+                  (!isIncome && tx.category != 'Income'))
+                  .toList();
             }
 
             // Filter transactions based on the selected date range
@@ -351,13 +353,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
               transactions = transactions.where((tx) {
                 DateTime txDate = tx.date!;
                 return (txDate.isAfter(_selectedDateRange!.start) ||
-                  txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
-                  (txDate.isBefore(_selectedDateRange!.end.add(Duration(days: 1))) ||
-                      txDate.isAtSameMomentAs(_selectedDateRange!.end));
+                    txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
+                    (txDate.isBefore(_selectedDateRange!.end.add(Duration(days: 1))) ||
+                        txDate.isAtSameMomentAs(_selectedDateRange!.end));
               }).toList();
             }
 
-          // Group transactions by date to display on the screen
+            // Group transactions by date to display on the screen
             Map<String, List<Transaction_data>> groupedTransactions = {};
             for (var transaction in transactions) {
               String formattedDate = DateFormat('yyyy-MM-dd').format(transaction.date!);
@@ -392,66 +394,66 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             color: Colors.white
                         ),
                       ),
-                  ),
+                    ),
 
                     // show info about each transaction, categorized date wise
                     ...dailyTransactions.map((transaction) {
                       // allows to delete any particular transaction with a swipe or a by clicking on a popup menu that appears when clicking on the transaction.
-                        return GestureDetector(
-                          onTap: () async {
-                            await showMenu(
-                              context: context,
-                              position: RelativeRect.fromLTRB(0, 50, 0, 0),
-                              items: [
-                                PopupMenuItem(
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                    ),
-                                    title: Text('Delete'),
-                                    onTap: () { // Remove the item from the database and update the UI
-                                      _expenseDatabase.deleteTransactions(transaction.id!);
-                                      setState(() {
-                                        _transactions.remove(transaction);
-                                      });
-
-                                      // Show a snackbar to indicate the transaction is deleted
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text('Transaction deleted'),
-                                        ),
-                                      );
-                                      Navigator.pop(context); // Close the menu
-                                    },
+                      return GestureDetector(
+                        onTap: () async {
+                          await showMenu(
+                            context: context,
+                            position: RelativeRect.fromLTRB(0, 50, 0, 0),
+                            items: [
+                              PopupMenuItem(
+                                child: ListTile(
+                                  leading: Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
                                   ),
+                                  title: Text('Delete'),
+                                  onTap: () { // Remove the item from the database and update the UI
+                                    _expenseDatabase.deleteTransactions(transaction.id!);
+                                    setState(() {
+                                      _transactions.remove(transaction);
+                                    });
+
+                                    // Show a snackbar to indicate the transaction is deleted
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Transaction deleted'),
+                                      ),
+                                    );
+                                    Navigator.pop(context); // Close the menu
+                                  },
                                 ),
-                              ],
-                              elevation: 8.0,
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black,
-                                  width: 1.0,
+                              ),
+                            ],
+                            elevation: 8.0,
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.black,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: Dismissible(key: Key(transaction.id!),
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                            child: Dismissible(key: Key(transaction.id!),
-                              background: Container(
-                                color: Colors.red,
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              onDismissed: (direction) {
+                            onDismissed: (direction) {
                               // Remove the item from the database and update the UI
                               _expenseDatabase.deleteTransactions(transaction.id!);
                               setState(() {
@@ -465,43 +467,43 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 ),
                               );
                             },
-                              child: ListTile(
-                                tileColor: Colors.white,
-                                // design for icon for transactions
-                                leading: CircleAvatar(
-                                  backgroundColor: Color(0xFFFFECB3),
-                                  child: Icon(transaction.getIcon(), color: Colors.black),
-                                ),
-                                title: Text( // displays name of the transaction
-                                  transaction.name,
-                                  style: TextStyle(
+                            child: ListTile(
+                              tileColor: Colors.white,
+                              // design for icon for transactions
+                              leading: CircleAvatar(
+                                backgroundColor: Color(0xFFFFECB3),
+                                child: Icon(transaction.getIcon(), color: Colors.black),
+                              ),
+                              title: Text( // displays name of the transaction
+                                transaction.name,
+                                style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
-                                ),
-                                subtitle: Text( // adds category of transaction
-                                  'Category: ${transaction.category}',
-                                  style: TextStyle(color: Colors.blueGrey),
-                                ),
-                                trailing: Text( // shows amount of the transaction
-                                  '${transaction.category == 'Income' ? '+' : '-'}\$${transaction.amount?.toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    color: transaction.category == 'Income'
-                                        ? Colors.green
-                                        : Colors.red,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              subtitle: Text( // adds category of transaction
+                                'Category: ${transaction.category}',
+                                style: TextStyle(color: Colors.blueGrey),
+                              ),
+                              trailing: Text( // shows amount of the transaction
+                                '${transaction.category == 'Income' ? '+' : '-'}\$${transaction.amount?.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  color: transaction.category == 'Income'
+                                      ? Colors.green
+                                      : Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                           ),
-                        );
+                        ),
+                      );
                     }).toList(),
                   ],
                 );
               },
-              );
+            );
           }
         }
     );
