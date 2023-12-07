@@ -1,3 +1,8 @@
+/// File: custom_navigation.dart
+/// Description: A Flutter Dart file containing the implementation of the 'CustomNavigation' widget.
+/// The widget displays the cutsom appbar and custom buttom navigation bar which
+/// will be  used by all other pages(screens).
+
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import 'reminders_page.dart';
@@ -7,15 +12,16 @@ import 'setting_page.dart';
 import 'financial_insights.dart';
 import 'budget_goals_page.dart';
 
+
+///class to implement the Custom App Bar for header of app
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: Builder(
 
-        // the routes to different pages
+        // routes to different pages
         // from the popup menu that appears when clicking on the hamburger icon on the top left of the app.
-
       builder: (context) => PopupMenuButton(
           icon: Icon(Icons.menu, color: Colors.white),
           color: Colors.black,
@@ -37,7 +43,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           height: 40,
           width: 80,
-          child: Image.asset(
+          child: Image.asset( //adds logo
             'assets/logo.png',
             fit: BoxFit.fitHeight,
           ),
@@ -49,7 +55,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: Icon(Icons.person, color: Colors.white),
           onPressed: () {
-            // Navigate to the ProfilePage when the icon is selected
+            // Navigate to the Settings page when the icon is clicked
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => SettingsPage()),
@@ -67,7 +73,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  //method to design the hamburger popup menu
+  ///Method to design and implement the hamburger popup menu
   PopupMenuItem _buildPopupMenuItem(IconData icon, String text, Widget destination, BuildContext context) {
     return PopupMenuItem(
       child: Column(
@@ -104,7 +110,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           ),
-          Divider(color: Colors.white), // White horizontal line
+          Divider(color: Colors.white), // White horizontal line (to seperate)
         ],
       ),
     );
@@ -114,7 +120,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
-//class for the bottom nav bar
+///Class for custom bottom navigation bar widget for footer of the app
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -124,6 +130,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      //builds the bottom bar with icons and labels
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -150,10 +157,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
       selectedItemColor: Color(0xFF5E17EB),
       unselectedItemColor: Colors.grey,
       onTap: (index) {
-        // Call the onTap function provided when creating the widget
+        // Call the onTap function when creating
         onTap(index);
 
-        // logic to navigate to specific pages based on the selected index
+        // logic to navigate to specific pages based on index
         switch (index) {
           case 0:
             // Navigate to the Home page

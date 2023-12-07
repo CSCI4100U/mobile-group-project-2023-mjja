@@ -1,5 +1,6 @@
 ///File: reminders_page.dart
-/// Description: Defines the RemindersPage widget to manage and display reminders.
+/// Description: Defines the RemindersPage widget to manage and display reminder
+/// and send notifications.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,12 +26,12 @@ class _RemindersPageState extends State<RemindersPage> {
   List<Reminder> reminders = [];
   String searchQuery = '';
 
+  ///Initialize notifications
   @override
   void initState() {
     super.initState();
     NotificationService.initializeNotification(); // Initialize notifications
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,7 @@ class _RemindersPageState extends State<RemindersPage> {
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 3,
-        onTap: (index) {
-        },
+        onTap: (index) {},
       ),
     );
   }
@@ -96,11 +96,15 @@ class _RemindersPageState extends State<RemindersPage> {
     );
   }
 
+  ///Method that creates a Widget that display a list of of reminders
   Widget _buildReminderList(BuildContext context, {required bool urgentOnly}) {
     final filteredReminders = reminders
-        .where((reminder) => (urgentOnly ? reminder.isUrgent : true) &&
-        (reminder.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
-            reminder.description.toLowerCase().contains(searchQuery.toLowerCase())))
+        .where((reminder) =>
+            (urgentOnly ? reminder.isUrgent : true) &&
+            (reminder.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+                reminder.description
+                    .toLowerCase()
+                    .contains(searchQuery.toLowerCase())))
         .toList();
 
     return ListView.builder(
@@ -124,13 +128,18 @@ class _RemindersPageState extends State<RemindersPage> {
 
           //display reminders list as a card design with the reminder name and due date
           // UI design for card assisted by chatGPT - OpenAI
-          child: Card( // Using Card for better UI
+          child: Card(
+            // Using Card for better UI
             color: Colors.grey[850],
             margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: ListTile(
               leading: Icon(
-                reminder.completed ? Icons.check_circle : (reminder.isUrgent ? Icons.warning : Icons.task_alt),
-                color: reminder.completed ? Colors.green : (reminder.isUrgent ? Colors.red : Colors.grey),
+                reminder.completed
+                    ? Icons.check_circle
+                    : (reminder.isUrgent ? Icons.warning : Icons.task_alt),
+                color: reminder.completed
+                    ? Colors.green
+                    : (reminder.isUrgent ? Colors.red : Colors.grey),
               ),
               title: Text(
                 reminder.title,
@@ -160,22 +169,21 @@ class _RemindersPageState extends State<RemindersPage> {
             child: ListBody(
               children: <Widget>[
                 Text('Description: ${reminder.description}'),
-                Text('Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(reminder.dueDate)}'),
+                Text(
+                    'Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(reminder.dueDate)}'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel',
-                  style: TextStyle(color: purpleColor)),
+              child: Text('Cancel', style: TextStyle(color: purpleColor)),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             TextButton(
               // complete button to be pressed by user
-              child: Text('Completed',
-                style: TextStyle(color: purpleColor)),
+              child: Text('Completed', style: TextStyle(color: purpleColor)),
               onPressed: () {
                 setState(() {
                   reminder.completed = true;
@@ -242,10 +250,11 @@ class _RemindersPageState extends State<RemindersPage> {
         }
       }
     }
+
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-      return AlertDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
           title: Text('Add New Reminder'),
           content: SingleChildScrollView(
             child: ListBody(
@@ -270,66 +279,64 @@ class _RemindersPageState extends State<RemindersPage> {
                   },
                 ),
                 ListTile(
-                  title: Text('Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(dueDate)}'),
+                  title: Text(
+                      'Due Date: ${DateFormat('yyyy-MM-dd – kk:mm').format(dueDate)}'),
                   trailing: Icon(Icons.calendar_today),
                   onTap: () {
-                    _selectDateTime(context).then((_) {
-                    });
+                    _selectDateTime(context).then((_) {});
                   },
                 ),
               ],
             ),
           ),
           actions: <Widget>[
-      TextButton(
-      child: Text('Cancel', style: TextStyle(color: purpleColor)),
-    onPressed: () {
-    Navigator.of(context).pop(); // Close the dialog
-    },
-    ),
-    TextButton(
-    child: Text('Done', style: TextStyle(color: purpleColor)),
-    onPressed: () {
-    setState(() {
-    var newReminder = Reminder(
-    title: title,
-    description: description,
-    isUrgent: isUrgent,
-    dueDate: dueDate,
-    );
-    reminders.add(newReminder);
-    // Calculate time difference between current time and 1 day before the due date
-    final timeDifference = dueDate.subtract(Duration(days: 1)).difference(DateTime.now());
-    final secondsBeforeDueDate = timeDifference.inSeconds;
+            TextButton(
+              child: Text('Cancel', style: TextStyle(color: purpleColor)),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Done', style: TextStyle(color: purpleColor)),
+              onPressed: () {
+                setState(() {
+                  var newReminder = Reminder(
+                    title: title,
+                    description: description,
+                    isUrgent: isUrgent,
+                    dueDate: dueDate,
+                  );
+                  reminders.add(newReminder);
+                  // Calculate time difference between current time and 1 day before the due date
+                  final timeDifference = dueDate
+                      .subtract(Duration(days: 1))
+                      .difference(DateTime.now());
+                  final secondsBeforeDueDate = timeDifference.inSeconds;
 
-    // Schedule the notification 1 day before the due date
-    NotificationService.showNotification(
-      title: 'Reminder',
-      body: 'Your reminder is due tomorrow: $title',
-      payload: {'navigate': 'true'},
-      scheduled: true,
-      interval: secondsBeforeDueDate,
-    );
+                  //Schedule the notification 1 day before the due date
+                  NotificationService.showNotification(
+                    title: 'Reminder',
+                    body: 'Your reminder is DUE tomorrow!: $title',
+                    payload: {'navigate': 'true'},
+                    scheduled: true,
+                    interval: secondsBeforeDueDate,
+                  );
+                });
+                Navigator.of(context).pop(); // Close the dialog
 
-
-    });
-    Navigator.of(context).pop(); // Close the dialog
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('You have set a new reminder'),
-        duration: Duration(seconds: 2),
-
-      ),
-    );
-    },
-    ),
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('You have set a new reminder'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              },
+            ),
           ],
-      );
-        },
+        );
+      },
     );
   }
-
 }
 
 /// A class representing a reminder.

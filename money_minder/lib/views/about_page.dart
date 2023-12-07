@@ -15,7 +15,7 @@ class AboutPage extends StatefulWidget {
 }
 
 /// The state class associated with the AboutPage widget.
-/// It contains the implementation for fetching and displaying package information.
+/// It contains the implementation for getting and displaying package information.
 class _AboutPageState extends State<AboutPage> {
   final Color backgroundColor = Colors.black;
   final Color textColor = Colors.white;
@@ -97,7 +97,6 @@ class _AboutPageState extends State<AboutPage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 4,
         onTap: (index) {
-          // Handle bottom navigation bar item taps
         },
       ),
     );

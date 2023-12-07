@@ -5,13 +5,12 @@ class PrivacySecurityPage extends StatefulWidget {
   _PrivacySecurityPageState createState() => _PrivacySecurityPageState();
 }
 
+// Default UI features (color theme)
 final Color backgroundColor = Colors.black;
 final Color textColor = Colors.white;
 final Color purpleColor = Color(0xFF5E17EB);
 
 class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
-  bool isFeatureEnabled = false; // Example switch state
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +26,11 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
             title: Text('Privacy Policy', style: TextStyle(fontWeight: FontWeight.bold, color: textColor)),
             subtitle: Text('We collect information that you provide directly to'
                 ' us when you create an account, use our financial tracking and '
-                'management services, or communicate with us. T'
-                'his may include:'
+                'management services, or communicate with us. This may include:'
                 'Personal identification information (name, email address, phone number).'
-            'Financial data (income, expenses, bank account details, transaction history).'
-          'Device information (IP address, operating system, browser type).', style: TextStyle(color: textColor)),
+                'Financial data (income, expenses, bank account details, transaction history).'
+                'Device information (IP address, operating system, browser type).',
+                style: TextStyle(color: textColor)),
             onTap: () {
               //
             },
@@ -43,7 +42,7 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
                 'management services. Please read them carefully before accessing '
                 'or using our app.', style: TextStyle(color: textColor)),
             onTap: () {
-              // Navigate to Terms of Service Page
+              // no navigation
             },
           ),
           ListTile(
@@ -54,7 +53,7 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
                 ' By using our app, you consent to these practices as described in '
                 'our Privacy Policy', style: TextStyle(color: textColor)),
             onTap: () {
-              // Navigate to Data Usage Policy Page
+              // no navigation
             },
           ),
           Divider(),
@@ -65,12 +64,10 @@ class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8),
             child: Text(
-              'Detailed information about privacy and security can be found at '
-                  'our webiste',
+              'Detailed information about privacy and security can be found at our webiste',
               style: TextStyle(fontSize: 16, color: textColor),
             ),
           ),
-          // Add more widgets as needed for additional information
         ],
       ),
     );
