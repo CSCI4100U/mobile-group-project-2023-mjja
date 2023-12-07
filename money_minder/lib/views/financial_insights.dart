@@ -6,6 +6,9 @@
 /// - A pie chart for expenses, categorized by the type of expense.
 /// - A bar chart for income and expenses, grouped by week.
 
+// ## Acknowledgments
+// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
+
 // All imports
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
