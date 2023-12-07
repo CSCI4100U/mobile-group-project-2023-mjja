@@ -64,9 +64,13 @@ The developers of this application aim to provide users with a comprehensive too
 
 Contribution of Each Member
 [Jahanvi Mathukia]: [Describe the contributions, tasks, or roles of this member.]
+
 [Aanisha Newaz]: [Worked on designing the user interface of the following pages: Financial Insights, Reminders, Budget goals. Worked on functionalities: Snackbar implementations, file sharing functionality, data visualizing using graphs, multiple pages/navigations, dialogs and pickers to create new reminders, goals, and add new transactions.]
+
 [Jessica Patel]: [Worked on the user interface of the MoneyMinder application, more specifically worked on the following pages: Landing Page, Sign-In, Sign up, Home(transactions), Add transactions, Reminders, Settings, About, Privacy and security, Help & Support. Worked on functionalities: Notifications, custom navigation (app header and footer), multiple screen navigation, dialogs, and pickers for different pages.]
+
 [Mnasi Patel]: [Contributions]
+
 [Ethan Randle-Bragg]: [Contributions]
 
 ## How to run:
