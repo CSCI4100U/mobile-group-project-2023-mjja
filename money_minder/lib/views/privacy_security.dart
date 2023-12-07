@@ -1,4 +1,13 @@
+/// File: privacy_security.dart
+/// Description: A Flutter Dart file containing the implementation of the 'PrivacySecurity' widget.
+/// The widget displays information about Privacy and Security about MoneyMinder
+///
+/// Includes:
+/// Privacy Policy, Terms & Conditions, Data Usage Policy
+
 import 'package:flutter/material.dart';
+
+
 
 class PrivacySecurityPage extends StatefulWidget {
   @override
@@ -10,6 +19,8 @@ final Color backgroundColor = Colors.black;
 final Color textColor = Colors.white;
 final Color purpleColor = Color(0xFF5E17EB);
 
+
+///Class that displays the Privacy and Security information
 class _PrivacySecurityPageState extends State<PrivacySecurityPage> {
   @override
   Widget build(BuildContext context) {
