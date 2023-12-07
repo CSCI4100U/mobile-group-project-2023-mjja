@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool _isObscure = true; // Initially, password is obscured
+  bool _isPasswordVisible = false;
 
   // Email regex pattern for validation
   final RegExp emailRegex = RegExp(
@@ -126,23 +126,20 @@ class _LoginPageState extends State<LoginPage> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: textColor),
                         ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                            color: textColor,
+                          ),
+                          onPressed: () {
                             setState(() {
-                              _isObscure = !_isObscure;
+                              _isPasswordVisible = !_isPasswordVisible;
                             });
                           },
-                          child: Icon(
-                            _isObscure
-                            ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: textColor,
-                          )
                         ),
                       ),
-
                       style: TextStyle(color: textColor),
-                      obscureText: true,
+                      obscureText: !_isPasswordVisible,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Password is required';

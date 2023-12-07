@@ -10,6 +10,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
+  bool _isPasswordVisible = false;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Color backgroundColor = Colors.black;
@@ -176,8 +179,19 @@ class _SignUpPageState extends State<SignUpPage> {
                             labelStyle: TextStyle(color: textColor),
                             enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
                             focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                color: textColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Password is required';

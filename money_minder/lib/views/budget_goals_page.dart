@@ -188,20 +188,10 @@ class _GoalsPageState extends State<GoalsPage> {
             SizedBox(height: 20),
           Row(
             children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.grey), // Adjust color accordingly
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => TransactionsPage()),
-                  );
-
-                },
-              ),
               SizedBox(width: 8.0),
               Text(
-                "        Budget Goals",
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: purpleColor), // Adjust styling as needed
+                "Budget Goals",
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white), // Adjust styling as needed
               ),
             ],
           ),

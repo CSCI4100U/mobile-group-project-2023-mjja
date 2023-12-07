@@ -39,7 +39,18 @@ class _RemindersPageState extends State<RemindersPage> {
       appBar: CustomAppBar(),
       backgroundColor: Colors.black,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 20),
+          Row(
+            children: <Widget>[
+              SizedBox(width: 8.0),
+              Text(
+                "Reminders",
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.white), // Adjust styling as needed
+              ),
+            ],
+          ),
           _buildSearchBar(),
           Expanded(
             child: _buildReminderList(context, urgentOnly: false),
@@ -79,7 +90,7 @@ class _RemindersPageState extends State<RemindersPage> {
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search Reminders',
-          fillColor: Colors.white24,
+          fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
