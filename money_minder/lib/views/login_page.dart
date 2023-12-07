@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import '../models/login_model.dart';
 import 'sign_up.dart';
-import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -155,18 +154,6 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     SizedBox(height: 24.0),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ForgotPasswordPage(),
-                        ));
-                      },
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: purpleColor,
