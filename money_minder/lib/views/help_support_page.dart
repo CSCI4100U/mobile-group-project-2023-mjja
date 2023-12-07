@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 
 final Color backgroundColor = Colors.black;
-final Color purpleColor =
-Color(0xFF5E17EB);
+final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
 class HelpSupportPage extends StatelessWidget {

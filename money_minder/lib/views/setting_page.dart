@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/landing_page.dart';
 import 'custom_navigation.dart';
 import 'privacy_security.dart';
-import 'profile_page.dart';
 import 'about_page.dart';
 import 'help_support_page.dart';
 
@@ -17,11 +16,13 @@ class _SettingsPageState extends State<SettingsPage> {
   final Color textColor = Colors.white;
   final Color purpleColor = Color(0xFF5E17EB);
 
-  void _handleLogout() {
+  // Controllers for getting user input
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
+  void _handleLogout() {
     Navigator.of(context).pushReplacementNamed('/login'); // Assuming '/login' is your login route
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +31,6 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: CustomAppBar(),
       body: ListView(
         children: <Widget>[
-          ListTile(
-            title: Text('Account', style: TextStyle(color: textColor,  fontWeight: FontWeight.bold,)),
-            subtitle: Text('Manage your account', style: TextStyle(color: Colors.grey)),
-            onTap: () {
-              // Add logic to navigate to account settings
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ProfilePage(),
-              ));
-
-            },
-            trailing: Icon(Icons.arrow_forward_ios, color: textColor),
-          ),
           ListTile(
             title: Text('About', style: TextStyle(color: textColor,  fontWeight: FontWeight.bold,)),
             onTap: () {

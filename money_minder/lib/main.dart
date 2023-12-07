@@ -25,7 +25,6 @@ import 'views/reminders_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initializeNotification();
   runApp(MyApp());
 }

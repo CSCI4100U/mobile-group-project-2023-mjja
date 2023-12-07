@@ -2,28 +2,23 @@
 // The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
 
 // the first page after signing into the app
-//shows all the past transactions
-//shows option to add transaction for new user
+/// shows all the past transactions
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/transaction_model.dart';
 import 'custom_navigation.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_date_pickers/flutter_date_pickers.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import '../data/localDB/transaction.dart';
-
-//for saving transaction data
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'package:share_plus/share_plus.dart';
-import 'package:share_extend/share_extend.dart';
 
+/// Default UI features
 final Color backgroundColor = Colors.black;
-final Color purpleColor =
-Color(0xFF5E17EB);
+final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
+/// Transaction_data class to initialize all required variables
 class Transaction_data{
   String? id;
   late String name;
@@ -64,15 +59,13 @@ class Transaction_data{
   }
 }
 
-
-//method to show expenses between date range selected
+/// Method to show transactions between date range selected from the date picker
 Future<DateTimeRange?> showCustomDateRangePicker({
   required BuildContext context,
   required DateTime firstDate,
   required DateTime lastDate,
   DateTimeRange? initialDateRange,
 }) async {
-
   DateTimeRange? pickedRange;
 
   return showDialog<DateTimeRange>(
@@ -83,7 +76,8 @@ Future<DateTimeRange?> showCustomDateRangePicker({
           width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
           height: MediaQuery.of(context).size.height * 0.5, // 50% of screen height
 
-          child: SfDateRangePicker(//Date picker to classify the transactions based on dates
+          child: SfDateRangePicker(
+            //Date picker to classify the transactions based on dates
             selectionMode: DateRangePickerSelectionMode.range,
             initialSelectedRange: PickerDateRange(
               initialDateRange?.start ?? firstDate,
@@ -122,11 +116,12 @@ class TransactionsPage extends StatefulWidget {
   _TransactionsPageState createState() => _TransactionsPageState();
 }
 
+/// Displays all the past transactions along with the amount and category, and categorized based on dates
 class _TransactionsPageState extends State<TransactionsPage> {
   String _selectedTransactionType = 'All'; // Default selection
   DateTimeRange? _selectedDateRange;
   final TransactionDatabase _expenseDatabase = TransactionDatabase();
-  List<Transaction_data> _transactions = [];
+  List<Transaction_data> _transactions = []; // initializing the transaction list
 
   @override
   void initState() {
@@ -134,37 +129,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
     _fetchAndSetExpenses(); // Fetch and set the expenses when the widget is initialized
   }
 
-  Future<void> _fetchAndSetExpenses() async {
-    final List<Transaction_data> expenses = await _fetchExpensesFromFirestore();
-    setState(() {
-      _transactions = expenses;
-    });
-  }
-
-  String _convertTransactionsToCsv(List<Transaction_data> transactions) {
-    StringBuffer csvBuffer = StringBuffer();
-    csvBuffer.writeln("ID,Name,Category,Amount,Date");
-    for (var transaction in transactions) {
-      csvBuffer.writeln('"${transaction.id}","${transaction.name}","${transaction.category}",'
-          '"${transaction.amount}","${DateFormat('yyyy-MM-dd').format(transaction.date!)}"');
+  /// Fetches all the transaction data entered in add_transaction form from Firebase to fill out the UI.
+  Future<List<Transaction_data>> _fetchExpensesFromFirestore() async {
+    try {
+      return await _expenseDatabase.readAllTransactions();
+    } catch (e) {
+      print('Error fetching expenses from Firestore: $e');
+      return [];
     }
-    return csvBuffer.toString();
   }
-
-  // Function to share the CSV file to external apps
-  Future<void> _shareCsvFile() async {
-    List<Transaction_data> expenses = await _fetchExpensesFromFirestore();
-    String csvData = _convertTransactionsToCsv(expenses);
-
-    final directory = await getTemporaryDirectory(); // Use temporary directory for temporary file
-    final path = '${directory.path}/expenses.csv';
-    final file = File(path);
-    await file.writeAsString(csvData);
-
-    // Share the file with any app that can handle it
-    Share.shareFiles([path], text: 'Here are your expenses in CSV format');
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +146,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
       backgroundColor: Colors.black,
       body: SingleChildScrollView( // This makes your column scrollable
         child: Column(
-          children: <Widget>[
+          children: <Widget>[ // Different build widgets for different sections of the screen
             _buildTotalBalanceCard(_transactions),
             _buildTransactionTypeButtons(),
             _buildRecentTransactionsTitle(),
@@ -190,6 +163,40 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  Future<void> _fetchAndSetExpenses() async {
+    final List<Transaction_data> transactions = await _fetchExpensesFromFirestore();
+    setState(() {
+      _transactions = transactions;
+    });
+  }
+
+  /// Method called when exporting the transactions.
+  /// Converts teh list of transactions into a CSV file
+  String _convertTransactionsToCsv(List<Transaction_data> transactions) {
+    StringBuffer csvBuffer = StringBuffer();
+    csvBuffer.writeln("ID,Name,Category,Amount,Date");
+    for (var transaction in transactions) {
+      csvBuffer.writeln('"${transaction.id}","${transaction.name}","${transaction.category}",'
+          '"${transaction.amount}","${DateFormat('yyyy-MM-dd').format(transaction.date!)}"');
+    }
+    return csvBuffer.toString();
+  }
+
+  /// Function to share the CSV file to external apps(Google Drive and Email)
+  Future<void> _shareCsvFile() async {
+    List<Transaction_data> transactions = await _fetchExpensesFromFirestore();
+    String csvData = _convertTransactionsToCsv(transactions);
+
+    final directory = await getTemporaryDirectory(); // Use temporary directory for temporary file
+    final path = '${directory.path}/transactions.csv';
+    final file = File(path);
+    await file.writeAsString(csvData);
+
+    // Share the file with any app that can handle it
+    Share.shareFiles([path], text: 'Here are your transactions in CSV format');
+  }
+
+  /// Shows the total balance left at the top by calculating totalIncome - totalExpenses, also allows exporting of the transactions.
   Widget _buildTotalBalanceCard(List<Transaction_data> transactions) {
     double totalIncome = 0.0;
     double totalExpense = 0.0;
@@ -217,7 +224,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Total Balance', style: TextStyle(color: Colors.black)),
+                  Text('Total Balance:', style: TextStyle(color: Colors.black)),
                   Text('\$${totalBalance.toStringAsFixed(2)}',
                       style: TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold, color: purpleColor)
@@ -240,23 +247,24 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
-  // Function to build transaction type buttons with left alignment and smaller size
+  /// Builds transaction type buttons, which when clicked on, changes the Transaction list
   Widget _buildTransactionTypeButtons() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start, // Left align the buttons
+        mainAxisAlignment: MainAxisAlignment.center, // Left align the buttons
         children: <Widget>[
           _transactionTypeButton('All'),
-          SizedBox(width: 4), // Reduced space between the buttons
+          SizedBox(width: 4),
           _transactionTypeButton('Income'),
-          SizedBox(width: 4), // Reduced space between the buttons
+          SizedBox(width: 4),
           _transactionTypeButton('Expense'),
         ],
       ),
     );
   }
 
+  /// Changes the design of buttons when clicked on it and pass the selected type to filter the transactions
   Widget _transactionTypeButton(String type) {
     bool isSelected = _selectedTransactionType == type;
     return ElevatedButton(
@@ -280,9 +288,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  /// Builds the "Recent Transaction" title and shows a date picker icon, which allows to select a date range, and update UI based on date range
   Widget _buildRecentTransactionsTitle() {
     return Container(
-      color: Colors.black, // Set the background color
+      color: Colors.black,
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,8 +321,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  /// Builds the transactions list, also updates it when the user enters new transactions
   Widget _buildRecentTransactionList() {
-    print("build transaction list is called");
     return FutureBuilder<List<Transaction_data>>(
         future: _fetchExpensesFromFirestore(),
         builder: (context, snapshot) {
@@ -323,122 +332,178 @@ class _TransactionsPageState extends State<TransactionsPage> {
             return Text('Error: ${snapshot.error}');
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Text('No transactions available.');
-          } else {
+          }
+          else {
             List<Transaction_data> transactions = snapshot.data ?? [];
 
-    // Filter transactions based on the selected type i.e. All, Icome or Expense
-    if (_selectedTransactionType != 'All') {
-      bool isIncome = _selectedTransactionType == 'Income';
-      transactions = transactions
-          .where((tx) =>
-              (isIncome && tx.category == 'Income') ||
-              (!isIncome && tx.category != 'Income'))
-          .toList();
-    }
+            // Filter transactions based on the selected type i.e. All, Income or Expense
+            if (_selectedTransactionType != 'All') {
+              bool isIncome = _selectedTransactionType == 'Income';
+              transactions = transactions
+                  .where((tx) =>
+                    (isIncome && tx.category == 'Income') ||
+                    (!isIncome && tx.category != 'Income'))
+                .toList();
+            }
 
-    // Filter transactions based on the selected date range
-    if (_selectedDateRange != null) {
-      transactions = transactions.where((tx) {
-        DateTime txDate = tx.date!;
-        return (txDate.isAfter(_selectedDateRange!.start) ||
-            txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
-            (txDate.isBefore(_selectedDateRange!.end.add(Duration(days: 1))) ||
-                txDate.isAtSameMomentAs(_selectedDateRange!.end));
-        }).toList();
-    }
+            // Filter transactions based on the selected date range
+            if (_selectedDateRange != null) {
+              transactions = transactions.where((tx) {
+                DateTime txDate = tx.date!;
+                return (txDate.isAfter(_selectedDateRange!.start) ||
+                  txDate.isAtSameMomentAs(_selectedDateRange!.start)) &&
+                  (txDate.isBefore(_selectedDateRange!.end.add(Duration(days: 1))) ||
+                      txDate.isAtSameMomentAs(_selectedDateRange!.end));
+              }).toList();
+            }
 
-    // Group transactions by date to display on the screen
-    Map<String, List<Transaction_data>> groupedTransactions = {};
-    for (var transaction in transactions) {
-      String formattedDate = DateFormat('yyyy-MM-dd').format(transaction.date!);
-      if (!groupedTransactions.containsKey(formattedDate)) {
-        groupedTransactions[formattedDate] = [];
-      }
-      groupedTransactions[formattedDate]!.add(transaction);
-    }
+          // Group transactions by date to display on the screen
+            Map<String, List<Transaction_data>> groupedTransactions = {};
+            for (var transaction in transactions) {
+              String formattedDate = DateFormat('yyyy-MM-dd').format(transaction.date!);
+              if (!groupedTransactions.containsKey(formattedDate)) {
+                groupedTransactions[formattedDate] = [];
+              }
+              groupedTransactions[formattedDate]!.add(transaction);
+            }
 
-    List<String> sortedDates = groupedTransactions.keys.toList();
-    sortedDates.sort((a, b) => DateTime.parse(b).compareTo(DateTime.parse(a)));
+            List<String> sortedDates = groupedTransactions.keys.toList();
+            sortedDates.sort((a, b) => DateTime.parse(b).compareTo(DateTime.parse(a)));
 
+            //Builds each tile to display the info of transactions
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: sortedDates.length,
+              itemBuilder: (context, index) {
+                String date = sortedDates[index];
+                List<Transaction_data> dailyTransactions = groupedTransactions[date]!;
 
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: sortedDates.length,
-      //itemCount: groupedTransactions.entries.length,
-      itemBuilder: (context, index) {
-        String date = sortedDates[index];
-        //String date = groupedTransactions.entries.elementAt(index).key;
-        List<Transaction_data> dailyTransactions = groupedTransactions[date]!;
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                DateFormat('EEEE, MMMM dd, yyyy').format(DateTime.parse(date)),
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            ...dailyTransactions
-                .map((transaction) => Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black, // Black border color
-                            width: 1.0, // Width of the border
-                          ),
-                        ),
-                      ),
-                      child: ListTile(
-                        tileColor: Colors.white,
-                        leading: CircleAvatar(
-                          backgroundColor: Color(0xFFF5F5DC), // Beige color
-                          child:
-                              Icon(transaction.getIcon(), color: Colors.black),
-                        ),
-                        title: Text(
-                          transaction.name,
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        subtitle: Text(
-                          'Category: ${transaction.category}',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        trailing: Text(
-                          '${transaction.category == 'Income' ? '+' : '-'}\$${transaction.amount?.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            color: transaction.category == 'Income'
-                                ? Colors.green
-                                : Colors.red,
-                            fontSize: 16,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding( // show the date of the transaction
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        DateFormat('EEEE, MMMM dd, yyyy').format(DateTime.parse(date)),
+                        style: TextStyle(
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
-                          ),
+                            color: Colors.white
                         ),
                       ),
-                    ))
-                .toList(),
-          ],
-        );
-      },
+                  ),
+
+                    // show info about each transaction, categorized date wise
+                    ...dailyTransactions.map((transaction) {
+                      // allows to delete any particular transaction with a swipe or a by clicking on a popup menu that appears when clicking on the transaction.
+                        return GestureDetector(
+                          onTap: () async {
+                            await showMenu(
+                              context: context,
+                              position: RelativeRect.fromLTRB(0, 50, 0, 0),
+                              items: [
+                                PopupMenuItem(
+                                  child: ListTile(
+                                    leading: Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                    ),
+                                    title: Text('Delete'),
+                                    onTap: () { // Remove the item from the database and update the UI
+                                      _expenseDatabase.deleteTransactions(transaction.id!);
+                                      setState(() {
+                                        _transactions.remove(transaction);
+                                      });
+
+                                      // Show a snackbar to indicate the transaction is deleted
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Transaction deleted'),
+                                        ),
+                                      );
+                                      Navigator.pop(context); // Close the menu
+                                    },
+                                  ),
+                                ),
+                              ],
+                              elevation: 8.0,
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            child: Dismissible(key: Key(transaction.id!),
+                              background: Container(
+                                color: Colors.red,
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              onDismissed: (direction) {
+                              // Remove the item from the database and update the UI
+                              _expenseDatabase.deleteTransactions(transaction.id!);
+                              setState(() {
+                                _transactions.remove(transaction);
+                              });
+
+                              // Show a snackbar to indicate the transaction is deleted
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Transaction deleted'),
+                                ),
+                              );
+                            },
+                              child: ListTile(
+                                tileColor: Colors.white,
+                                // design for icon for transactions
+                                leading: CircleAvatar(
+                                  backgroundColor: Color(0xFFFFECB3),
+                                  child: Icon(transaction.getIcon(), color: Colors.black),
+                                ),
+                                title: Text( // displays name of the transaction
+                                  transaction.name,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                                ),
+                                subtitle: Text( // adds category of transaction
+                                  'Category: ${transaction.category}',
+                                  style: TextStyle(color: Colors.blueGrey),
+                                ),
+                                trailing: Text( // shows amount of the transaction
+                                  '${transaction.category == 'Income' ? '+' : '-'}\$${transaction.amount?.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    color: transaction.category == 'Income'
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                    }).toList(),
+                  ],
+                );
+              },
+              );
+          }
+        }
     );
-  }
-    }
-  );
-}
-  Future<List<Transaction_data>> _fetchExpensesFromFirestore() async {
-    try {
-      return await _expenseDatabase.readAllTransactions();
-    } catch (e) {
-      print('Error fetching expenses from Firestore: $e');
-      return [];
-    }
   }
 }
