@@ -1,9 +1,5 @@
-/**
- * SignUpDatabase: This class contains all the method related to Signup class
- */
+/// SignUpDatabase: This class contains all the method related to intialize and perform CRUD operations in Signup class
 
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import '../data/localDB/login.dart';
 import '../data/localDB/signup.dart';
 import 'login_model.dart';
@@ -55,35 +51,12 @@ class SignUpDatabase {
     await initializeDatabase();
     final db = await dbUtils.database;
     final List<Map<String, Object?>> maps = await db.query('signup');
-    return List.generate(maps!.length, (i) {
+    return List.generate(maps.length, (i) {
       return Signup.fromMap(maps[i]);
     });
   }
 
-  // update signup record by id
-  Future<int?> updateSignUp(Signup signUp) async {
-    await initializeDatabase();
-    final db = await dbUtils.database;
-    return await db.update(
-      'signup',
-      signUp.toMap(),
-      where: 'id = ?',
-      whereArgs: [signUp.id], // Assuming there is only one signup entry
-    );
-  }
-
-  // delete signup record by id
-  Future<int?> deleteSignUp(int id) async {
-    await initializeDatabase();
-    final db = await dbUtils.database;
-    return await db.delete(
-      'signup',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
-
-  // as user signs up for the app, make sure related login gets created
+  // as user signs up for the app, make sure emailAddress and password is saved in login table
   Future<void> transferToLogin(Signup signUp) async {
     await initializeDatabase(); // Ensure the database is initialized
 
@@ -96,7 +69,8 @@ class SignUpDatabase {
       final loginDb = LoginDatabase();
 
       // Update the Login object with the generated id
-      final login = Login(emailAddress: signUp.emailAddress, password: signUp.password);
+      final login =
+      Login(emailAddress: signUp.emailAddress, password: signUp.password);
       final loginId = await loginDb.createLogin(login);
 
       if (loginId != null) {

@@ -1,16 +1,19 @@
-/// A StatefulWidget that provides financial insights by visualizing transaction data
-/// in the form of charts.
+/// Containing the implementation of A StatefulWidget that
+/// provides financial insights by visualizing transaction data
 
 /// It displays two types of charts:
 /// - A pie chart for expenses, categorized by the type of expense.
-/// - A bar chart for income and expenses, grouped by week.
+/// - A bar chart for income and expenses for past 3 months from today.
 
+// All imports
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import 'custom_navigation.dart';
 import '../models/transaction_model.dart';
+import 'package:intl/intl.dart';
 
+/// The main StatefulWidget class for the Financial Insights page.
 class FinancialInsightsPage extends StatefulWidget {
   const FinancialInsightsPage({super.key});
 
@@ -18,17 +21,18 @@ class FinancialInsightsPage extends StatefulWidget {
   _FinancialInsightsState createState() => _FinancialInsightsState();
 }
 
+/// Global color definitions used for UI consistency.
 final Color backgroundColor = Colors.black;
 final Color purpleColor = Color(0xFF5E17EB);
 final Color textColor = Colors.white;
 
-/// A StatelessWidget that represents a single legend item in the pie chart.
-/// each colour represents a different category of expenses
+/// Represents a single legend item in the pie chart.
 class LegendItem extends StatelessWidget {
   final Color color;
   final String text;
 
-  const LegendItem({Key? key, required this.color, required this.text}) : super(key: key);
+  const LegendItem({Key? key, required this.color, required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,7 @@ class LegendItem extends StatelessWidget {
             color: color,
           ),
           SizedBox(width: 8),
-          Text(text,
-              style: TextStyle(fontSize: 15, color: Colors.white)),
+          Text(text, style: TextStyle(fontSize: 15, color: textColor)),
         ],
       ),
     );
@@ -59,17 +62,17 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
 
   // Map to associate each category with a color
   Map<String, Color> categoryColors = {
-    'Food': Colors.cyanAccent,
-    'Shopping': Colors.lightBlueAccent,
-    'Travel': Colors.greenAccent,
-    'Bills': Colors.lightBlueAccent,
-    'Education': Colors.indigoAccent,
-    'Subscriptions': Colors.redAccent,
-    'Home': Colors.deepOrangeAccent,
-    'Other': Colors.orangeAccent,
+    'Food': Color(0xFF1DE9B6),
+    'Shopping': Color(0xFFFFC400),
+    'Travel': Color(0xFFCCFF90),
+    'Bills': Colors.deepPurpleAccent,
+    'Education': Color(0xFF00695C),
+    'Subscriptions': Color(0xFFFF80AB),
+    'Home': Colors.blueAccent,
+    'Other': Colors.redAccent,
   };
 
-///mode to view pie chart or bar graph
+  //mode to view pie chart or bar graph
   bool showPieChart = true;
 
   @override
@@ -79,11 +82,11 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     fetchTransactions();
   }
 
-  /// Function to fetch transactions from Firebase
+  /// Function to fetch transactions data from Firebase
   void fetchTransactions() async {
     try {
-      List<Transaction_data> fetchedTransactions = await transactionDatabase
-          .readAllTransactions();
+      List<Transaction_data> fetchedTransactions =
+      await transactionDatabase.readAllTransactions();
       print("the fetched transactions: ${fetchedTransactions}");
       setState(() {
         transactions = fetchedTransactions;
@@ -93,153 +96,154 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     }
   }
 
+  /// Main build method for UI design
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      backgroundColor: Colors.black,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(
-            height: 28,
-          ),
-          //implement toggle button to change view for type of chart
-          Center(
-            child: ToggleButtons(
-              fillColor: Colors.white,
-              selectedColor: purpleColor,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4.0),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                  child: Text(
-                    'Expenses breakdown',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Transactions in-and-out',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-
-                  ),
-                ),
-              ],
-              onPressed: (int index) {
-                setState(() {
-                  showPieChart = index == 0;
-                });
-              },
-              isSelected: [showPieChart, !showPieChart],
+      backgroundColor: backgroundColor,
+      body: SingleChildScrollView(
+        scrollDirection:
+        Axis.vertical, // Allows vertical scrolling if items overflow
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(
+              height: 28,
             ),
-          ),
-          SizedBox(height: 16),
-          Expanded(
-            child: showPieChart ? buildPieChart() : buildTransactionChart(),
-          ),
-        ],
+            //implement toggle button to switch between pie/bar chart
+            Center(
+              child: ToggleButtons(
+                fillColor: Colors.white,
+                selectedColor: purpleColor,
+                color: textColor,
+                borderRadius: BorderRadius.circular(16.0),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 16.0),
+                    child: Text(
+                      'Expenses',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Income vs Expense',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
+                onPressed: (int index) {
+                  setState(() {
+                    showPieChart = index == 0;
+                  });
+                },
+                isSelected: [showPieChart, !showPieChart],
+              ),
+            ),
+            SizedBox(height: 16),
+            Container(
+              height: 500,
+              child: showPieChart ? buildPieChart() : buildTransactionChart(),
+            ),
+          ],
         ),
-        bottomNavigationBar: CustomBottomNavigationBar(
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 1, // Set the current index to Financial Insights
-        onTap: (index) { // Handle bottom navigation bar item taps
-      },
-    ),
-
+        onTap: (index) {},
+      ),
     );
   }
 
-  /// Builds the bar chart for income and expenses by week.
-  ///
+  /// Builds the bar chart for income and expenses by month.
   /// The chart is created with grouped bars representing income and expenses side by side
   /// for each week to compare the two values visually.
   Widget buildPieChart() {
-    double chartAspectRatio = 1;
     return AspectRatio(
         aspectRatio: 1.3,
-        child: Column(
-          children: [
+        child: Column(children: [
           Container(
-          height: 20,
-          child: Center(
-            child: Text(
-              'Expenses by Category',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+            height: 40,
+            child: Center(
+              child: Text(
+                'Expenses by Category',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: textColor
+                ),
+              ),
             ),
           ),
-        ),
-      Expanded(
-        child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 28,
-              ),
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          setState(() {
-                            if (!event.isInterestedForInteractions ||
-                                pieTouchResponse == null ||
-                                pieTouchResponse.touchedSection == null) {
-                              touchedIndex = -1;
-                              return;
-                            }
-                            touchedIndex = pieTouchResponse.touchedSection!
-                                .touchedSectionIndex;
-                          });
-                        },
+          Expanded(
+              child: Column(children: <Widget>[
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse
+                                  .touchedSection!.touchedSectionIndex;
+                            });
+                          },
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 3,
+                        centerSpaceRadius: 100,
+                        sections: showingSections(),
                       ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 5,
-                      centerSpaceRadius: 60,
-                      sections: showingSections(),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: buildLegend(),
-              ),
-            ]
-          )
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40.0),
+                  child: buildLegend(),
+                ),
+              ]
+              )
           )
         ]
-      )
+        )
     );
   }
 
-  ///widget to show legend beside the pie chart
+  ///widget to show legend of the pie chart
   Widget buildLegend() {
     Set<String> uniqueCategories = transactions
         .where((transaction) => transaction.category != "Income")
         .map((transaction) => transaction.category!)
         .toSet();
 
-    ///ensures that our legend is aligned to the left
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    //List the legend with the items side by side
+    return SingleChildScrollView(
+      scrollDirection:
+      Axis.horizontal, // Allows horizontally scrolling through the legend
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: uniqueCategories
-            .map((category) =>
-            LegendItem(
-              color: categoryColors[category] ?? Colors.black,
-              text: category,
-            ))
-            .toList(),
+            .map((category) => LegendItem(
+          color: categoryColors[category] ?? Colors.black,
+          text: category,
+        )).toList(),
       ),
     );
   }
@@ -249,7 +253,8 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     Map<String, double> categoryAmounts = {};
 
     transactions.forEach((transaction) {
-      if (transaction.category != null && transaction.amount != null &&
+      if (transaction.category != null &&
+          transaction.amount != null &&
           transaction.category != "Income") {
         categoryAmounts.update(
             transaction.category!, (value) => value + transaction.amount!,
@@ -268,20 +273,20 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
       return PieChartSectionData(
         color: categoryColors[category] ?? Colors.black,
         value: amount,
-        title: '${(amount / (getTotalAmount() - getTotalIncome()) * 100)
-            .toStringAsFixed(1)}%',
+        title:
+        '${(amount / (getTotalAmount() - getTotalIncome()) * 100).toStringAsFixed(1)}%',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: textColor,
           shadows: shadows,
         ),
       );
     });
   }
 
-  /// method to calculate total amount
+  /// method to calculate total amount of transactions
   double getTotalAmount() {
     double totalAmount = 0;
     transactions.forEach((transaction) {
@@ -293,48 +298,56 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
   ///method to calculate total income
   double getTotalIncome() {
     double totalIncome = 0;
-    transactions.where((transaction) => transaction.category == "Income")
+    transactions
+        .where((transaction) => transaction.category == "Income")
         .forEach((transaction) {
       totalIncome += transaction.amount!;
     });
     return totalIncome;
   }
 
-/// Helper function to group transactions by week
-  Map<int, List<Transaction_data>> groupTransactionsByWeek(
+  /// Helper function to group transactions by month
+  Map<int, List<Transaction_data>> groupTransactionsByMonth(
       List<Transaction_data> transactions) {
-    return transactions.fold(
-        <int, List<Transaction_data>>{}, (map, transaction) {
-      int week = getWeekNumber(transaction.date!);
-      if (!map.containsKey(week)) {
-        map[week] = [];
+    return transactions.fold(<int, List<Transaction_data>>{}, (map, transaction) {
+      int month = getMonthNumber(transaction.date!);
+      if (!map.containsKey(month)) {
+        map[month] = [];
       }
-      map[week]!.add(transaction);
+      map[month]!.add(transaction);
       return map;
     });
   }
 
-/// Helper function to get the week number from a DateTime
-  int getWeekNumber(DateTime date) {
-    return ((date
-        .difference(DateTime(2023, 11, 1))
-        .inDays) / 7).ceil();
+  /// Helper function to get the month number from a DateTime
+  int getMonthNumber(DateTime date) {
+    return date.month;
   }
 
-  /// Builds the bar chart for income and expenses by week.
+  /// Builds the bar chart for income and expenses by month.
+  // Used the assistance of ChatGPT - OpenAI to organize
+  // transactions visually using colours
   Widget buildTransactionChart() {
-    // Group transactions by week
-    Map<int, List<Transaction_data>> transactionsByWeek =
-    groupTransactionsByWeek(transactions);
+    // Group transactions by month
+    Map<int, List<Transaction_data>> transactionsByMonth =
+    groupTransactionsByMonth(transactions);
 
-    // Extract data for total expenses and total income for each week
-    List<BarChartGroupData> barGroups =
-    transactionsByWeek.keys.map((week) {
+    //Logic to get the most recent months to display (past 3 months)
+    DateTime now = DateTime.now();
+    List<int> recentMonths = List.generate(3, (index) {
+      int month = now.month - index;
+      if (month <= 0) {
+        month += 12;
+      }
+      return month;
+    }).reversed.toList();
+
+    // Filter the transactions to only include data from the recent three months
+    List<BarChartGroupData> barGroups = recentMonths.map((month) {
       double totalExpenses = 0;
       double totalIncome = 0;
 
-      //Used assistance of ChatGPT - OpenAI to debug logic
-      transactionsByWeek[week]!.forEach((transaction) {
+      transactionsByMonth[month]?.forEach((transaction) {
         if (transaction.category == "Income") {
           totalIncome += transaction.amount!;
         } else {
@@ -342,8 +355,9 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
         }
       });
 
+      //develop data for double bar graph
       return BarChartGroupData(
-        x: week.toInt(),
+        x: month,
         barRods: [
           BarChartRodData(
             toY: totalExpenses.abs(),
@@ -352,79 +366,99 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
           BarChartRodData(
             toY: totalIncome,
             color: Colors.greenAccent,
-            rodStackItems: [
-              BarChartRodStackItem(0, totalIncome, Colors.greenAccent),
-            ],
           ),
         ],
       );
     }).toList();
 
-    return Column(
-      children: [
-        Container(
-          height: 30,
-          child: Center(
-            child: Text(
-              'Transactions This Month',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-          ),
-        ),
-        Container(
-          height: 500,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-
-          child: BarChart(
-              BarChartData(
-                barGroups: barGroups,
-                alignment: BarChartAlignment.spaceAround,
-                titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 40,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(
-                          '\$${value.toInt()}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                          ),
-                        );
-                      },
-                      interval: 500,
-                    ),
-                ),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 10,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Text(
-                          'Week ${value.toInt()}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                borderData: FlBorderData(show: true),
-                barTouchData: BarTouchData(
-                  touchTooltipData: BarTouchTooltipData(
-                    tooltipBgColor: Colors.blueAccent,
-                  ),
-                ),
-                gridData: FlGridData(show: false),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            height: 30,
+            child: Center(
+              child: Text(
+                'Income vs Expense By Month',
+                style: TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold, color: textColor),
               ),
             ),
+          ),
+          Container(
+            height: 400,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 0.0),
+              // create bar chart
+              child: BarChart(
+                BarChartData(
+                  barGroups: barGroups,
+                  alignment: BarChartAlignment.spaceAround,
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 40,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          return Text(
+                            '\$${value.toInt()}',
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 12,
+                            ),
+                          );
+                        },
+                        interval: 500,
+                      ),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          String monthName = DateFormat.MMM().format(
+                            DateTime(2023, value.toInt()),
+                          );
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Text(
+                              monthName,
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 12,
+                              ),
+                            ),
+                          );
+                        },
+                        interval: 1,
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(show: true),
+                  barTouchData: BarTouchData(
+                    touchTooltipData: BarTouchTooltipData(
+                      tooltipBgColor: Colors.blueAccent,
+                    ),
+                  ),
+                  gridData: FlGridData(show: false),
+                ),
+              ),
+            ),
+          ),
+          // Legend for the bar chart
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Expenses - Red bar
+                LegendItem(color: Colors.redAccent, text: "Total Expenses"),
+                SizedBox(width: 16), // Spacer
+                // Income - Green bar
+                LegendItem(color: Colors.greenAccent, text: "Total Income"),
+              ],
             ),
           ),
         ],
+      )
     );
   }
 }

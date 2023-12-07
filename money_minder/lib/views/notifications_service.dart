@@ -1,11 +1,21 @@
+//Acknowledgements:
+// https://github.com/Coding-Orbit/awesome_notification/blob/main/android/app/src/main/AndroidManifest.xml
+// Used the above link to help build awesome package notifications
+
+///  Manages notification services using the Awesome Notifications package.
+
 import 'package:money_minder/main.dart';
 import 'package:money_minder/views/reminders_page.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
+/// A NotificationService Class that initializes and manges notifications using
+/// Awesome Notifications
 class NotificationService {
+  // Initializes notification service.
   static Future<void> initializeNotification() async {
     await AwesomeNotifications().initialize(
+      // Initialize Awesome Notifications with channels and channel groups
       null,
       [
         NotificationChannel(
@@ -31,6 +41,7 @@ class NotificationService {
       debug: true,
     );
 
+    //permission to send notifications
     await AwesomeNotifications().isNotificationAllowed().then(
           (isAllowed) async {
         if (!isAllowed) {
@@ -38,34 +49,13 @@ class NotificationService {
         }
       },
     );
-
+    // Set up notification listeners
     await AwesomeNotifications().setListeners(
       onActionReceivedMethod: onActionReceivedMethod,
-      onNotificationCreatedMethod: onNotificationCreatedMethod,
-      onNotificationDisplayedMethod: onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod: onDismissActionReceivedMethod,
     );
   }
 
-  /// Use this method to detect when a new notification or a schedule is created
-  static Future<void> onNotificationCreatedMethod(
-      ReceivedNotification receivedNotification) async {
-    debugPrint('onNotificationCreatedMethod');
-  }
-
-  /// Use this method to detect every time that a new notification is displayed
-  static Future<void> onNotificationDisplayedMethod(
-      ReceivedNotification receivedNotification) async {
-    debugPrint('onNotificationDisplayedMethod');
-  }
-
-  /// Use this method to detect if the user dismissed a notification
-  static Future<void> onDismissActionReceivedMethod(
-      ReceivedAction receivedAction) async {
-    debugPrint('onDismissActionReceivedMethod');
-  }
-
-  /// Use this method to detect when the user taps on a notification or action button
+  /// when the user taps on a notification or action button
   static Future<void> onActionReceivedMethod(
       ReceivedAction receivedAction) async {
     debugPrint('onActionReceivedMethod');
@@ -79,6 +69,7 @@ class NotificationService {
     }
   }
 
+  /// Show notification with the specific content and options.
   static Future<void> showNotification({
     required final String title,
     required final String body,
@@ -95,6 +86,7 @@ class NotificationService {
     assert(!scheduled || (scheduled && interval != null));
 
     await AwesomeNotifications().createNotification(
+      // create and display the notification using Awesome Notifications
       content: NotificationContent(
         id: -1,
         channelKey: 'high_importance_channel',
@@ -114,8 +106,7 @@ class NotificationService {
         timeZone:
         await AwesomeNotifications().getLocalTimeZoneIdentifier(),
         preciseAlarm: true,
-      )
-          : null,
+      ) : null,
     );
   }
 }

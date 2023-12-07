@@ -1,9 +1,6 @@
-/**
- * GoalsDatabase: This class contains all the method related to Goal class
- */
+/// GoalsDatabase: This class contains all the initialize and CRUD methods related to Goal class
 
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import '../data/localDB/db_utils.dart';
 import '../data/localDB/goals.dart';
 
@@ -33,7 +30,8 @@ class GoalDatabase {
   Future<int?> createGoal(Goal goal) async {
     await initializeDatabase();
     final db = await dbUtils.database;
-    return await db.insert('goal', goal.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.insert('goal', goal.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // read goal records
@@ -41,7 +39,7 @@ class GoalDatabase {
     await initializeDatabase();
     final db = await dbUtils.database;
     final List<Map<String, Object?>> maps = await db.query('goal');
-    return List.generate(maps!.length, (i) {
+    return List.generate(maps.length, (i) {
       return Goal.fromMap(maps[i]);
     });
   }

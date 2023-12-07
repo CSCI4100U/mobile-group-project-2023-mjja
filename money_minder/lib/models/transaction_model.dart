@@ -1,6 +1,4 @@
-// /**
-//  * ExpenseDatabase: This class contains methods to perform CRUD operations on Expense class
-//  */
+/// TransactionDatabase: This class contains methods to perform CRUD operations on Transaction class
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/localDB/db_utils.dart';
@@ -24,18 +22,18 @@ class TransactionDatabase {
   //   }
   // }
 
+  // create new transaction
   Future<void> createTransaction(TransactionClass transaction) async {
     print("inside create expense");
     try {
       // await initializeDatabase();
-      print("before adding expense to Firestore: $transaction");
       await _firestore.collection('transactions').add(transaction.toMap());
-      print("Expense added to Firestore successfully");
     } catch (e) {
       print('Error creating expense: $e');
     }
   }
 
+  //read all transactions
   Future<List<Transaction_data>> readAllTransactions() async {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('transactions').get();
@@ -58,14 +56,7 @@ class TransactionDatabase {
     }
   }
 
-  Future<void> updateTransactions(TransactionClass expense) async {
-    try {
-      await _firestore.collection('transactions').doc(expense.id).update(expense.toMap());
-    } catch (e) {
-      print('Error updating expense: $e');
-    }
-  }
-
+  //delete all transactions
   Future<void> deleteTransactions(String id) async {
     try {
       await _firestore.collection('transactions').doc(id).delete();

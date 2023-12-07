@@ -1,14 +1,18 @@
-// login page that allows user to enter an email and password to enter into an app.
-// also gives option to Forgot password, takes to password reset page by entering email address
-// Gives option to Sign Up if don't have an account
+/// login page that allows user to enter an email and password to enter into an app.
+/// also gives option to Forgot password, takes to password reset page by entering email address
+/// Gives option to Sign Up if don't have an account
 
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import '../models/login_model.dart';
 import 'sign_up.dart';
-import 'forgot_password.dart';
 
-class WelcomeBackPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final Color backgroundColor = Colors.black;
   final Color purpleColor = Color(0xFF5E17EB);
   final Color textColor = Colors.white;
@@ -19,6 +23,7 @@ class WelcomeBackPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
 
   // Email regex pattern for validation
   final RegExp emailRegex = RegExp(
@@ -120,9 +125,22 @@ class WelcomeBackPage extends StatelessWidget {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: textColor),
                         ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: textColor,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                       ),
                       style: TextStyle(color: textColor),
-                      obscureText: true,
+                      obscureText: !_isPasswordVisible,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Password is required';
@@ -138,18 +156,6 @@ class WelcomeBackPage extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 24.0),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ForgotPasswordPage(),
-                        ));
-                      },
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: textColor),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: purpleColor,
@@ -160,7 +166,8 @@ class WelcomeBackPage extends StatelessWidget {
                           String email = getEmail();
                           String password = getPassword().trim();
 
-                          bool isLoggedIn = await loginDatabase.checkLoginCredentialsFirebase(email, password);
+                          bool isLoggedIn = await loginDatabase
+                              .checkLoginCredentialsFirebase(email, password);
 
                           if (isLoggedIn) {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -168,6 +175,7 @@ class WelcomeBackPage extends StatelessWidget {
                             ));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: purpleColor,
                               content: Text('Invalid email or password'),
                             ));
                           }

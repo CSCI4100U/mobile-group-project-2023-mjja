@@ -1,23 +1,26 @@
+/// Containing the implementation of the 'CustomNavigation' widget.
+/// The widget displays the custom appbar and custom bottom navigation bar which
+/// will be  used by all other pages(screens).
+
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import 'reminders_page.dart';
 import 'investment_insight.dart';
-import 'profile_page.dart';
 import 'add_transaction.dart';
 import 'setting_page.dart';
 import 'financial_insights.dart';
 import 'budget_goals_page.dart';
 
+/// Class to implement the Custom App Bar for header of app
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: Builder(
 
-        // the routes to different pages
+        // routes to different pages
         // from the popup menu that appears when clicking on the hamburger icon on the top left of the app.
-
-      builder: (context) => PopupMenuButton(
+        builder: (context) => PopupMenuButton(
           icon: Icon(Icons.menu, color: Colors.white),
           color: Colors.black,
           itemBuilder: (BuildContext context) {
@@ -38,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           height: 40,
           width: 80,
-          child: Image.asset(
+          child: Image.asset( //adds logo
             'assets/logo.png',
             fit: BoxFit.fitHeight,
           ),
@@ -50,10 +53,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: Icon(Icons.person, color: Colors.white),
           onPressed: () {
-            // Navigate to the ProfilePage when the icon is selected
+            // Navigate to the Settings page when the icon is clicked
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              MaterialPageRoute(builder: (context) => SettingsPage()),
             );
           },
         ),
@@ -68,7 +71,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  //method to design the hamburger popup menu
+  ///Method to design and implement the hamburger popup menu
   PopupMenuItem _buildPopupMenuItem(IconData icon, String text, Widget destination, BuildContext context) {
     return PopupMenuItem(
       child: Column(
@@ -100,12 +103,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ],
                   ),
-                  Icon(Icons.arrow_forward, color: Colors.white), // Arrow icon to indicate the menu item
                 ],
               ),
             ),
           ),
-          Divider(color: Colors.white), // White horizontal line
         ],
       ),
     );
@@ -115,7 +116,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
-//class for the bottom nav bar
+/// Class for custom bottom navigation bar widget for footer of the app
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -125,6 +126,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      //builds the bottom bar with icons and labels
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -151,41 +153,39 @@ class CustomBottomNavigationBar extends StatelessWidget {
       selectedItemColor: Color(0xFF5E17EB),
       unselectedItemColor: Colors.grey,
       onTap: (index) {
-        // Call the onTap function provided when creating the widget
-        onTap(index);
+        onTap(index); // Call the onTap function when creating
 
-        // logic to navigate to specific pages based on the selected index
-        switch (index) {
+        switch (index) { // logic to navigate to specific pages based on index
           case 0:
-            // Navigate to the Home page
+          // Navigate to the Home page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => TransactionsPage()),
             );
             break;
           case 1:
-            // Navigate to the Insights page
+          // Navigate to the Insights page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => FinancialInsightsPage()),
             );
             break;
           case 2:
-            // Navigate to the Add page
+          // Navigate to the Add page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => AddTransactionForm(onExpenseAdded: (Expense ) {  },)),
             );
             break;
           case 3:
-            // Navigate to the Reminders page
+          // Navigate to the Reminders page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => RemindersPage()),
             );
             break;
           case 4:
-            // Navigate to the Settings page
+          // Navigate to the Settings page
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => SettingsPage()),

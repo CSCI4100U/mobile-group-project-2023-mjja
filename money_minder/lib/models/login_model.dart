@@ -1,10 +1,6 @@
-/**
- * LoginDatabase: This class contains all the method related to Login class
- */
+/// LoginDatabase: This class contains all the initialize and CRUD method related to Login class
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import '../data/localDB/login.dart';
 import '../data/localDB/db_utils.dart';
 
@@ -13,7 +9,7 @@ class LoginDatabase {
 
   //firebase call
   final CollectionReference loginCollection =
-      FirebaseFirestore.instance.collection('logins');
+  FirebaseFirestore.instance.collection('logins');
 
   // initialize database and create table if does not exists
   Future<void> initializeDatabase() async {
@@ -51,51 +47,19 @@ class LoginDatabase {
     }
   }
 
-
   // read login records
   Future<List<Login>> readLogin() async {
     await initializeDatabase();
     final db = await dbUtils.database;
     final List<Map<String, Object?>> maps = await db.query('login');
-    return List.generate(maps!.length, (i) {
+    return List.generate(maps.length, (i) {
       return Login.fromMap(maps[i]);
     });
   }
 
-  // update login record by id
-  Future<int?> updateLogin(Login login) async {
-    await initializeDatabase();
-    final db = await dbUtils.database;
-    return await db.update(
-      'login',
-      login.toMap(),
-      where: 'id = ?',
-      whereArgs: [login.id], // Assuming there is only one login entry
-    );
-  }
-
-  // delete login record by id
-  Future<int?> deleteLogin(int id) async {
-    await initializeDatabase();
-    final db = await dbUtils.database;
-    return await db.delete('login', where: 'id = ?', whereArgs: [id]);
-  }
-
-  // check if the login record already exists
-  Future<bool> checkLoginCredentials(
+  // check if log in already existes in firebase
+  Future<bool> checkLoginCredentialsFirebase(
       String emailAddress, String password) async {
-    await initializeDatabase();
-    final db = await dbUtils.database;
-    final List<Map<String, Object?>> maps = await db.query(
-      'login',
-      where: 'emailAddress = ? AND password = ?',
-      whereArgs: [emailAddress, password],
-    );
-
-    return maps != null && maps.isNotEmpty;
-  }
-
-  Future<bool> checkLoginCredentialsFirebase(String emailAddress, String password) async {
     try {
       QuerySnapshot querySnapshot = await loginCollection
           .where('emailAddress', isEqualTo: emailAddress)

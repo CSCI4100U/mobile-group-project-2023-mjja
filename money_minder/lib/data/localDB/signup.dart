@@ -1,6 +1,4 @@
-/**
- * Signup: This class will store the signup information of the user
- **/
+/// Signup: This class will store the signup information of the user
 
 class Signup {
   int? id;                  // unique Signup identifier

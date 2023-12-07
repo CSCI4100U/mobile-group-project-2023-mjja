@@ -1,3 +1,7 @@
+/// First page of the app which gives user option to:
+///   Login: if account already exists
+///   Signup/ Create account: for new users
+
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'sign_up.dart';
@@ -48,7 +52,7 @@ class SignInScreen extends StatelessWidget {
                   onPressed: () {
                     // Navigate to the LogIn when the button is pressed
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => WelcomeBackPage(),
+                      builder: (context) => LoginPage(),
                     ));
                   },
                   child: Text(
@@ -63,8 +67,7 @@ class SignInScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: purpleColor,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 20), // Padding insidebutton
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   ),
                   onPressed: () {
                     // Navigate to the SignUp when the button is pressed

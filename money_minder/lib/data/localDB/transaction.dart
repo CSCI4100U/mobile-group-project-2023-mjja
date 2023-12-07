@@ -1,6 +1,5 @@
-/**
- * Expense: this class store the expense information of the user.
- */
+/// Expense: this class store the transaction information of the user.
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionClass {
@@ -18,7 +17,6 @@ class TransactionClass {
     this.date
   });
 
-  // generate a new Expense object from a map, typically from the database
   factory TransactionClass.fromMap(Map<String, dynamic> map) {
     return TransactionClass(
       id: map['id'],
@@ -29,7 +27,6 @@ class TransactionClass {
     );
   }
 
-  // convert an Expense object to a map for database storage
   Map<String, dynamic> toMap() {
     return {
       //'id': id,

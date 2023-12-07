@@ -1,3 +1,10 @@
+/// New users can create their account by entering:
+///   - Email, Full name, Username, and Password (all required fields)
+/// On clicking 'Create Account' button:
+///   - All the data will be stored in SQLite and Firebase
+///   - The emailAddress and password will be stored into 'Login' table allowing user to login next time without creating new account.
+///   - The user will be routed to Login page where they can login with the email and password entered while creating account.
+
 import 'package:flutter/material.dart';
 import 'package:money_minder/views/login_page.dart';
 import '../models/signup_model.dart';
@@ -9,7 +16,10 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
+///Displays fields to enter user info
 class _SignUpPageState extends State<SignUpPage> {
+  bool _isPasswordVisible = false;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Color backgroundColor = Colors.black;
@@ -32,7 +42,8 @@ class _SignUpPageState extends State<SignUpPage> {
     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
   );
 
-  void signUp(BuildContext context) async {
+  /// Saves all signup data to SQLite and Firebase
+  void _saveSignupDataToDatabase(BuildContext context) async {
     try {
       if (_formKey.currentState?.validate() ?? false) {
         // Form is valid, proceed with signup
@@ -49,19 +60,19 @@ class _SignUpPageState extends State<SignUpPage> {
         );
         signup.id = null;
 
-        // Log the signup data before adding to SQLite
+        // For testing purpose - Log the signup data before adding to SQLite
         print('Signup data before adding to SQLite: ${signup.toMap()}');
 
-        // Add signup to SQLite database
+        // Add signup data to SQLite database
         final SignUpDatabase signupDatabase = SignUpDatabase();
         await signupDatabase.createSignUp(signup);
 
         // Push signup data to Firebase
         await syncSignupDataToFirebase(signup);
 
-        // Navigate to the home page
+        // Navigate to the login page
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => WelcomeBackPage(),
+          builder: (context) => LoginPage(),
         ));
       }
     } catch (e) {
@@ -76,16 +87,17 @@ class _SignUpPageState extends State<SignUpPage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: ConstrainedBox( // Ensure the scroll view occupies the full height
+          //adjust the height of the form
+          child: ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height,
             ),
-            child: IntrinsicHeight( // Ensure the contents fill up the height
+            child: IntrinsicHeight(
               child: Stack(
                 children: [
                   Positioned(
-                    top: 15,
-                    left: 0,
+                    top: 10,
+                    right: 0,
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Image.asset(
@@ -101,27 +113,33 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Spacer(),
                         Text(
                           'Create Account',
-                          style: TextStyle(color: textColor, fontSize: 45.0, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: textColor,
+                              fontSize: 45.0,
+                              fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 8.0),
                         Text(
-                          "Let's create an account",
-                          style: TextStyle(color: textColor, fontSize: 14.0),
+                          "Let's create an account!",
+                          style: TextStyle(color: textColor, fontSize: 15.0),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 32.0),
+                        SizedBox(height: 30.0),
+
+                        //Email address
                         TextFormField(
                           controller: emailController,
                           style: TextStyle(color: textColor),
                           decoration: InputDecoration(
                             labelText: 'Email *',
                             labelStyle: TextStyle(color: textColor),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -134,14 +152,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                         ),
                         SizedBox(height: 16.0),
+
+                        //Full name
                         TextFormField(
                           controller: fullNameController,
                           style: TextStyle(color: textColor),
                           decoration: InputDecoration(
                             labelText: 'Full Name *',
                             labelStyle: TextStyle(color: textColor),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -151,14 +173,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                         ),
                         SizedBox(height: 16.0),
+
+                        // Username
                         TextFormField(
                           controller: usernameController,
                           style: TextStyle(color: textColor),
                           decoration: InputDecoration(
                             labelText: 'Username *',
                             labelStyle: TextStyle(color: textColor),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -168,16 +194,33 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                         ),
                         SizedBox(height: 16.0),
+
+                        //Password
                         TextFormField(
                           controller: passwordController,
                           style: TextStyle(color: textColor),
                           decoration: InputDecoration(
                             labelText: 'Password *',
                             labelStyle: TextStyle(color: textColor),
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
-                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: textColor)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: textColor)),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: textColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Password is required';
@@ -193,21 +236,26 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                         ),
                         SizedBox(height: 24.0),
+
+                        // Create account button
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(primary: buttonColor),
-                          onPressed: () => signUp(context),
-                          child: Text('Sign Up', style: TextStyle(color: textColor)),
+                          onPressed: () => _saveSignupDataToDatabase(context),
+                          child: Text('Create Account',
+                              style: TextStyle(color: textColor, fontSize: 18)),
                         ),
                         SizedBox(height: 16.0),
+
+                        // Log in option
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => WelcomeBackPage(),
+                              builder: (context) => LoginPage(),
                             ));
                           },
                           child: Text(
                             'Have an account? Log In',
-                            style: TextStyle(color: textColor),
+                            style: TextStyle(color: textColor, fontSize: 17),
                           ),
                         ),
                       ],
