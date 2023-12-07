@@ -239,6 +239,13 @@ class _GoalsPageState extends State<GoalsPage> {
   void _toggleGoalCompletion(int index, bool isCompleted) async {
     Goal goal = goalsList[index];
     goal.isCompleted = isCompleted ? 1 : 0;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Budget goal marked as completed!'),
+        backgroundColor: purpleColor,
+        duration: Duration(seconds: 5),
+      ),
+    );
     await _goalDatabase.updateGoal(goal);
     _loadGoals();
   }
