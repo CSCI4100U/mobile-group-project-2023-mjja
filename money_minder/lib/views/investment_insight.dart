@@ -1,4 +1,4 @@
-/// Displays teh live stock prices(10 minutes delay) using an API.
+/// Displays the live stock prices(10 minutes delay) using an API.
 /// The stocks of some companies are already provided
 /// The user can also add any new stock they want.
 
@@ -9,7 +9,7 @@ import 'custom_navigation.dart';
 
 final Color backgroundColor = Colors.black;
 final Color purpleColor =
-Color(0xFF5E17EB); // Replace with your exact color code
+    Color(0xFF5E17EB); // Replace with your exact color code
 final Color textColor = Colors.white;
 
 class InsightsPage extends StatefulWidget {
@@ -33,10 +33,17 @@ class _InsightsPageState extends State<InsightsPage> {
     fetchStockData('GOOG');
     fetchStockData('AAPL');
     fetchStockData('TSLA');
+    fetchStockData('AMZN');
+    fetchStockData('NVDA');
+    fetchStockData('META');
+    fetchStockData('HSBC');
+    fetchStockData('SHEL');
+    fetchStockData('AVGO');
+    fetchStockData('ADBE');
   }
 
   Future<void> fetchStockData(String symbol) async {
-    final apiKey = 'sk_6f6239c6a8854732a8b818026ff04068'; // IEX Cloud Key
+    final apiKey = 'sk_bf99b81898b649bb84952d702e939384'; // IEX Cloud Key
     final apiUrl =
         'https://cloud.iexapis.com/stable/stock/$symbol/quote?token=$apiKey';
 
@@ -78,8 +85,8 @@ class _InsightsPageState extends State<InsightsPage> {
       final filteredStocks = allStocks;
       displayedStocks = allStocks
           .where((stock) =>
-      stock.name.toLowerCase().contains(lowercaseQuery) ||
-          stock.symbol.toLowerCase().contains(lowercaseQuery))
+              stock.name.toLowerCase().contains(lowercaseQuery) ||
+              stock.symbol.toLowerCase().contains(lowercaseQuery))
           .toList();
     });
   }
@@ -180,7 +187,7 @@ class _InsightsPageState extends State<InsightsPage> {
                       Navigator.of(context).pop();
                     },
                     child:
-                    Text('Cancel', style: TextStyle(color: Colors.black)),
+                        Text('Cancel', style: TextStyle(color: Colors.black)),
                   ),
                   TextButton(
                     onPressed: () {
@@ -250,8 +257,8 @@ class StockSearch extends SearchDelegate<Stock> {
     final lowercaseQuery = query.toLowerCase();
     final filteredStocks = allStocks
         .where((stock) =>
-    stock.name.toLowerCase().contains(lowercaseQuery) ||
-        stock.symbol.toLowerCase().contains(lowercaseQuery))
+            stock.name.toLowerCase().contains(lowercaseQuery) ||
+            stock.symbol.toLowerCase().contains(lowercaseQuery))
         .toList();
 
     return ListView.builder(
