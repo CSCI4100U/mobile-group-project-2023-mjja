@@ -1,7 +1,5 @@
-/**
- * this is utility file for DB.
- * This will create a localDB and all create necessary tables for the application
- */
+/// this is utility file for DB.
+/// This will create a localDB and create all necessary tables for the application
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
@@ -36,47 +34,6 @@ class DBUtils {
             username TEXT,
             password TEXT
           )
-        ''');
-        db.execute('''
-         CREATE TABLE IF NOT EXISTS accountInfo(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            emailAddress TEXT,
-            fullName TEXT,
-            username TEXT,
-            password TEXT
-          )
-        ''');
-        db.execute('''
-         CREATE TABLE IF NOT EXISTS expenses(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT,
-              category TEXT,
-              amount REAL,
-              date TEXT
-            )
-        ''');
-        db.execute('''
-         CREATE TABLE IF NOT EXISTS income(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT,
-              amount REAL,
-              date TEXT
-            )
-        ''');
-        db.execute('''
-         CREATE TABLE IF NOT EXISTS category(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT
-            )
-        ''');
-        db.execute('''
-         CREATE TABLE IF NOT EXISTS budget(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              name TEXT,
-              category TEXT,
-              amount REAL,
-              endDate TEXT
-            )
         ''');
         db.execute('''
           CREATE TABLE IF NOT EXISTS goal(

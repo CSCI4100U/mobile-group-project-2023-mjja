@@ -1,6 +1,5 @@
-/**
- * Login: This class will store the login information of the user
- **/
+/// Login: This class will store the login information of the user
+
 
 class Login {
   int? id;                  // unique Login identifier

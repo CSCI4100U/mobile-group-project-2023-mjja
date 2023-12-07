@@ -1,6 +1,4 @@
-/**
- * Goal: this class store the goal information of the user.
- */
+/// Goal: this class store the goal information of the user.
 
 class Goal {
   int? id;              // unique Goal identifier
