@@ -178,11 +178,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   /// Method called when exporting the transactions.
-  /// Converts teh list of transactions into a CSV file
+  /// Converts the list of transactions into a CSV file format
   // Transaction information conversion was developed with the assistance of ChatGPT - OpenAI
   String _convertTransactionsToCsv(List<Transaction_data> transactions) {
     StringBuffer csvBuffer = StringBuffer();
     csvBuffer.writeln("ID,Name,Category,Amount,Date");
+    // format all transactions in the desired format
     for (var transaction in transactions) {
       csvBuffer.writeln('"${transaction.id}","${transaction.name}","${transaction.category}",'
           '"${transaction.amount}","${DateFormat('yyyy-MM-dd').format(transaction.date!)}"');
@@ -195,14 +196,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
     List<Transaction_data> transactions = await _fetchExpensesFromFirestore();
     String csvData = _convertTransactionsToCsv(transactions);
 
-    // Use temporary directory for temporary file
+    // Use temporary directory for temporary file (uses path_provider)
     final directory = await getTemporaryDirectory();
     final path = '${directory.path}/transactions.csv';
     final file = File(path);
+    // Write the formatted transaction list into the .csv file
     await file.writeAsString(csvData);
 
-    // Share the file with gmail and google drive
-    Share.shareFiles([path], text: 'Here are your transactions in CSV format');
+    // Share the file with gmail or google drive
+    Share.shareFiles([path], text: 'Here are my transactions in CSV format');
   }
 
   /// Shows the total balance left at the top by calculating totalIncome - totalExpenses, also allows exporting of the transactions.

@@ -338,8 +338,6 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
     Map<int, List<Transaction_data>> transactionsByMonth =
     groupTransactionsByMonth(transactions);
 
-    List<int> sortedMonths = transactionsByMonth.keys.toList()..sort();
-
     //Logic to get the most recent months to display (3)
     DateTime now = DateTime.now();
     List<int> recentMonths = List.generate(3, (index) {
@@ -349,18 +347,6 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
       }
       return month;
     }).reversed.toList();
-
-    // get current month and year
-    int _currentMonth = DateTime.now().month;
-    int _currentYear = DateTime.now().year;
-    final int _monthsToShow = 3;
-    List<int> _displayedMonths = [];
-
-    // Filter transactions for the current month and year
-    List<Transaction_data> currentMonthTransactions =
-        transactionsByMonth[_currentMonth]?.where((transaction) {
-          return transaction.date?.year == _currentYear;
-        }).toList() ?? [];
 
     // Filter the transactions to only include data from the recent three months
     List<BarChartGroupData> barGroups = recentMonths.map((month) {
@@ -422,7 +408,7 @@ class _FinancialInsightsState extends State<FinancialInsightsPage> {
                             '\$${value.toInt()}',
                             style: TextStyle(
                               color: textColor,
-                              fontSize: 10,
+                              fontSize: 12,
                             ),
                           );
                         },

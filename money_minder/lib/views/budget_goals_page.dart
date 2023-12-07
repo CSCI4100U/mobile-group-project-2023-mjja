@@ -133,6 +133,13 @@ class _GoalsPageState extends State<GoalsPage> {
 
                 // Add the new goal to the database
                 int? result = await _goalDatabase.createGoal(newGoal);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Budget goal added successfully'),
+                    backgroundColor: purpleColor,
+                    duration: Duration(seconds: 2),
+                  ),
+                );
                 if (result != null) {
                   // Goal added successfully, reload goals
                   _loadGoals();
@@ -201,6 +208,13 @@ class _GoalsPageState extends State<GoalsPage> {
   void _deleteGoal(int index) async {
     Goal goal = goalsList[index];
     await _goalDatabase.deleteGoal(goal.id!);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Budget goal deleted successfully'),
+        backgroundColor: purpleColor,
+        duration: Duration(seconds: 2),
+      ),
+    );
     _loadGoals();
   }
 
@@ -231,7 +245,8 @@ class _GoalsPageState extends State<GoalsPage> {
                 itemBuilder: (context, index) {
                   var goal = goalsList[index];
                   return Dismissible(
-                    key: Key(goal.id.toString()), // Assuming each goal has a unique ID
+                    //make sure each goal has a unique ID
+                    key: Key(goal.id.toString()),
                     onDismissed: (direction) {
                       // Show a confirmation dialog before deleting the goal
                       _showDeleteConfirmationDialog(context, goal, index);
@@ -274,7 +289,6 @@ class _GoalsPageState extends State<GoalsPage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 1, // Set the current index according to the GoalsPage
         onTap: (index) {
-          // Handle bottom navigation bar item taps
         },
       ),
     );
