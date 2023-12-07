@@ -13,5 +13,7 @@
     "category_star": "Categoría*",
     "amount_star": "Importe (CAD)*",
     "enter_where": "Ingrese dónde realizó la transacción.",
-    "this_field_req" : "¡Este campo es obligatorio!"
+    "this_field_req" : "¡Este campo es obligatorio!",
+    "oh_no": "¡Oh, no! \n Lo olvidé",
+    
 }

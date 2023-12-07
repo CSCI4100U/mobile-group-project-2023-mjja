@@ -55,6 +55,10 @@
   "@enter_where": {
     "description": "enter hint text"
   },
+  "oh_no": "Oh, No! \n I Forgot",
+  "@oh_no": {
+    "description": "oh no with newline"
+  },
   "this_field_req": "This field is required!",
   "@this_field_req": {
     "description": "This is a required field text"
