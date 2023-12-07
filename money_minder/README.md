@@ -4,7 +4,7 @@
 #### Member 1: Jahanvi Mathukia - 100832165 - [JahanviMathukia](https://github.com/JahanviMathukia)
 #### Member 2: Aanisha Newaz - 100788588 - [Aanisha02](https://github.com/Aanisha02)
 #### Member 3: Jessica Patel - 100785837 - [JessicaPatel711](https://github.com/JessicaPatel711?)
-#### Member 4: Mansi Patel - [SID]
+#### Member 4: Mansi Patel - 100805283 - [mansi-patel3](https://github.com/mansi-patel3)
 #### Member 5: Ethan Randle-Bragg - [100742591] 0 [EthanRandle](https://github.com/EthanRandle)
 
 ## Changes from the Proposal
@@ -75,6 +75,10 @@ Worked on designing the user interface of the following pages: Financial Insight
 Worked on the user interface of the MoneyMinder application, more specifically worked on the following pages: Landing Page, Sign-In, Sign up, Home(transactions), Add transactions, Reminders, Settings, About, Privacy and security, Help & Support. Worked on functionalities: Notifications, custom navigation (app header and footer), multiple screen navigation, dialogs, and pickers for different pages.
 
 #### Mansi Patel: 
+- Main Focus on the backend side integrating UI with Firebase and/or SQLite
+- End to end implementation of signup and login from UI to firebase
+- End to end implementation of bufegt-goals and reminders from UI to SQLite
+- Setup the Firebase and SQLite DB structure for the project.  
 
 #### Ethan Randle-Bragg: 
 
@@ -85,6 +89,7 @@ Stock: The investment insights page uses IEX cloud API to get the most accurate 
 We also have a + button in the bottom right that allows for a user to add a new stock and the listview will automatically update with this new stock and price
 there is also a search bar at the top that you can use to search any stock by either is 4 letter symbol or company name
 An example stock to add in the Alert dialog when you click that add floating action button is COST for costco. Additionally the Stock API only lasts 7 days so if the project is marked after that date you will need to replace   final apiKey = 'sk_bf99b81898b649bb84952d702e939384'; in investment_insight.dart line 49 with sk_0310f693e25a492aab102ef5231fe40b if that doesn't work you will need to sign up for IEX cloud here at https://iexcloud.io/
+
 ## How to run:
 - git pull
 - in your terminal, cd money_minder
