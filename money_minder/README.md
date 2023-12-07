@@ -2,7 +2,7 @@
 
 ### Group Members Name and SID
 #### Member 1: Jahanvi Mathukia - [SID]
-#### Member 2: Aanisha Newaz - 100788588 - @Aanisha02
+#### Member 2: Aanisha Newaz - 100788588 - [Aanisha02](https://github.com/Aanisha02)
 #### Member 3: Jessica Patel - [SID]
 #### Member 4: Mansi Patel - [SID]
 #### Member 5: Ethan Randle-Bragg - [SID]
@@ -14,24 +14,50 @@ Internationalization: Content and writings in Money Minder is translated to Span
 Financial Goal Tracking and Budgetting: These two features are merged as they serve similar purposes. This will prevent the user from being confused on which list to navigate into.
 
 ### Removal:
-All attempts of chanllenging features have been discarded to ensure our app only has complete, usable features.
-Extra challenges: Reciept scanning, location tracking, multiple user support
+All attempts of chanllenging features have been discarded to ensure our app only has complete, usable features. <br>
+**Extra challenges**: Reciept scanning, location tracking, multiple user support
 
-Working of the Whole App
-Brief Overview
-Provide a brief overview of the app's functionality and purpose.
+## Working of the Whole App
+### Brief Overview
+MoneyMinder is a finance app that is designed to make daily tasks easier and efficient. 
+The purpose of this application is to develop a robust and user-friendly mobile application to track expenses, analyze spending patterns, and manage budgets and stocks. 
+The developers of this application aim to provide users with a comprehensive tool to organize and manage their daily expenses. 
 
-Page Descriptions and Navigation
-Page 1: [Page Name]
-Functionality: [Brief description of what this page does.]
-Navigation: [Instructions on how to navigate to this page.]
-Page 2: [Page Name]
-Functionality: [Description]
-Navigation: [Instructions]
-Page 3: [Page Name]
-Functionality: [Description]
+### Page Descriptions and Navigation
+#### Landing Page
+**Functionality**: Once the app is opened, the user is given the option to sign in or sign up to use the app. <br>
+**Navigation**: This will be the landing page once the app is opened.
+#### Sign in/Sign up pages
+**Functionality**: User will be prompted to sign into their existing account using their email and password. Signing up will require their email, full name, username and password.<br>
+**Navigation**: Landing page -> sign in or sign up button.
 
-Navigation: [Instructions]
+#### Transactions page
+**Functionality**: User can view all their recent transactions, including income that comes in and expenses that goes out. The user can also filter their transactions by date. Finally, the user can export their transactions in a .csv format and upload it to drive or share it via email.<br>
+**Navigation**: Landing Page -> *log in/sign up* -> the page will show up 
+
+#### Financial insights
+**Functionality**: This page will show two different graphs to visualize the user's recent spendings. The first graph is a pie chart that shows a breakdown of where the user has been spending money on. The second graph is a double br graph which shows income and expenses side by side during the three most recent months.<br>
+**Navigation**: Landing Page -> *log in/sign up* -> second button on bottom navigation **OR** Landing Page -> *log in/sign up* -> click hamburger menu -> click Financial Insights 
+
+#### Add Transactions
+**Functionality**: [Description]<br>
+**Navigation**: 
+
+#### Reminders
+**Functionality**: [Description]<br>
+**Navigation**: 
+
+#### Investment insights
+**Functionality**: [Description]<br>
+**Navigation**: 
+
+#### Budget goals
+**Functionality**: [Description]<br>
+**Navigation**: 
+
+#### Settings
+**Functionality**: [Description]<br>
+**Navigation**: 
 
 [Continue for each page as necessary]
 
