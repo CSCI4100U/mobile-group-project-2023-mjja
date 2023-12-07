@@ -5,7 +5,7 @@
 #### Member 2: Aanisha Newaz - 100788588 - [Aanisha02](https://github.com/Aanisha02)
 #### Member 3: Jessica Patel - 100785837 - [JessicaPatel711](https://github.com/JessicaPatel711?)
 #### Member 4: Mansi Patel - [SID]
-#### Member 5: Ethan Randle-Bragg - [SID]
+#### Member 5: Ethan Randle-Bragg - [100742591] 0 [EthanRandle](https://github.com/EthanRandle)
 
 ## Changes from the Proposal
 ### Additions
@@ -78,6 +78,13 @@ Worked on the user interface of the MoneyMinder application, more specifically w
 
 #### Ethan Randle-Bragg: 
 
+Language:
+Using your systems current default language the app will launch with that language and all widgets and text will be translated
+
+Stock: The investment insights page uses IEX cloud API to get the most accurate stock data for the day as well as display its current price and daily change whether that be positive or negative %
+We also have a + button in the bottom right that allows for a user to add a new stock and the listview will automatically update with this new stock and price
+there is also a search bar at the top that you can use to search any stock by either is 4 letter symbol or company name
+An example stock to add in the Alert dialog when you click that add floating action button is COST for costco. Additionally the Stock API only lasts 7 days so if the project is marked after that date you will need to replace   final apiKey = 'sk_bf99b81898b649bb84952d702e939384'; in investment_insight.dart line 49 with sk_0310f693e25a492aab102ef5231fe40b if that doesn't work you will need to sign up for IEX cloud here at https://iexcloud.io/
 ## How to run:
 - git pull
 - in your terminal, cd money_minder
