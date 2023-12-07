@@ -45,6 +45,16 @@ class DBUtils {
               isCompleted INTEGER
             )
         ''');
+        db.execute('''
+          CREATE TABLE IF NOT EXISTS reminder(
+              id INTEGER PRIMARY KEY,
+              title TEXT,
+              description TEXT,
+              endDate TEXT,
+              isCompleted INTEGER, 
+              isUrgent INTEGER
+            )
+        ''');
       },
       version: 1,
     );
