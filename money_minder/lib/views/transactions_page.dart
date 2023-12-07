@@ -6,9 +6,6 @@
 ///     - All transactions between range of dates selected from date picker
 ///   All the past transactions - name, category, amount, and, date directly from Firebase
 
-// ## Acknowledgments
-// The code in this project was developed with the assistance of ChatGPT, an AI language model created by OpenAI.
-
 //all necessary imports
 import 'dart:io';
 import 'package:flutter/material.dart';

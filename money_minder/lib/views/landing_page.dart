@@ -7,7 +7,7 @@ import 'login_page.dart';
 import 'sign_up.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SignInScreen extends StatelessWidget {
+class LandingPage extends StatelessWidget {
   final Color purpleColor = Color(0xFF5E17EB);
 
   @override
@@ -26,13 +26,16 @@ class SignInScreen extends StatelessWidget {
                   width: 180.0,
                   height: 200.0,
                 ),
-                Text(
+                Center(
+                  child: Text(
                   'MONEY MINDER',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 50.0,
                     fontWeight: FontWeight.bold,
                   ),
+                    textAlign: TextAlign.center,
+                ),
                 ),
                 Text(
                   AppLocalizations.of(context)!.mm_slogan,

@@ -77,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 )),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => SignInScreen(), //Logout of the app
+                builder: (context) => LandingPage(), //Logout of the app
               ));
             },
             trailing: Icon(Icons.exit_to_app, color: purpleColor),

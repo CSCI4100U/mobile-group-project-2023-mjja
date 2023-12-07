@@ -8,6 +8,8 @@
 // https://firebase.google.com/docs/cli#setup_update_cli
 // https://pub.dev/packages/fl_chart
 // https://github.com/imaNNeo/fl_chart/blob/master/repo_files/documentations/pie_chart.md
+// http://stackoverflow.com/
+// https://flutter.dev/docs/reference/tutorials
 // Used the above links to help build this whole application
 
 
@@ -17,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'views/landing_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// firebase dependencies
 import 'package:firebase_core/firebase_core.dart';
 import 'views/notifications_service.dart';
 
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         const Locale('en', ''), // English, no country code
         const Locale('es', ''), // Spanish, no country code
       ],
-      home: SignInScreen(),
+      home: LandingPage(),
 
     );
   }
