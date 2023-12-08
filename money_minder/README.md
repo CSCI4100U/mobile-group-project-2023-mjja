@@ -69,7 +69,7 @@ The developers of this application aim to provide users with a comprehensive too
 Worked on integrating the whole transaction page with Firebase from sending all the data from the add transaction page to Firebase and fetching it back to fill up the UI on the transaction page. Worked on integrating the required data from Firebase to create a donut chart for expenses and the design of that page. Created the required structure for Firebase and SQLite database. Documented and formatted the code.
 
 #### Aanisha Newaz: 
-Worked on designing the user interface of the following pages: Financial Insights, Reminders, Budget goals. Worked on functionalities: Snackbar implementations, file sharing functionality, data visualizing using graphs, multiple pages/navigations, dialogs and pickers to create new reminders, goals, and add new transactions.
+Worked on designing the user interface of MoneyMinder with primary focus on the following pages: Financial Insights, Reminders, Budget goals. Worked on functionalities: Snackbar implementations, file sharing functionality, data visualizing using graphs, multiple screens/navigations, dialogs, and pickers to create new reminders, goals, and add new transactions.
 
 #### Jessica Patel: 
 Worked on the user interface of the MoneyMinder application, more specifically worked on the following pages: Landing Page, Sign-In, Sign up, Home(transactions), Add transactions, Reminders, Settings, About, Privacy and security, Help & Support. Worked on functionalities: Notifications, custom navigation (app header and footer), multiple screen navigation, dialogs, and pickers for different pages.
@@ -98,6 +98,7 @@ An example stock to add in the Alert dialog when you click that add floating act
 
 ## YouTube Link
 - Mansi Patel - [Walkthrough](https://www.youtube.com/watch?v=Svr-eegoS7E)
+- Aanisha Newaz - [Demo](https://drive.google.com/file/d/1y56D37wSSFRYE7j0WqSvB3TLbBqm56Ae/view?usp=sharing)
 - Ethan Randle-Bragg https://youtu.be/8qyC-UONRuA
 - Jessica Patel - [Demo](https://youtu.be/9qtAQKIxN7Y)
 - Jahanvi Mathukia - [Demo](https://youtu.be/_I37pRL6Rqg)
