@@ -60,25 +60,12 @@ Future<void> syncDataToFirebase() async {
 
   final List<Login> logins = await fetchLoginsFromSQLite();
   final List<Signup> signups = await fetchSignupsFromSQLite();
-  //final List<Expense> expenses = await fetchExpensesFromSQLite();
 
   // Reference to the 'logins' collection
   final CollectionReference loginsCollection = FirebaseFirestore.instance.collection('logins');
 
   // Reference to the 'signups' collection
   final CollectionReference signupsCollection = FirebaseFirestore.instance.collection('signups');
-
-  // Reference to the 'accountinfos' collection
-  final CollectionReference accountinfosCollection = FirebaseFirestore.instance.collection('accountinfos');
-
-  // Reference to the 'expenses' collection
-  final CollectionReference expensesCollection = FirebaseFirestore.instance.collection('expenses');
-
-  // Reference to the 'incomes' collection
-  final CollectionReference incomesCollection = FirebaseFirestore.instance.collection('incomes');
-
-  // Reference to the 'budgets' collection
-  final CollectionReference budgetsCollection = FirebaseFirestore.instance.collection('budgets');
 
   // Create a batch for simultaneous write/update to Firebase
   WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -92,14 +79,6 @@ Future<void> syncDataToFirebase() async {
   for (final signup in signups) {
     batch.set(signupsCollection.doc(signup.id.toString()), signup.toMap(), SetOptions(merge: true));
   }
-
-
-  // Add expenses to the batch
-  // for (final expense in expenses) {
-  //   batch.set(expensesCollection.doc(expense.id.toString()), expense.toMap(), SetOptions(merge: true));
-  // }
-
-
 
   await batch.commit();
 
