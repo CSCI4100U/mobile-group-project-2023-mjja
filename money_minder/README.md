@@ -94,4 +94,7 @@ An example stock to add in the Alert dialog when you click that add floating act
 - git pull
 - in your terminal, cd money_minder
 - flutter pub get 
-- flutter run      
+- flutter run
+
+## YouTube Link
+- Mansi Patel - [Walkthrough](https://www.youtube.com/watch?v=Svr-eegoS7E) 
