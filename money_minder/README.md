@@ -32,7 +32,7 @@ The developers of this application aim to provide users with a comprehensive too
 **Functionality**: User will be prompted to sign into their existing account using their email and password. Signing up/ creating an account for new users will require their email, full name, username, and password. <br>
 **Navigation**: Landing page -> sign in or sign up button.
 
-**To test this app**: For sign in use emailAddress: testuser@gmail.com and Password: Password1!
+**To test this app**: For sign in use email address: testuser@gmail.com and Password: Password1!
 
 ### Transactions page
 **Functionality**: User can view all their recent transactions, including income that comes in and expenses that goes out with the current total balance of the account. The user can also filter their transactions by date. Finally, the user can export their transactions in a .csv format and upload it to drive or share it via email, discord, etc based on device permissions.<br>
@@ -96,7 +96,7 @@ An example stock to add in the Alert dialog when you click that add floating act
 - flutter pub get 
 - flutter run
 
-## YouTube Link
+## YouTube/Drive Link to Video
 - Mansi Patel - [Walkthrough](https://www.youtube.com/watch?v=Svr-eegoS7E)
 - Aanisha Newaz - [Demo](https://drive.google.com/file/d/1y56D37wSSFRYE7j0WqSvB3TLbBqm56Ae/view?usp=sharing)
 - Ethan Randle-Bragg https://youtu.be/8qyC-UONRuA
