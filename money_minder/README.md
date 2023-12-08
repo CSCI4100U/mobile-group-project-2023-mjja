@@ -5,7 +5,7 @@
 #### Member 2: Aanisha Newaz - 100788588 - [Aanisha02](https://github.com/Aanisha02)
 #### Member 3: Jessica Patel - 100785837 - [JessicaPatel711](https://github.com/JessicaPatel711?)
 #### Member 4: Mansi Patel - 100805283 - [mansi-patel3](https://github.com/mansi-patel3)
-#### Member 5: Ethan Randle-Bragg - [100742591] 0 [EthanRandle](https://github.com/EthanRandle)
+#### Member 5: Ethan Randle-Bragg - [100742591] [EthanRandle](https://github.com/EthanRandle)
 
 ## Changes from the Proposal
 ### Additions
