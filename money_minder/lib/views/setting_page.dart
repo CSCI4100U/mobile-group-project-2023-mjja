@@ -7,6 +7,7 @@ import 'custom_navigation.dart';
 import 'privacy_security.dart';
 import 'about_page.dart';
 import 'help_support_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// A Stateful Widget for settings page of the app.
 class SettingsPage extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: Text('About',
+            title: Text(AppLocalizations.of(context)!.about,
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.bold,
@@ -42,7 +43,7 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: Icon(Icons.info_outline, color: textColor),
           ),
           ListTile(
-            title: Text('Privacy & Security',
+            title: Text(AppLocalizations.of(context)!.privacy_security,
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: Icon(Icons.lock, color: textColor),
           ),
           ListTile(
-            title: Text('Help & Support',
+            title: Text(AppLocalizations.of(context)!.help_support,
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: Icon(Icons.help_center, color: textColor),
           ),
           ListTile(
-            title: Text('Logout',
+            title: Text(AppLocalizations.of(context)!.logout,
                 style: TextStyle(
                   color: textColor,
                   fontWeight: FontWeight.bold,

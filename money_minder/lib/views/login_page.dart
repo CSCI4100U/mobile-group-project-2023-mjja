@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:money_minder/views/transactions_page.dart';
 import '../models/login_model.dart';
 import 'sign_up.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: <Widget>[
                     SizedBox(height: 80.0),
                     Text(
-                      'Welcome!',
+                      AppLocalizations.of(context)!.welcome,
                       style: TextStyle(
                         color: textColor,
                         fontSize: 45.0,
@@ -81,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Enter your email and password to access your account.',
+                      AppLocalizations.of(context)!.enter_email_pass,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: textColor,
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(
-                        labelText: 'Email *',
+                        labelText: AppLocalizations.of(context)!.email_star,
                         labelStyle: TextStyle(color: textColor),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: textColor),
@@ -105,10 +106,10 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Email is required';
+                          return AppLocalizations.of(context)!.email_req;
                         }
                         if (!emailRegex.hasMatch(value)) {
-                          return 'Enter a valid email address';
+                          return AppLocalizations.of(context)!.email_valid;
                         }
                         return null;
                       },
@@ -117,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextFormField(
                       controller: passwordController,
                       decoration: InputDecoration(
-                        labelText: 'Password *',
+                        labelText: AppLocalizations.of(context)!.pass_star,
                         labelStyle: TextStyle(color: textColor),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: textColor),
@@ -143,14 +144,10 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: !_isPasswordVisible,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Password is required';
+                          return AppLocalizations.of(context)!.pass_req;
                         }
                         if (!passwordRegex.hasMatch(value)) {
-                          return 'Password must meet the following requirements:\n'
-                              '• At least 8 characters long.\n'
-                              '• At least one uppercase letter.\n'
-                              '• At least one lowercase letter.\n'
-                              '• At least one digit.';
+                          return AppLocalizations.of(context)!.pass_statement;
                         }
                         return null;
                       },
@@ -176,13 +173,16 @@ class _LoginPageState extends State<LoginPage> {
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               backgroundColor: purpleColor,
-                              content: Text('Invalid email or password'),
+                              content: Text(
+                                AppLocalizations.of(context)!
+                                    .invalid_email_or_pass,
+                              ),
                             ));
                           }
                         }
                       },
                       child: Text(
-                        'Log In',
+                        AppLocalizations.of(context)!.login,
                         style: TextStyle(color: textColor),
                       ),
                     ),
@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                         ));
                       },
                       child: Text(
-                        "Don't have an account? Sign Up",
+                        AppLocalizations.of(context)!.dont_have_acc,
                         style: TextStyle(
                           color: textColor,
                           decoration: TextDecoration.underline,

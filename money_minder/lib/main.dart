@@ -10,8 +10,8 @@
 // https://github.com/imaNNeo/fl_chart/blob/master/repo_files/documentations/pie_chart.md
 // http://stackoverflow.com/
 // https://flutter.dev/docs/reference/tutorials
+//https://iexcloud.io/docs
 // Used the above links to help build this whole application
-
 
 import 'package:flutter/material.dart';
 
@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
         const Locale('es', ''), // Spanish, no country code
       ],
       home: LandingPage(),
-
     );
   }
 }

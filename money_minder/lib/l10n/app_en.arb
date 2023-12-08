@@ -55,12 +55,119 @@
   "@enter_where": {
     "description": "enter hint text"
   },
+  "this_field_req": "This field is required!",
+  "@this_field_req": {
+    "description": "This is a required field text"
+  },
   "oh_no": "Oh, No! \n I Forgot",
   "@oh_no": {
     "description": "oh no with newline"
   },
-  "this_field_req": "This field is required!",
-  "@this_field_req": {
-    "description": "This is a required field text"
+    "welcome": "Welcome!",
+  "@welcome": {
+    "description": "welcome with explanation mark"
+  },
+  "enter_email_pass": "Enter your email and password to access your account.",
+  "@enter_email_pass": {
+    "description": "Enter email and pass statement"
+  },
+  "email_star": "Email *",
+  "@email_star": {
+    "description": "Email *"
+  },
+  "email_req": "Email is required",
+  "@email_req": {
+    "description": "Email is required"
+  },
+  "email_valid": "Enter a valid email address",
+  "@email_valid": {
+    "description": "Enter a valid email address"
+  },
+  "pass_star": "Password *",
+  "@pass_star": {
+    "description": "Password *"
+  },
+  "pass_req": "Password is required",
+  "@pass_req": {
+    "description": "Password is required"
+  },
+  "pass_statement": "Password must meet the following requirements:\n • At least 8 characters long.\n • At least one uppercase letter.\n • At least one lowercase letter.\n • At least one digit.",
+  "@pass_statement": {
+    "description": "Password error statement"
+  },
+  "invalid_email_or_pass": "Invalid email or password",
+  "@invalid_email_or_pass": {
+    "description": "Invalid email or password"
+  },
+  "login": "Log In",
+  "@login": {
+    "description": "Log In"
+  },
+  "dont_have_acc": "Don't have an account? Sign Up",
+  "@dont_have_acc": {
+    "description": "Don't have an account? Sign Up"
+  },
+    "create_account": "Create Account",
+  "@create_account": {
+    "description": "Create Account"
+  },
+
+  "lets_create": "Let's create an account!",
+  "@lets_create": {
+    "description": "Let's create an account!"
+  },
+
+  "full_name_star": "Full Name *",
+  "@full_name_star": {
+    "description": "Full Name *"
+  },
+  "full_name_req": "Full Name is required",
+  "@full_name_req": {
+    "description": "Full Name is required"
+  },
+  "user_name_req": "Username is required",
+  "@user_name_req": {
+    "description": "Username is required"
+  },
+  "all": "All",
+  "@all": {
+    "description": "All"
+  },
+  "income": "Income",
+  "@income": {
+    "description": "Income"
+  },
+  "expense": "Expense",
+  "@expense": {
+    "description": "Expense"
+  },
+  "recent_trans": "Recent Transactions",
+  "@recent_trans": {
+    "description": "Recent Transactions"
+  },
+  "privacy_security": "Privacy & Security",
+  "@privacy_security": {
+    "description": "Privacy & Security"
+  },
+
+  "about": "About",
+  "@about": {
+    "description": "About"
+  },
+
+  "help_support": "Help & Support",
+  "@help_support": {
+    "description": "Help & Support"
+  },
+
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout"
+  },
+
+  "total_bal": "Total Balance:",
+  "@total_bal": {
+    "description": "Total Balance:"
   }
+
 }
