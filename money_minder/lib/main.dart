@@ -11,6 +11,7 @@
 // http://stackoverflow.com/
 // https://flutter.dev/docs/reference/tutorials
 //https://iexcloud.io/docs
+// Used google translate for spanish translations 
 // Used the above links to help build this whole application
 
 import 'package:flutter/material.dart';
